@@ -1,6 +1,8 @@
 image: blang/latex
 build:
   script:
+    - pwd
+    - ls
     - latexmk -pdf -cd dissertation.tex
   artifacts:
     paths:
