@@ -3,7 +3,7 @@ build:
   script:
     - pwd
     - ls
-    - latexmk -pdf -cd dissertation.tex
+    - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
       - "*.pdf"
