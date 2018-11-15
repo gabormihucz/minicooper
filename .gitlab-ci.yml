@@ -1,6 +1,7 @@
 image: blang/latex
 build:
   script:
+    - python MCapp/mcapp.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
