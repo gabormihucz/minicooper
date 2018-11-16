@@ -1,2 +1,7 @@
 # exlude compiled python files
 *.pyc
+
+# django related stuff
+MCweb/env
+*.DS_Store
+__pycache__
