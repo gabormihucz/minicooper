@@ -2,6 +2,7 @@ image: blang/latex
 build:
   script:
     - python MCapp/mcapp.py
+    - python MCapp/testOCR.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
