@@ -3,8 +3,8 @@ build:
   script:
     - pip install pillow
     - pip install pytesseract
-    - sudo apt install tesseract-ocr
-    - sudo apt install libtesseract-dev
+    - apt install tesseract-ocr
+    - apt install libtesseract-dev
     - python MCapp/mcapp.py
     - python MCapp/testOCR.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
