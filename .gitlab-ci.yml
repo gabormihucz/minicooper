@@ -2,7 +2,7 @@ image: blang/latex
 build:
   before_script:
     - virtualenv venv
-    - . /venv/bin/activate
+    - . venv/bin/activate
     - python -V
     - sudo apt-get install tesseract-ocr
     - sudo apt-get install libtesseract-dev
