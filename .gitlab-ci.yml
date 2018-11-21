@@ -4,7 +4,7 @@ build:
     - virtualenv venv
     - . venv/bin/activate
     - python -V
-    - sudo apt-get update
+    - apt-get update
     - sudo apt-get -qq install -y tesseract-ocr libtesseract-dev
   script:
     - pip install pillow
