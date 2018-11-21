@@ -1,10 +1,14 @@
 image: blang/latex
 build:
+  before_script:
+    - virtualenv venv
+    - . /venv/bin/activate
+    - python -V
+    - sudo apt-get install tesseract-ocr
+    - sudo apt-get install libtesseract-dev
   script:
     - pip install pillow
     - pip install pytesseract
-    - sudo apt install tesseract-ocr
-    - sudo apt install libtesseract-dev
     - python MCapp/mcapp.py
     - python MCapp/testOCR.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
