@@ -10,7 +10,7 @@ build:
     - pip install pillow
     - pip install pytesseract
     - python MCapp/mcapp.py
-    - python MCapp/testOCR.py
+    #- python MCapp/testOCR.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
