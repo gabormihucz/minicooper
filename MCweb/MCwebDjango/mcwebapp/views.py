@@ -16,4 +16,4 @@ def index(request):
     #       <img src="{% static "images/cat.jpg" %}" alt="picture of a cat">
     # @2277073z
 
-    return HttpResponse("Hello world.")
+    return render(request,'mcwebapp/index.html',{})
