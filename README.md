@@ -1,2 +1,2 @@
 # dissertation
-CS15 -- team project
+CS15 --- team project
