@@ -21,19 +21,21 @@ def crop_from_template(template, filename, page_num = 0):
     page_array = np.asarray(page)
     #test = Image.fromarray(page_array)
     #test.save("test.jpeg")
-
+    croppedImages = []
     for label,coords in template.items():
         y1 = min(coords["y1"], coords["y2"])
         y2 = max(coords["y1"], coords["y2"])
         x1 = min(coords["x1"], coords["x2"])
         x2 = max(coords["x1"], coords["x2"])
         croppped = page_array[y1:y2,x1:x2]
-        output_image = Image.fromarray(croppped)
-        output_image.save(label + ".jpeg")
+        # output_image = Image.fromarray(croppped)
+        # output_image.save(label + ".jpeg")
+        croppedImages += [[label,Image.fromarray(croppped)]]
 
-
-
-
-#t2 = load_template("SampleTemplate")
-
-#crop_from_template(t2,"SamplePDF.pdf")
+    #print(croppedImages)
+    return croppedImages
+#
+#
+# t2 = load_template("SampleTemplate")
+#
+# croppedImages = crop_from_template(t2,"SamplePDF.pdf")
