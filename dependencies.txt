@@ -6,3 +6,4 @@ pip
 pytesseract
 setuptools
 wheel
+django
