@@ -19,7 +19,7 @@ def index(request):
 
     return render(request,'mcwebapp/index.html',{})
 
-
+"""
 def register(request):
     registered = False
 
@@ -40,3 +40,4 @@ def register(request):
     context_dict = {'user_form': user_form
                     'registered': registered}
     return render(request, 'mcwebapp/register.html', context_dict)
+"""

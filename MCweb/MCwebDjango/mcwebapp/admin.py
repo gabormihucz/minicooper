@@ -1,6 +1,6 @@
 from django.contrib import admin
-
-from .models import PdfFile
+from mcwebapp.models import UserProfile
+from mcwebapp.models import PdfFile
 
 admin.site.register(PdfFile)
 
