@@ -5,6 +5,7 @@ build:
     - . venv/bin/activate
     - python -V
     - sudo apt-get update
+    - sudo apt install poppler-utils
   script:
     - pip install -r dependencies.txt
     - python MCapp/tests.py
