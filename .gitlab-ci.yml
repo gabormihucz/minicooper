@@ -8,7 +8,9 @@ build:
   script:
     - pip install -r dependencies.txt
     - pip list
+    - cd MCapp
     - python MCapp/tests.py
+    - cd ..
     - python3 MCweb/MCwebDjango/webtests.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:

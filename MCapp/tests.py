@@ -12,7 +12,7 @@ class TestOCR(unittest.TestCase):
     def test_load_template(self):
         #loading template eturns a dictionary, test check if hash of that dictionary matches the precomputed correct hash
         print(os.getcwd())
-        loadedTemplate = crop.load_template(r"SampleTemplate")
+        loadedTemplate = crop.load_template("SampleTemplate")
         loadedTemplate = hashlib.md5(str(loadedTemplate).encode())
 
         self.assertEqual(loadedTemplate.hexdigest(),"1655bedf1f0b2c3c411315d2a5bb1de7")
@@ -21,18 +21,18 @@ class TestOCR(unittest.TestCase):
     def test_crop_from_template(self):
         # print(os.getcwd())
         # print("here")
-        # print(os.listdir(r"templates/"))
+        # print(os.listdir(r"pdfs/"))
         # print("here2")
         cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
 
-        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,r"pdfs/bob.pdf",0)
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf",0)
         self.assertEqual(len(str(croppedImages)),83)
 
 
     #test checks if py tesseract works corectly
     def test_simple_ocr(self):
         cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
-        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,r"pdfs/bob.pdf")
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf")
         # populating the dictionary
         textOutput = {}
         for entry in croppedImages:
