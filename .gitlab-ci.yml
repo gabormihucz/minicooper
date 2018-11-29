@@ -7,6 +7,7 @@ build:
     - sudo apt-get update
   script:
     - pip install -r dependencies.txt
+    - pip list
     - python MCapp/tests.py
     - python3 MCweb/MCwebDjango/webtests.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex

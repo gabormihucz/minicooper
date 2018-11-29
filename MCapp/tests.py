@@ -19,10 +19,10 @@ class TestOCR(unittest.TestCase):
 
 
     def test_crop_from_template(self):
-        print(os.getcwd())
-        print("here")
-        print(os.listdir(r"templates/"))
-        print("here2")
+        # print(os.getcwd())
+        # print("here")
+        # print(os.listdir(r"templates/"))
+        # print("here2")
         cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
 
         croppedImages = crop.crop_from_template(cropLoadTemplateOutput,r"pdfs/bob.pdf",0)
