@@ -25,14 +25,14 @@ class TestOCR(unittest.TestCase):
         print("here2")
         cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
 
-        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf",0)
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,r"pdfs/bob.pdf",0)
         self.assertEqual(len(str(croppedImages)),83)
 
 
     #test checks if py tesseract works corectly
     def test_simple_ocr(self):
         cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
-        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf")
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,r"pdfs/bob.pdf")
         # populating the dictionary
         textOutput = {}
         for entry in croppedImages:
