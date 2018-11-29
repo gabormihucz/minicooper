@@ -7,20 +7,7 @@ from pdf2image import convert_from_path
 import numpy as np
 
 
-
 class TestOCR(unittest.TestCase):
-
-    #test checks if py tesseract works corectly
-    def test_simple_ocr(self):
-
-        test_bob = convert_from_path("pdfs/bob.pdf")
-        test_bob = test_bob[0]
-        test_bob = np.asarray(test_bob)
-        test_bob = Image.fromarray(test_bob)
-        test_bob = simpleOCR.image_to_text(test_bob)
-
-        self.assertEqual(test_bob,"While Bob ate an apple was in the basket.")
-
     #test check if template was loaded correctly
     def test_load_template(self):
         #loading template eturns a dictionary, test check if hash of that dictionary matches the precomputed correct hash
@@ -28,6 +15,27 @@ class TestOCR(unittest.TestCase):
         loadedTemplate = hashlib.md5(str(loadedTemplate).encode())
 
         self.assertEqual(loadedTemplate.hexdigest(),"1655bedf1f0b2c3c411315d2a5bb1de7")
+
+
+    def test_crop_from_template(self):
+        cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
+
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf")
+        print(croppedImages)
+        self.assertEqual(len(str(croppedImages)),83)
+
+
+    #test checks if py tesseract works corectly
+    def test_simple_ocr(self):
+        cropLoadTemplateOutput = {'allContent': {'x1': 0, 'x2': 1000, 'y1': 0, 'y2': 1000}}
+        croppedImages = crop.crop_from_template(cropLoadTemplateOutput,"pdfs/bob.pdf")
+        # populating the dictionary
+        textOutput = {}
+        for entry in croppedImages:
+            textOutput[entry[0]] = simpleOCR.image_to_text(entry[1])
+
+        self.assertEqual(textOutput,{'allContent': 'While Bob ate an apple'})
+
 
 if __name__ == "__main__":
     unittest.main()

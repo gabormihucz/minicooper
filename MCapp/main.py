@@ -1,8 +1,11 @@
+#main.py is supposed to take a name of template and name of pdf and in return save corresponding json (that is result of ocr) to a jsons folder
+
 import sys
 import os
 import json
 from crop import *
 from simpleOCR import *
+import hashlib
 
 #if fail == True, then some preconditions were not met and programme will not generate the expected output
 fail = False
@@ -24,6 +27,7 @@ if fail == False:
     chosenPDF = "pdfs/"+sys.argv[2]+".pdf"
     #applying template on an image
     croppedImages = crop_from_template(chosenTemplate,chosenPDF)
+    print(len(str(croppedImages)))
 
     textOutput = {}
 
@@ -32,7 +36,7 @@ if fail == False:
         textOutput[entry[0]] = image_to_text(entry[1])
 
     textOutput = json.dumps(textOutput, ensure_ascii=False)
-    
+
     with open("jsons/"+sys.argv[2]+".json","w") as f:
         f.write(textOutput)
 

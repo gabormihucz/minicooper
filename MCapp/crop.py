@@ -2,15 +2,11 @@ import numpy as np
 from pdf2image import convert_from_path
 from PIL import Image
 import pickle
-
-def save_template(template, name):
-    with open("templates/" + name + ".pkl", "wb") as f:
-        pickle.dump(template, f, pickle.HIGHEST_PROTOCOL)
-
-
+#fns that loads pickele changes it to json, returning the actual template that is required by OCR
 def load_template(name):
     with open("templates/" + name + ".pkl", "rb") as f:
         return pickle.load(f)
+
 
 # takes a dictionary template and a string filename and saves cropped images according to the template
 # format of template:
@@ -31,3 +27,10 @@ def crop_from_template(template, filename, page_num = 0):
         croppedImages += [[label,Image.fromarray(croppped)]]
 
     return croppedImages
+
+
+#old functions:
+# save_template replaced with load_and_save from init_template.py
+# def save_template(template, name):
+#     with open("templates/" + name + ".pkl", "wb") as f:
+#         pickle.dump(template, f, pickle.HIGHEST_PROTOCOL)
