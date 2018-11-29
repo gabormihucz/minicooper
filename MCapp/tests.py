@@ -11,6 +11,7 @@ class TestOCR(unittest.TestCase):
     #test check if template was loaded correctly
     def test_load_template(self):
         #loading template eturns a dictionary, test check if hash of that dictionary matches the precomputed correct hash
+        print(os.getcwd())
         loadedTemplate = crop.load_template("SampleTemplate")
         loadedTemplate = hashlib.md5(str(loadedTemplate).encode())
 

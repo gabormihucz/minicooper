@@ -5,7 +5,7 @@ import os
 import json
 from crop import *
 from simpleOCR import *
-import hashlib
+
 
 #if fail == True, then some preconditions were not met and programme will not generate the expected output
 fail = False
@@ -27,7 +27,6 @@ if fail == False:
     chosenPDF = "pdfs/"+sys.argv[2]+".pdf"
     #applying template on an image
     croppedImages = crop_from_template(chosenTemplate,chosenPDF)
-    print(len(str(croppedImages)))
 
     textOutput = {}
 
