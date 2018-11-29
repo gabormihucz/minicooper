@@ -11,7 +11,7 @@ build:
     - cd MCapp
     - python tests.py
     - cd ..
-    - python3 MCweb/MCwebDjango/webtests.py
+    # - python3 MCweb/MCwebDjango/webtests.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
