@@ -5,7 +5,7 @@ import pickle
 #fns that loads pickele changes it to json, returning the actual template that is required by OCR
 def load_template(name):
     with open("templates/" + name + ".pkl", "rb") as f:
-        return pickle.load(f)os.getcwd()
+        return pickle.load(f)
 
 
 # takes a dictionary template and a string filename and saves cropped images according to the template
