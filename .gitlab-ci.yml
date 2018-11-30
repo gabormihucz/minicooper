@@ -11,7 +11,9 @@ build:
     - cd MCapp
     - python tests.py
     - cd ..
+    - cd MCweb/MCwebDjango
     - python3 manage.py runserver
+    - cd ../..
     # - python3 MCweb/MCwebDjango/webtests.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
