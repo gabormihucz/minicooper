@@ -7,9 +7,7 @@ from django.conf.urls.static import static
 from registration.backends.simple.views import RegistrationView
 
 from django.conf.urls import url
-
 from django.conf.urls import include
-from . import views
 from django.contrib.auth import logout
 
 
