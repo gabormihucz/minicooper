@@ -6,10 +6,10 @@ from mcwebapp.models import *
 
 from django.urls import reverse
 class IndexViewTests(TestCase):
-	def test_index_view(self):
+    def test_index_view(self):
 
-		response = self.client.get(reverse(''))
-		self.assertEqual(response.status_code, 200)
+        response = self.client.get(reverse(''))
+        self.assertEqual(response.status_code, 200)
 
 class TestUserProfiles(unittest.TestCase):
     def setUp(self):
