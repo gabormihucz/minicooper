@@ -149,5 +149,5 @@ LOGIN_REDIRECT_URL = '/'
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
 LOGIN_URL = '/accounts/login/'
-ALLOWED_HOSTS = ['http://minicooper.pythonanywhere.com', 'minicooper.pythonanywhere.com']
+ALLOWED_HOSTS = ['http://minicooper.pythonanywhere.com', 'minicooper.pythonanywhere.com','127.0.0.1','localhost']
 
