@@ -12,6 +12,6 @@ from django.contrib.auth import logout
 
 
 urlpatterns = [
-        path('', views.index, name='index'),
+        path('', views.index, name=''),
         #url(r'^register/$', views.register, name='register'),
         ]
