@@ -1,8 +1,5 @@
 from django.db import models
-<<<<<<< HEAD
-=======
 from django.contrib.auth.models import User
->>>>>>> dev
 
 class PdfFile(models.Model):
     file_name = models.CharField(max_length = 200)
@@ -10,8 +7,6 @@ class PdfFile(models.Model):
 
     def __str__(self):
         return self.file_name
-<<<<<<< HEAD
-=======
 
 class UserProfile(models.Model):
 	# This line is required. Links UserProfile to a User model instance.
@@ -23,4 +18,3 @@ class UserProfile(models.Model):
 	# Remember if you use Python 2.7.x, define __unicode__ too!
 	def __str__(self):
 		return self.user.username
->>>>>>> dev
