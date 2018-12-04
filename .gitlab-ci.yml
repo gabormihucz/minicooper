@@ -1,14 +1,17 @@
 image: blang/latex
 build:
   before_script:
-    - virtualenv venv
+    - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
     - sudo apt-get update
   script:
     - pip install -r dependencies.txt
-    - python MCapp/mcapp.py
-    - python MCapp/testOCR.py
+    - pip list
+    - cd MCapp
+    - python tests.py
+    - cd ..
+    # - python3 MCweb/MCwebDjango/webtests.py
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
