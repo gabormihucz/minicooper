@@ -27,10 +27,3 @@ def crop_from_template(template, filename, page_num = 0):
         croppedImages += [[label,Image.fromarray(croppped)]]
 
     return croppedImages
-
-
-#old functions:
-# save_template replaced with load_and_save from init_template.py
-# def save_template(template, name):
-#     with open("templates/" + name + ".pkl", "wb") as f:
-#         pickle.dump(template, f, pickle.HIGHEST_PROTOCOL)
