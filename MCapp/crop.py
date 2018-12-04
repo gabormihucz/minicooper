@@ -16,8 +16,6 @@ def crop_from_template(template, filename, page_num = 0):
     images = convert_from_path(filename)
     page = images[page_num]
     page_array = np.asarray(page)
-    #test = Image.fromarray(page_array)
-    #test.save("test.jpeg")
 
     croppedImages = []
     for label,coords in template.items():

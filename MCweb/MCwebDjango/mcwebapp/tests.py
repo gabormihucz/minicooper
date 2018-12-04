@@ -1,8 +1,4 @@
 from django.test import TestCase
-<<<<<<< HEAD
-
-# Create your tests here.
-=======
 import unittest
 from mcwebapp.models import *
 
@@ -38,4 +34,3 @@ class LogInTest(TestCase):
         response = self.client.post('/accounts/login/', self.credentials, follow=True)
         # should be logged in now
         self.assertTrue(response.context['user'].is_active)
->>>>>>> dev

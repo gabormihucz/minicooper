@@ -15,10 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-<<<<<<< HEAD
-
-urlpatterns = [
-=======
 from django.conf import settings
 from django.conf.urls.static import static
 from registration.backends.simple.views import RegistrationView
@@ -32,7 +28,6 @@ class MyRegistrationView(RegistrationView):
 
 urlpatterns = [
     path('', include('mcwebapp.urls')),
->>>>>>> dev
     path('home/', include('mcwebapp.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
