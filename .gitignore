@@ -6,3 +6,4 @@ MCweb/env
 *.DS_Store
 __pycache__
 MCweb/MCwebDjango/mcwebapp/migrations
+MCweb/MCwebDjango/db.sqlite3
