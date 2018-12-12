@@ -11,6 +11,8 @@ build:
     - cd MCapp
     - python tests.py
     - cd ..
+    - python3 MCweb/MCwebDjango/manage.py makemigrations
+    - python3 MCweb/MCwebDjango/manage.py migrate
     - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
