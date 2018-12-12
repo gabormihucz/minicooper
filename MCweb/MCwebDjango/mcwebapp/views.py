@@ -1,6 +1,23 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import UserForm
+from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
+import json
+from django.shortcuts import get_object_or_404
+from django.conf import settings as psettings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+# user auth
+
+
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect, HttpResponse
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+from datetime import datetime
 
 def index(request):
     # to work with templates:
@@ -16,5 +33,8 @@ def index(request):
     # - for a picture static/images/cat/jpg
     #       <img src="{% static "images/cat.jpg" %}" alt="picture of a cat">
     # @2277073z
+    if request.user.is_anonymous:
+        return HttpResponseRedirect("/accounts/login")
 
-    return render(request,'mcwebapp/index.html',{})
+    response = render(request,'mcwebapp/index.html',{})
+    return response
