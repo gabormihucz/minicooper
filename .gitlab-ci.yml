@@ -8,10 +8,8 @@ build:
   script:
     - pip install -r dependencies.txt
     - pip list
-    - cd MCapp
-    - python tests.py
-    - cd ..
-    # - python3 MCweb/MCwebDjango/webtests.py
+    - python MCapp/tests.py
+    - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
   artifacts:
     paths:
