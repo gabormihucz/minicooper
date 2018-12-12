@@ -1,10 +1,11 @@
 from django.test import TestCase
 import unittest
 from mcwebapp.models import *
+from django.urls import reverse
+from django.utils import timezone
 
 # Create your tests here.
 
-from django.urls import reverse
 class IndexViewTests(TestCase):
     def test_index_view(self):
 
@@ -34,3 +35,11 @@ class LogInTest(TestCase):
         response = self.client.post('/accounts/login/', self.credentials, follow=True)
         # should be logged in now
         self.assertTrue(response.context['user'].is_active)
+
+class ModelTest(unittest.TestCase):
+    def pdfFileTest(self):
+        filename = 'gibberish'
+        curr_time = timezone.now()
+        pdf = PdfFile(file_name = filename, upload_date = curr_time)
+        pdf.save()
+        self.assertEqual(PdfFile.objects.get(file_name = filename), pdf)
