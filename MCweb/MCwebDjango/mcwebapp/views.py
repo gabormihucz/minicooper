@@ -35,9 +35,15 @@ def index(request):
     # @2277073z
     if request.user.is_anonymous:
         return HttpResponseRedirect("/accounts/login")
+    if not TemplateFile.objects.all() and request.user.is_superuser:
+        return HttpResponseRedirect("/dummy_creator/")
 
-    response = render(request,'mcwebapp/index.html',{})
+    templates = TemplateFile.objects.all()
+    pdfs = PDFFile.objects.all()
+    jsons = JSONFile.objects.all()
+    context_dict = {'templates': templates, 'pdfs': pdfs, 'jsons': jsons}
+    response = render(request,'mcwebapp/index.html',context_dict)
     return response
-
+    
 def dummy_creator(request):
     return render(request,'mcwebapp/dummy_creator.html',{})
