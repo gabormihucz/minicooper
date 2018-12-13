@@ -13,12 +13,21 @@ class UserProfile(models.Model):
 	def __str__(self):
 		return self.user.username
 
+class TemplateFile(models.Model):
+    name = models.CharField(max_length=30)
+    upload_date = models.DateTimeField('date uploaded')
+    file_ = models.FileField(upload_to='templateFiles/')
+    user = models.ForeignKey(User)
+
+    def __str__(self):
+        return self.name
+
 
 class PDFFile(models.Model):
     name = models.CharField(max_length = 200)
     upload_date = models.DateTimeField('date uploaded')
     file_ = models.FileField(upload_to='pdfFiles/')
-    json = models.OneToOneField(JSONFile)
+    template = models.ForeignKey(TemplateFile)
 
     def __str__(self):
         return self.name
@@ -28,17 +37,7 @@ class JSONFile(models.Model):
     name = models.CharField(max_length=30)
     upload_date = models.DateTimeField('date uploaded')
     file_ = models.FileField(upload_to='jsonFiles/')
-    json = models.ForeignKey(PDFFile)
-
-    def __str__(self):
-        return self.name
-
-
-class TemplateFile(models.Model):
-    name = models.CharField(max_length=30)
-    upload_date = models.DateTimeField('date uploaded')
-    file_ = models.FileField(upload_to='templateFiles/')
-    user = models.ForeignKey(User)
+    json = models.OneToOneField(PDFFile)
 
     def __str__(self):
         return self.name
