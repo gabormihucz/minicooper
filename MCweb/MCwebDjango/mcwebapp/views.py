@@ -38,3 +38,6 @@ def index(request):
 
     response = render(request,'mcwebapp/index.html',{})
     return response
+
+def dummy_creator(request):
+    return render(request,'mcwebapp/dummy_creator.html',{})
