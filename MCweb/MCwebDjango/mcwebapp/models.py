@@ -16,7 +16,7 @@ class UserProfile(models.Model):
 class TemplateFile(models.Model):
     name = models.CharField(max_length=30)
     upload_date = models.DateTimeField('date uploaded')
-    file_ = models.FileField(upload_to='templateFiles/')
+    file_name = models.FileField(upload_to='templateFiles/')
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -26,7 +26,7 @@ class TemplateFile(models.Model):
 class PDFFile(models.Model):
     name = models.CharField(max_length = 200)
     upload_date = models.DateTimeField('date uploaded')
-    file_ = models.FileField(upload_to='pdfFiles/')
+    file_name = models.FileField(upload_to='pdfFiles/')
     template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT)
 
     def __str__(self):
@@ -36,7 +36,7 @@ class PDFFile(models.Model):
 class JSONFile(models.Model):
     name = models.CharField(max_length=30)
     upload_date = models.DateTimeField('date uploaded')
-    file_ = models.FileField(upload_to='jsonFiles/')
+    file_name = models.FileField(upload_to='jsonFiles/')
     json = models.OneToOneField(PDFFile, on_delete=models.PROTECT)
 
     def __str__(self):
