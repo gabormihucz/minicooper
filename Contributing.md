@@ -30,8 +30,8 @@ Pawel Heldt (2268686h@student.gla.ac.uk)
 
 Zay Yar Tun (2277073z@student.gla.ac.uk)  
  * Responsibilites:  
-   * Iteration 2:  
-   * Iteration 3:  
-   * Iteration 4:  
+   * Iteration 2:  Wireframes
+   * Iteration 3:  Wireframes, web app template design
+   * Iteration 4:  Template creation, results page
    * Iteration 5:  
 
