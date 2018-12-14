@@ -3,6 +3,65 @@
 {% block css_block %}{% endblock %}
 
 {% block body_block %}
+    <div class="container">
+        <h2>PDF-JSON pairs</h2>
+        <!-- create table and loop through all jsons to fill it in according to needed data -->
+        {% if elems %}
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>PDF</th>
+                    <th>JSON</th>
+                    <th>Status</th>
+                    <th>Template</th>
+                    <th>User</th>
+                    <th>Date</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for elem in elems %}
+                    <tr>
+                        <td>{{ elem.pdf.name }}</td>
+                        <td>{{ elem.name }}</td>
+                        <td> Pass </td>
+                        <td>{{ elem.pdf.template.name }}</td>
+                        <td>{{ elem.pdf.template.user.username  }}</td>
+                        <td>{{ elem.upload_date }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- paginator business -->
+            {% if elems.has_other_pages %}
+                <ul class="pagination">
+                    {% if elems.has_previous %}
+                        <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in elems.paginator.page_range %}
+                        {% if elems.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if elems.has_next %}
+                        <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
+        {% else %}
+            You are out of luck! There is no data to display! <br/>
+
+
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block script_block %}{% endblock %}
