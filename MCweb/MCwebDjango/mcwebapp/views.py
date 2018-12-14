@@ -108,3 +108,22 @@ def upload_pdf(request):
         return HttpResponse("Post request parsed succesfully")
     #if not a post visualise the template that is responsible for handeling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
+
+
+@csrf_exempt
+def get_pdf_info(request):
+    if request.method =="GET":
+        print("it's a get")
+        file_name = request.GET.get('file_name','url query with no or wrong parameters')
+        print(file_name)
+        try:
+            response = PDFFile.objects.get(name=file_name)
+            return HttpResponse("File exist")
+            # jsonresp = json.dumps(response)
+
+        except:
+            return HttpResponse("File not stored on the server")
+
+
+        # return HttpResponse(jsonresp)
+    return render(request,'mcwebapp/getPDFInfo.html',{})
