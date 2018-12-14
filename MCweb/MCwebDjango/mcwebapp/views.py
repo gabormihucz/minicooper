@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from django.conf import settings as psettings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from mcwebapp.models import *
+
 # user auth
 
 
@@ -18,6 +20,21 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 from datetime import datetime
+
+# helper function that paginates a list
+
+def paginate(input_list, request):
+    page = request.GET.get('page', 1)
+    paginator = Paginator(input_list, 10)
+
+    try:
+        elems = paginator.page(page)
+    except PageNotAnInteger:
+        elems = paginator.page(1)
+    except EmptyPage:
+        elems = paginator.page(paginator.num_pages)
+
+    return {'elems': elems}
 
 def index(request):
     # to work with templates:
@@ -33,15 +50,19 @@ def index(request):
     # - for a picture static/images/cat/jpg
     #       <img src="{% static "images/cat.jpg" %}" alt="picture of a cat">
     # @2277073z
+    
+    # as user who is not logged in is redirected to the login page
+    # superuser in case of no templates is redirected to the template creator page
+    # otherwise return a view with the list of jsons paginated
+    
     if request.user.is_anonymous:
         return HttpResponseRedirect("/accounts/login")
     if not TemplateFile.objects.all() and request.user.is_superuser:
         return HttpResponseRedirect("/dummy_creator/")
 
-    templates = TemplateFile.objects.all()
-    pdfs = PDFFile.objects.all()
     jsons = JSONFile.objects.all()
-    context_dict = {'templates': templates, 'pdfs': pdfs, 'jsons': jsons}
+    context_dict = paginate(jsons, request)
+
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
     
