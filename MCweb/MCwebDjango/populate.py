@@ -54,3 +54,4 @@ def populate():
 if __name__ == '__main__':
     print('Populating the database...')
     populate()
+    print('Database population successful.')
