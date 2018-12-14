@@ -23,8 +23,8 @@
 
                 {% for elem in elems %}
                     <tr>
-                        <td>{{ elem.pdf.name }}</td>
-                        <td>{{ elem.name }}</td>
+                        <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
+                        <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
                         <td> Pass </td>
                         <td>{{ elem.pdf.template.name }}</td>
                         <td>{{ elem.pdf.template.user.username  }}</td>
