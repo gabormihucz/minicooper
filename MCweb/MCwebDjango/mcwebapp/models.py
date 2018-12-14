@@ -37,7 +37,7 @@ class JSONFile(models.Model):
     name = models.CharField(max_length=30)
     upload_date = models.DateTimeField('date uploaded')
     file_name = models.FileField(upload_to='jsonFiles/')
-    json = models.OneToOneField(PDFFile, on_delete=models.PROTECT)
+    pdf = models.OneToOneField(PDFFile, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.name
