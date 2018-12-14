@@ -113,10 +113,11 @@ def upload_pdf(request):
 @csrf_exempt
 def get_pdf_info(request):
     if request.method =="GET":
-        print("it's a get")
-        file_name = request.GET.get('file_name','url query with no or wrong parameters')
-        print(file_name)
+        #assigning the value of a parameter to a variable
+        file_name = request.GET.get('file_name','url query with no or wrong parameters') #the second part is whatto return when parameter is wrongly structure
+
         try:
+            #trying to find a right object
             response = PDFFile.objects.get(name=file_name)
             return HttpResponse("File exist")
             # jsonresp = json.dumps(response)
@@ -124,6 +125,5 @@ def get_pdf_info(request):
         except:
             return HttpResponse("File not stored on the server")
 
-
-        # return HttpResponse(jsonresp)
+    #regular subpage to visit if get not send
     return render(request,'mcwebapp/getPDFInfo.html',{})
