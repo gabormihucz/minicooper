@@ -25,6 +25,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import base64
 
+# importing OCR processing
+from mcwebapp.pdf2json import pdf_process
 
 def paginate(input_list, request):
     page = request.GET.get('page', 1)
@@ -104,6 +106,15 @@ def upload_pdf(request):
         pdfFile.template=template
 
         pdfFile.save()
+
+        pdf_process(template.name, name,"media/pdfFiles/" "media/jsonFiles/")
+
+        # creating json model instance
+        jsonFile = JSONFile()
+        jsonFile.name = name
+        jsonFile.upload_date = upload_date
+        jsonFile.file_name.name = "jsonFiles/" + name + ".json"
+        jsonFile.pdf = pdfFile
 
         return HttpResponse("Post request parsed succesfully")
     #if not a post visualise the template that is responsible for handeling posts
