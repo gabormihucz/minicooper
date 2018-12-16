@@ -92,7 +92,7 @@ def upload_pdf(request):
         name = data["filename"]
         upload_date = datetime.datetime.now()
         #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="templateDefault")
+        template = TemplateFile.objects.get(name="sampleTemplate")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
