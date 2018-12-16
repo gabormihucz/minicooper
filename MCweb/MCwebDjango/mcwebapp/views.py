@@ -115,6 +115,8 @@ def upload_pdf(request):
         jsonFile.upload_date = upload_date
         jsonFile.file_name.name = "jsonFiles/" + name + ".json"
         jsonFile.pdf = pdfFile
+        
+        jsonFile.save()
 
         return HttpResponse("Post request parsed succesfully")
     #if not a post visualise the template that is responsible for handeling posts
