@@ -107,7 +107,7 @@ def upload_pdf(request):
 
         pdfFile.save()
 
-        pdf_process(template.name, name,"media/pdfFiles/" "media/jsonFiles/")
+        pdf_process.pdf_proccess(template.name, name,"media/pdfFiles/", "media/jsonFiles/")
 
         # creating json model instance
         jsonFile = JSONFile()
