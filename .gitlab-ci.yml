@@ -5,6 +5,9 @@ build:
     - . venv/bin/activate
     - python -V
     - sudo apt-get update
+    - sudo apt update
+    - sudo apt install tesseract-ocr
+    - sudo apt install libtesseract-dev
   script:
     - pip install -r dependencies.txt
     - pip list
