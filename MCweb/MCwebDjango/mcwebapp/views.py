@@ -92,7 +92,7 @@ def upload_pdf(request):
         name = data["filename"]
         upload_date = datetime.datetime.now()
         #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="sampleTemplate")
+        template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
@@ -107,7 +107,7 @@ def upload_pdf(request):
 
         pdfFile.save()
 
-        pdf_process.pdf_proccess(template.name, name,"media/pdfFiles/", "media/jsonFiles/")
+        pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
 
         # creating json model instance
         jsonFile = JSONFile()
@@ -115,6 +115,8 @@ def upload_pdf(request):
         jsonFile.upload_date = upload_date
         jsonFile.file_name.name = "jsonFiles/" + name + ".json"
         jsonFile.pdf = pdfFile
+        
+        jsonFile.save()
 
         return HttpResponse("Post request parsed succesfully")
     #if not a post visualise the template that is responsible for handeling posts
