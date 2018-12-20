@@ -23,9 +23,9 @@ Nestoras Skiadas (2258257s@student.gla.ac.uk)
 
 Pawel Heldt (2268686h@student.gla.ac.uk)  
  * Responsibilites:  
-   * Iteration 2:  
-   * Iteration 3:  
-   * Iteration 4:  
+   * Iteration 2:  wiki, architecture diagram, backlog
+   * Iteration 3:  client side app functionality, tests, gitlab organisation 
+   * Iteration 4:  client and web side (GET and POST requests)
    * Iteration 5:  
 
 Zay Yar Tun (2277073z@student.gla.ac.uk)  
