@@ -19,6 +19,8 @@ build:
     - python3 MCweb/MCwebDjango/populate.py
     - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
+    - zip -r deployment.zip $(pwd)
   artifacts:
     paths:
       - "*.pdf"
+      - "*.zip"
