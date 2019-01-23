@@ -36,7 +36,6 @@ def paginate(input_list, request):
     page = request.GET.get('page', 1)
     paginator = Paginator(input_list, 10)
     elems = paginator.page(page)
-    print(elems)
 
     return {'elems': elems}
 
