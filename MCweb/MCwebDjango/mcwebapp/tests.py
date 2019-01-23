@@ -1,16 +1,11 @@
-from django.test import TestCase
-from django.test import Client
-import unittest
-from mcwebapp.models import *
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
-import urllib.request
-import json
-import datetime
-from django.utils import timezone
-import pytz
-import populate
 
+import unittest
+import urllib.request, json, datetime, pytz, populate
+
+from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process, crop
 
 

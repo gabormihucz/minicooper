@@ -1,34 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from .forms import UserForm
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-import json
-from django.shortcuts import get_object_or_404
 from django.conf import settings as psettings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-from mcwebapp.models import *
-
-# user auth
-
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse
-
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-
-import datetime
-from django.utils import timezone
-import pytz
-
-# helper function that paginates a list
 from django.views.decorators.csrf import csrf_exempt
-import json
-import base64
+from django.utils import timezone
 
-# importing OCR processing
+from .forms import UserForm
+from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process
+
+import json, base64, datetime, pytz
+
 
 # helper function for paginated lists
 
