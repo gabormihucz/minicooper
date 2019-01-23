@@ -79,8 +79,8 @@ def template_creator(request):
 # and return the matching JSON objects in a paginated list
 def search(request):
     query = request.GET.get('search-bar', '')
-    pdfs = JSONFile.objects.filter(name__icontains=query)
-    context_dict = paginate(pdfs, request)
+    jsons = JSONFile.objects.filter(name__icontains=query)
+    context_dict = paginate(jsons, request)
     return render(request, 'mcwebapp/search_files.html', context_dict)
 
 
