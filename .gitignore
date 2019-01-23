@@ -7,3 +7,6 @@ MCweb/env
 __pycache__
 MCweb/MCwebDjango/mcwebapp/migrations
 MCweb/MCwebDjango/db.sqlite3
+MCapp/.idea/
+MCweb/MCwebDjango/.coverage
+MCweb/MCwebDjango/covhtml/
