@@ -26,7 +26,7 @@ def populate():
 
     # Create template.
     t = TemplateFile.objects.get_or_create(name='SampleTemplate')[0]
-    t.upload_date = timezone.now()
+    t.upload_date = curr_time
     t.file_name = 'templateFiles/SampleTemplate.json'
     t.user = user
     t.save()
