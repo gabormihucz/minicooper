@@ -32,5 +32,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),
     path('accounts/register/',MyRegistrationView.as_view(),name='registration_register'),
-    path('dummy_creator/',views.dummy_creator,name='dummy_creator')
+    path('template_creator/',views.template_creator,name='template_creator'),
+    path('search_files/', views.search, name='search_files'),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

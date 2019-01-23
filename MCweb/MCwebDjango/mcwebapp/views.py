@@ -19,6 +19,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
 import datetime
+from django.utils import timezone
+import pytz
 
 # helper function that paginates a list
 from django.views.decorators.csrf import csrf_exempt
@@ -28,16 +30,14 @@ import base64
 # importing OCR processing
 from mcwebapp.pdf2json import pdf_process
 
+# helper function for paginated lists
+
 def paginate(input_list, request):
     page = request.GET.get('page', 1)
     paginator = Paginator(input_list, 10)
-
-    try:
-        elems = paginator.page(page)
-    except PageNotAnInteger:
-        elems = paginator.page(1)
-    except EmptyPage:
-        elems = paginator.page(paginator.num_pages)
+    elems = paginator.page(page)
+    print("yoMum")
+    print(elems)
 
     return {'elems': elems}
 
@@ -63,7 +63,7 @@ def index(request):
     if request.user.is_anonymous:
         return HttpResponseRedirect("/accounts/login")
     if not TemplateFile.objects.all() and request.user.is_superuser:
-        return HttpResponseRedirect("/dummy_creator/")
+        return HttpResponseRedirect("/template_creator/")
 
     jsons = JSONFile.objects.all()
     context_dict = paginate(jsons, request)
@@ -71,8 +71,62 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
-def dummy_creator(request):
-    return render(request,'mcwebapp/dummy_creator.html',{})
+# if not superuser redirect to homepage, otherwise go to template creator
+def template_creator(request):
+    if not request.user.is_superuser:
+        return HttpResponseRedirect("/")
+    return render(request,'mcwebapp/template_creator.html',{})
+
+# get the search query, and filter JSON files whether the query appears in them
+# and return the matching JSON objects in a paginated list
+def search(request):
+    query = request.GET.get('search-bar', '')
+    pdfs = JSONFile.objects.filter(name__icontains=query)
+    context_dict = paginate(pdfs, request)
+    return render(request, 'mcwebapp/search_files.html', context_dict)
+
+
+def search_templates(request):
+    query = request.GET.get('search-bar', '')
+    templates = TemplateFile.objects.filter(name__icontains=query)
+    context_dict = paginate(templates, request)
+    return render(request, 'mcwebapp/search_templates.html', context_dict)
+
+
+def manage_templates(request):
+    templates = TemplateFile.objects.all()
+    context_dict = paginate(templates, request)
+    print(context_dict)
+    response = render(request,'mcwebapp/template_manager.html',context_dict)
+    return response
+
+
+@csrf_exempt
+def save_template(request):
+    if request.method =="POST":
+        try:
+            print("post request to save template")
+
+            # translating post message json into python dictionary
+            data = json.loads(request.body.decode('utf-8'))
+
+            # creating template object
+            template = TemplateFile()
+            template.name = data["template_name"]
+            template.upload_date = timezone.now()
+
+            with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+                o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+
+            template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+            template.user = request.user
+
+            template.save()
+            return HttpResponse("Post request parsed succesfully")
+        except:
+            return HttpResponse("Template coudn't be save")
+    return render(request,'mcwebapp/saveTemplate.html',{})
+
 
 
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
@@ -90,9 +144,9 @@ def upload_pdf(request):
 
 
         name = data["filename"]
-        upload_date = datetime.datetime.now()
+        upload_date = timezone.now()
         #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="SampleTemplate")
+        template = TemplateFile.objects.get(name="testTemp")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
@@ -107,18 +161,18 @@ def upload_pdf(request):
 
         pdfFile.save()
 
-        pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
-
-        # creating json model instance
-        jsonFile = JSONFile()
-        jsonFile.name = name
-        jsonFile.upload_date = upload_date
-        jsonFile.file_name.name = "jsonFiles/" + name + ".json"
-        jsonFile.pdf = pdfFile
-        
-        jsonFile.save()
-
-        return HttpResponse("Post request parsed succesfully")
+        try:
+            pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
+            # creating json model instance
+            jsonFile = JSONFile()
+            jsonFile.name = name
+            jsonFile.upload_date = upload_date
+            jsonFile.file_name.name = "jsonFiles/" + name + ".json"
+            jsonFile.pdf = pdfFile
+            jsonFile.save()
+            return HttpResponse("Post request parsed succesfully")
+        except:
+            return HttpResponse("Pdf sent over post seems to be corrupted")
     #if not a post visualise the template that is responsible for handeling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
 
@@ -129,14 +183,14 @@ def get_pdf_info(request):
         #assigning the value of a parameter to a variable
         file_name = request.GET.get('file_name','url query with no or wrong parameters') #the second part is whatto return when parameter is wrongly structure
 
-        try:
-            #trying to find a right object
-            response = PDFFile.objects.get(name=file_name)
-            return HttpResponse("File exist")
-            # jsonresp = json.dumps(response)
-
-        except:
-            return HttpResponse("File not stored on the server")
-
-    #regular subpage to visit if get not send
-    return render(request,'mcwebapp/getPDFInfo.html',{})
+        if file_name == 'url query with no or wrong parameters':
+             #regular subpage to visit if get not send
+             return render(request,'mcwebapp/getPDFInfo.html',{})
+        else:
+            try:
+                #trying to find a right object
+                response = PDFFile.objects.get(name=file_name)
+                return HttpResponse("File exist")
+                # jsonresp = json.dumps(response)
+            except:
+                return HttpResponse("File not stored on the server")

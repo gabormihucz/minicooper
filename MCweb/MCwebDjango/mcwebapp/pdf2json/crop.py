@@ -4,10 +4,10 @@ from PIL import Image
 import pickle
 import json
 
-#fns that loads pickele changes it to json, returning the actual template that is required by OCR
-def load_template(name):
-    with open("templates/" + name + ".pkl", "rb") as f:
-        return pickle.load(f)
+#fns that loads pickele changes it to json, returning the actual template that is required by OCR, (deprecated)
+#def load_template(name):
+ #   with open("templates/" + name + ".pkl", "rb") as f:
+  #      return pickle.load(f)
 
 #loads a template directly from json
 def load_template_json(name, path):

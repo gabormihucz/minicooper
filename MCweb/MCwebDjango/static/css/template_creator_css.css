@@ -1,0 +1,35 @@
+#canvas-container{
+  background-color: #bababa;
+  overflow:hidden;
+  border-style:solid;
+  border-color:black;
+  border-width:1px;
+}
+
+#inner-canvas-container{
+  position:relative;
+  height:500px
+}
+
+#draw-btn{
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+#upload-btn{
+  position:absolute;
+  bottom:0;
+  right:0;
+}
+
+#side-bar{
+  border-style:solid;
+  border-color:black;
+  border-width:1px;
+  height:490px;
+}
+#label-name-text{
+  margin-bottom: 0;
+  font-size: 12pt;
+}
