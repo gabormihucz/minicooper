@@ -12,7 +12,7 @@ build:
     - pip install -r dependencies.txt
     - pip list
     - cd MCapp
-    - python tests.py
+    - python3 tests.py
     - cd ..
     - python3 MCweb/MCwebDjango/manage.py makemigrations
     - python3 MCweb/MCwebDjango/manage.py migrate
