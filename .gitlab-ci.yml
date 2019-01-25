@@ -8,6 +8,7 @@ build:
     - sudo apt update
     - sudo apt install tesseract-ocr
     - sudo apt install libtesseract-dev
+    - sudo apt install zip
   script:
     - pip install -r dependencies.txt
     - pip list
