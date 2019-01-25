@@ -6,9 +6,9 @@ build:
     - python -V
     - sudo apt-get update
     - sudo apt update
-    - sudo apt install tesseract-ocr
-    - sudo apt install libtesseract-dev
-    - sudo apt install zip
+    - sudo apt -y install tesseract-ocr
+    - sudo apt -y install libtesseract-dev
+    - sudo apt -y install zip
   script:
     - pip install -r dependencies.txt
     - pip list
