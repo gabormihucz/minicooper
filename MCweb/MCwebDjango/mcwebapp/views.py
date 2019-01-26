@@ -12,7 +12,7 @@ from .forms import UserForm
 from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process
 
-import json, base64, datetime, pytz
+import json, base64, datetime, pytz, os
 
 
 # helper function for paginated lists
@@ -59,6 +59,19 @@ def template_creator(request):
     if not request.user.is_superuser:
         return HttpResponseRedirect("/")
     return render(request,'mcwebapp/template_creator.html',{})
+
+
+def template_editor(request, temp_name):
+    temp = TemplateFile.objects.get(name=temp_name)
+    # print(temp.file_name)
+    # print(os.getcwd())
+
+    with open("media/"+str(temp.file_name),"r") as t:
+        file = t.read()
+    tempDictJSON = {"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
+    tempDict ={"JSON":tempDictJSON}
+    print("success")
+    return render(request,'mcwebapp/template_editor.html',tempDict)
 
 # get the search query, and filter JSON files whether the query appears in them
 # and return the matching JSON objects in a paginated list
