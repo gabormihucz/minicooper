@@ -11,7 +11,7 @@ Gabor Mihucz (2239495m@student.gla.ac.uk)
  * Responsibilites:  
    * Iteration 2: wiki, CI, gitlab organisation, customer communication, notetaking  
    * Iteration 3: file watching, signup/login functionality, PythonAnywhere hosting, gitlab organisation, customer communication  
-   * Iteration 4: results page, template creation, coverage testing, customer communication  
+   * Iteration 4: results page, search function, error checking in signup/login, coverage testing, mutation testing, customer communication  
    * Iteration 5: 
 
 Nestoras Skiadas (2258257s@student.gla.ac.uk)  
@@ -32,6 +32,6 @@ Zay Yar Tun (2277073z@student.gla.ac.uk)
  * Responsibilites:  
    * Iteration 2:  Wireframes
    * Iteration 3:  Wireframes, web app template design
-   * Iteration 4:  Template creation, results page
+   * Iteration 4:  Template creation
    * Iteration 5:  
 
