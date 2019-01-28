@@ -1,0 +1,107 @@
+{% extends 'mcwebapp/base.html' %}
+{%load staticfiles%}
+{% block css_block %}
+<link href="{% static 'css/template_creator_css.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block body_block %}
+
+<div class="container-fluid mt-3 ml-4">
+  <h1 class="ml-3">Template Creator</h1>
+  {% if JSON %}
+  <p>{{JSON.file}}</p>
+  <p>here</p>
+  {% else %}
+  <p>no</p>
+  {% endif %}
+  <!-- Container for template name input -->
+  <div class="row mx-auto justify-content-md-center mb-3">
+    <label class="mt-1">Template Name:</label>
+    <input id="template-name-label" class="form-control form-control-sm col-md-3 ml-4" type="text">
+  </div>
+  <!-- End template name input container -->
+
+  <!-- Container for both convas and side bar -->
+  <div class="row mx-auto justify-content-md-center">
+
+    <!-- Contains both PDF and Drawing Canvas as well as Draw and Upload buttons -->
+    <div id="canvas-container" class="col-md-7 mx-3">
+
+      <!-- Container for only PDF and Drawing Canvas -->
+      <div id="inner-canvas-container" class="row my-3 justify-content-md-center">
+        <canvas id="pdf-canvas" resize="true" style="position: absolute; "></canvas>
+        <canvas id="drawing-canvas" resize="true" style="position: absolute; "></<canvas>
+      </div>
+      <!-- End inner canvas container -->
+
+      <button id="draw-btn" class="btn btn-primary order-3 float-sm-right mt-3 mr-3">Draw Rectangle</button>
+      <button id="upload-btn" class="btn btn-primary order-3 float-sm-right mb-3 mr-3">Upload PDF</button>
+      <input id="file-input" type="file" name="name" style="display: none;" />
+    </div>
+    <!-- End Canvas with buttons -->
+
+    <!-- Side Bar -->
+    <div id="side-bar" class="col-md-2">
+      <div class="form-group col-md-10 mt-2">
+
+  			<p id="label-name-text" class="small">Name:</p>
+  			<input id="box-label" class="form-control form-control-sm col-sm-8" type="text" disabled>
+        <hr>
+
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mandatory_check" id="mandatory-radio" value="option1" disabled checked>
+          <label class="form-check-label" for="exampleRadios1">Mandatory</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="mandatory_check" id="optional-radio" value="option2" disabled>
+          <label class="form-check-label" for="exampleRadios2">Optional</label>
+        </div>
+        <hr>
+        <!-- Begin Coordinage Buttons -->
+        <div class="col ml-0 px-0">
+          <p class="small my-0 ">Top Left</p>
+          <div class="form-group row my-0 ">
+            <label for="x1-label" class="col-sm-1 col-form-label">x:</label>
+      			   <input id="x1-label" class="form-control form-control-sm col-sm-5 ml-1" type="text" disabled>
+          </div>
+
+          <div class="form-group row my-0 ">
+            <label for="y1-label" class="col-sm-1 col-form-label">y:</label>
+    			     <input id="y1-label" class="form-control form-control-sm col-sm-5 ml-1" type="text" disabled>
+          </div>
+          <hr>
+          <p class="small my-0 ">Bottom Right</p>
+          <div class="form-group row my-0 ">
+            <label for="x2-label" class="col-sm-1 col-form-label">x:</label>
+    			     <input id="x2-label" class="form-control form-control-sm col-sm-5 ml-1" type="text" disabled>
+          </div>
+
+          <div class="form-group row my-0 ">
+            <label for="y2-label" class="col-sm-1 col-form-label">y:</label>
+    			     <input id="y2-label" class="form-control form-control-sm col-sm-5 ml-1" type="text" disabled>
+          </div>
+        </div>
+        <!-- End Coordinage Buttons -->
+        <hr>
+
+        <button id="set-button" class="btn btn-primary btn-sm" disabled >Set</button>
+        <button id="delete-button" class="btn btn-danger btn-sm ml-1" disabled >Delete</button>
+
+  		</div>
+    </div>
+    <!-- End Side Bar -->
+  </div>
+  <!-- End Container -->
+  <div class="row justify-content-center">
+    <button id="save-button" class="btn btn-primary mt-4 ">Save Template</button>
+  </div>
+</div>
+<!-- <input type="hidden" id="tempDict" name="tempDict" value="{{ JSON }}"> -->
+<input type="hidden" id="coordinates" name="coordinates" value="{{ JSON.file }}">
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static 'js/pdf_js/build/pdf.js' %}"></script>
+<script src="{% static 'js/paper.js/dist/paper-full.js' %}"></script>
+<script src="{% static 'js/editor_script.js' %}"></script>
+{% endblock %}

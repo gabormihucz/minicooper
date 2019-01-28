@@ -5,14 +5,24 @@ build:
     - . venv/bin/activate
     - python -V
     - sudo apt-get update
+    - sudo apt update
+    - sudo apt -y install tesseract-ocr
+    - sudo apt -y install libtesseract-dev
+    - sudo apt -y install zip
   script:
     - pip install -r dependencies.txt
     - pip list
     - cd MCapp
-    - python tests.py
+    - python3 tests.py
     - cd ..
-    # - python3 MCweb/MCwebDjango/webtests.py
+    - python3 MCweb/MCwebDjango/manage.py makemigrations
+    - python3 MCweb/MCwebDjango/manage.py migrate
+    - python3 MCweb/MCwebDjango/populate.py
+    - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
+    - sudo rm -r venv/
+    - zip -r deployment.zip $(pwd)
   artifacts:
     paths:
       - "*.pdf"
+      - "*.zip"

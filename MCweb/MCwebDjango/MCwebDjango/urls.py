@@ -27,10 +27,8 @@ class MyRegistrationView(RegistrationView):
         return ''
 
 urlpatterns = [
-    path('', include('mcwebapp.urls')),
-    path('home/', include('mcwebapp.urls')),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('registration.backends.simple.urls')),
     path('', views.index, name='index'),
-    path('accounts/register/',MyRegistrationView.as_view(),name='registration_register'),
+    path('', include('mcwebapp.urls')),
+    path('admin/', admin.site.urls),
+
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
