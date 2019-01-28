@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['http://minicooper.pythonanywhere.com', 'minicooper.pythonanywh
 
 INSTALLED_APPS = [
     'mcwebapp.apps.McwebappConfig',
-
+    'django_nose',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,3 +149,10 @@ LOGIN_REDIRECT_URL = '/'
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
 LOGIN_URL = '/accounts/login/'
+
+# Tell nose to measure coverage on mcwebap
+NOSE_ARGS = [
+    '--cover-erase',
+    '--cover-package=mcwebapp',
+
+]

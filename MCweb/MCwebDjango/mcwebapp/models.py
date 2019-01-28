@@ -1,16 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class PdfFile(models.Model):
-    file_name = models.CharField(max_length = 200)
-    upload_date = models.DateTimeField('date uploaded')
-
-    def __str__(self):
-        return self.file_name
 
 class UserProfile(models.Model):
 	# This line is required. Links UserProfile to a User model instance.
-	user = models.OneToOneField(User, on_delete=models.CASCADE,)
+	user = models.OneToOneField(User, on_delete=models.PROTECT,)
 	# The additional attributes we wish to include.
 	website = models.URLField(blank=True)
 	picture = models.ImageField(upload_to='profile_images', blank=True)
@@ -18,3 +12,42 @@ class UserProfile(models.Model):
 	# Remember if you use Python 2.7.x, define __unicode__ too!
 	def __str__(self):
 		return self.user.username
+
+class TemplateFile(models.Model):
+    name = models.CharField(max_length=30)
+    upload_date = models.DateTimeField('date uploaded', null=True)
+    file_name = models.FileField(upload_to='templateFiles/', null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class PDFFile(models.Model):
+    name = models.CharField(max_length = 200)
+    upload_date = models.DateTimeField('date uploaded', null=True)
+    file_name = models.FileField(upload_to='pdfFiles/', null=True)
+    template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class JSONFile(models.Model):
+    name = models.CharField(max_length=30)
+    upload_date = models.DateTimeField('date uploaded', null=True)
+    file_name = models.FileField(upload_to='jsonFiles/', null=True)
+    pdf = models.OneToOneField(PDFFile, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class MatchPattern(models.Model):
+    name = models.CharField(max_length=30)
+    regex = models.CharField(max_length=60, null=True)
+    template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
+
+    def __str__(self):
+        return self.name
+
