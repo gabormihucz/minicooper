@@ -142,7 +142,7 @@ def upload_pdf(request):
         name = data["filename"]
         upload_date = timezone.now()
         #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="testTemp")
+        template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
