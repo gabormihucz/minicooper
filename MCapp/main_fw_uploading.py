@@ -1,8 +1,6 @@
 import sys
 import os
 import json
-from crop import *
-from simpleOCR import *
 import time
 import shutil
 import post_to_server
