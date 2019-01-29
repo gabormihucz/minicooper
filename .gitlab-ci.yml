@@ -21,8 +21,7 @@ build:
     - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
-    - cd ..
-    - zip -r deployment.zip dissertation
+    - zip -r deployment.zip ../dissertation
   artifacts:
     paths:
       - "*.pdf"
