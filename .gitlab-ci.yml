@@ -22,6 +22,7 @@ build:
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - zip -r deployment.zip $(pwd)
+    - pwd
   artifacts:
     paths:
       - "*.pdf"
