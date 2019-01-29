@@ -16,10 +16,10 @@ Gabor Mihucz (2239495m@student.gla.ac.uk)
 
 Nestoras Skiadas (2258257s@student.gla.ac.uk)  
  * Responsibilites:  
-   * Iteration 2: CI & VM  
-   * Iteration 3:  
-   * Iteration 4:  
-   * Iteration 5:  
+   * Iteration 2: CI/CD & VM  configuration, managing git branches
+   * Iteration 3: CI/CD, setting up the Django app, basic Django testing, project deployment, manageing git branches
+   * Iteration 4: CI/CD, output of completed build as artefact, managing git branches, pop-up of summary data
+   * Iteration 5:
 
 Pawel Heldt (2268686h@student.gla.ac.uk)  
  * Responsibilites:  
