@@ -25,7 +25,7 @@ Pawel Heldt (2268686h@student.gla.ac.uk)
  * Responsibilites:  
    * Iteration 2:  wiki, architecture diagram, backlog
    * Iteration 3:  client side app functionality, tests, gitlab organisation 
-   * Iteration 4:  client and web side (GET and POST requests)
+   * Iteration 4:  client and web side (GET and POST requests)+tests, component diagrams, ocr schema, template editor(in progress)
    * Iteration 5:  
 
 Zay Yar Tun (2277073z@student.gla.ac.uk)  
