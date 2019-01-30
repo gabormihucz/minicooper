@@ -117,7 +117,7 @@ class UploadPdfTest(TestCase):
             'username': 'testuser',
             'password': 'secret'}
         User.objects.create_user(**self.credentials)
-        TemplateFile.objects.create(name="testTemp",upload_date=timezone.now(),
+        TemplateFile.objects.create(name="SampleTemplate",upload_date=timezone.now(),
                                     user=User.objects.get(username = 'testuser'))
     def testPost(self):
         c = Client()
