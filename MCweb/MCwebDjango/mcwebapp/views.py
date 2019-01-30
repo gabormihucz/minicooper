@@ -20,9 +20,9 @@ import json, base64, datetime, pytz, os
 def paginate(input_list, request):
     page = request.GET.get('page', 1)
     paginator = Paginator(input_list, 10)
-    jsons = paginator.page(page)
+    elems = paginator.page(page)
 
-    return {'jsons': jsons}
+    return {'elems': elems}
 
 def index(request):
     # to work with templates:
