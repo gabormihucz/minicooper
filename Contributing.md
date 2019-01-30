@@ -3,8 +3,8 @@ List of contributors to the MiniCooper project:
 Corey Aynsley (2266643a@student.gla.ac.uk)  
  * Responsibilites:  
    * Iteration 2: wiki, user personas  
-   * Iteration 3:  
-   * Iteration 4:  
+   * Iteration 3: Defining template files and implementing pdf to image conversion using template on client side app
+   * Iteration 4: Porting client side pdf processing to web app, Error checking for pdf proccessing, Ensuring compatibilty between template creator and pdf processing
    * Iteration 5:  
 
 Gabor Mihucz (2239495m@student.gla.ac.uk)  
