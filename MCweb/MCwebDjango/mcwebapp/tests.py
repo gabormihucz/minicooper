@@ -189,7 +189,7 @@ class PdfProcessTest(TestCase):
             json_output = json.loads(template.read())
         test_string = {"cost": "£1000", "tax": "£125", "total": "£1125", "address_line1": "Address line 1", "address_line2": "Address line 2", "city": "City", "post_code": "Post Code"}
         self.assertEqual(json_output, test_string)
-"""
+
 #this test does not work hence, commenting it out
     def test_mandatory_field_fails(self):
         success = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
@@ -198,4 +198,3 @@ class PdfProcessTest(TestCase):
     def test_mandatory_field_suceeds(self):
         success = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
         self.assertTrue(success)
-"""
