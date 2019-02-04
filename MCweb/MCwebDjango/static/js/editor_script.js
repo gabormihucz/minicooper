@@ -375,7 +375,15 @@ $( "#file-input" ).change(function() {
               }
 
               //Update sidebar on creation of the rectangle
-              $("#box-label").val(rectangles[rectangle_name]["name"]);
+              $("#box-label").val(rectangles[current_rectangle.name]["name"]);
+              if (rectangles[current_rectangle.name]["mandatory"]){
+                $("#mandatory-radio").prop("checked", true);
+              }else{
+                $("#optional-radio").prop("checked", true);
+              }
+
+              display_coordinates(current_rectangle);
+              disable_side_bar(false);
 
             }
             console.log("here");
