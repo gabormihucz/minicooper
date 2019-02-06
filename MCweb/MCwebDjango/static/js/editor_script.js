@@ -118,21 +118,21 @@ $(drawing_canvas).on('mouseup', function(e) {
       }else{
         $("#optional-radio").prop("checked", true);
       }
-      display_coordinates();
+      display_coordinates(current_rectangle);
       disable_side_bar(false);
 
     }
     //Drag to move the rectangle around
     rectangle.onMouseDrag = function(e){
       rectangle.position = e.point;
-      display_coordinates();
+      display_coordinates(this);
     }
 
     //Update sidebar on creation of the rectangle
     $("#box-label").val(rectangles[rectangle_name]["name"]);
 
     $("#mandatory-radio").prop("checked", true);
-    display_coordinates();
+    display_coordinates(current_rectangle);
     disable_side_bar(false);
 
     //Stop drawing, reset draw button
@@ -178,7 +178,7 @@ $("#set-button").on('click',function(){
           selected_rectangles_key["mandatory"] = false;
       }
 
-      resize_current_rectangle();
+      resize_current_rectangle(current_rectangle);
 
     }else{
       alert("Label already exists or is empty");
@@ -277,9 +277,6 @@ $("#save-button").on('click',function(){
       xhr.setRequestHeader("Content-Type", "application/json");
       xhr.send(JSON.stringify(result));
       console.log("post_sent");
-
-
-
     }
   }
 });
@@ -332,7 +329,7 @@ $( "#file-input" ).change(function() {
             rectangles = {};
 
             for (var key in coordinates){
-
+              console.log(key);
               var values = coordinates[key];
               var rectangle = new paper.Path.Rectangle(parseInt(values['x1']),
                 parseInt(values['y1']),
@@ -351,15 +348,10 @@ $( "#file-input" ).change(function() {
               select_rectangle(current_rectangle);
 
               rectangles[rectangle_name]={};
-              //Choose suitable default name for box to avoid conflict in temp JSON
-              // var proposed_default_name = "default" + name_counter.toString();
-              // while(check_box_label_exist(proposed_default_name,rectangles)){
-              //   name_counter++;
-              //   proposed_default_name = "default" + name_counter.toString();
-              // }
+
               proposed_default_name = key;
               rectangles[rectangle_name]["name"] = proposed_default_name;
-              // name_counter++;
+
               rectangles[rectangle_name]["mandatory"] = values['mandatory'];
               rectangles[rectangle_name]["object"] = rectangle;
 
@@ -372,31 +364,28 @@ $( "#file-input" ).change(function() {
                 }else{
                   $("#optional-radio").prop("checked", true);
                 }
-                display_coordinates();
+                display_coordinates(current_rectangle);
                 disable_side_bar(false);
 
               }
               //Drag to move the rectangle around
               rectangle.onMouseDrag = function(e){
-                rectangle.position = e.point;
-                display_coordinates();
+                this.position = e.point;
+                display_coordinates(this);
               }
 
               //Update sidebar on creation of the rectangle
-              $("#box-label").val(rectangles[rectangle_name]["name"]);
+              $("#box-label").val(rectangles[current_rectangle.name]["name"]);
+              if (rectangles[current_rectangle.name]["mandatory"]){
+                $("#mandatory-radio").prop("checked", true);
+              }else{
+                $("#optional-radio").prop("checked", true);
+              }
 
-              //Stop drawing, reset draw button
-              // drawing = false;
-              // animate = false;
-              // $("#draw-btn").css("background-color","#007bff");
-              // $('html,body').css('cursor','default');
-
-              //Focus on the sidebar name field
-              // $("#box-label").focus();
-              // $("#box-label").select();
+              display_coordinates(current_rectangle);
+              disable_side_bar(false);
 
             }
-
             console.log("here");
           });
         }
@@ -467,7 +456,7 @@ function disable_side_bar(state){
   $("#y2-label").prop('disabled',state);
 }
 
-function resize_current_rectangle(){
+function resize_current_rectangle(rectangle){
   var coordinateArray = [$("#x1-label").val(),$("#y1-label").val(),$("#x2-label").val(),$("#y2-label").val()];
   var emptyfound = false;
   for (var i = 0; i < coordinateArray.length; i++){
@@ -481,16 +470,16 @@ function resize_current_rectangle(){
     var y1 = parseInt(coordinateArray[1]);
     var x2 = parseInt(coordinateArray[2]);
     var y2 = parseInt(coordinateArray[3]);
-    current_rectangle.bounds = new paper.Rectangle(new paper.Point(x1,y1), new paper.Size(x2-x1,y2-y1));
+    rectangle.bounds = new paper.Rectangle(new paper.Point(x1,y1), new paper.Size(x2-x1,y2-y1));
   }else{
     alert("At least one coordinate field is empty");
   }
 
 }
 
-function display_coordinates(){
-  $("#x1-label").val(current_rectangle.bounds.topLeft._x.toFixed(0));
-  $("#y1-label").val(current_rectangle.bounds.topLeft._y.toFixed(0));
-  $("#x2-label").val(current_rectangle.bounds.bottomRight._x.toFixed(0));
-  $("#y2-label").val(current_rectangle.bounds.bottomRight._y.toFixed(0));
+function display_coordinates(rectangle){
+  $("#x1-label").val(rectangle.bounds.topLeft._x.toFixed(0));
+  $("#y1-label").val(rectangle.bounds.topLeft._y.toFixed(0));
+  $("#x2-label").val(rectangle.bounds.bottomRight._x.toFixed(0));
+  $("#y2-label").val(rectangle.bounds.bottomRight._y.toFixed(0));
 }

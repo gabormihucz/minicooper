@@ -142,7 +142,7 @@ def upload_pdf(request):
         name = data["filename"]
         upload_date = timezone.now()
         #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="testTemp")
+        template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
@@ -165,6 +165,11 @@ def upload_pdf(request):
             jsonFile.upload_date = upload_date
             jsonFile.file_name.name = "jsonFiles/" + name + ".json"
             jsonFile.pdf = pdfFile
+            jsonFile.mandatory_fulfilled = success
+            if success:
+                jsonFile.status_string = "Pass"
+            else:
+                jsonFile.status_string = "Fail"
             jsonFile.save()
             return HttpResponse("Post request parsed succesfully")
         except:

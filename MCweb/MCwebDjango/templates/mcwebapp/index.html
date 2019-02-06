@@ -25,7 +25,7 @@
                     <tr>
                         <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
                         <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
-                        <td> Pass </td>
+                        <td>{{ elem.status_string }}</td>
                         <td>{{ elem.pdf.template.name }}</td>
                         <td>{{ elem.pdf.template.user.username  }}</td>
                         <td>{{ elem.upload_date }}</td>

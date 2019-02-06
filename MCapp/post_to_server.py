@@ -7,7 +7,7 @@ import base64
 def post(pdf):
 
 	#opening a pdf, later on we'll have to substitute the hardcoded one
-	with open("pdfs/" + pdf, 'rb') as f:
+	with open(pdf, 'rb') as f:
 	    data = base64.b64encode(f.read()) #encoding to fit into later json
 
 
@@ -23,5 +23,3 @@ def post(pdf):
 
 	#response from a server
 	response = urllib.request.urlopen(req, jsondataasbytes)
-
-	# print(response.read().decode())
