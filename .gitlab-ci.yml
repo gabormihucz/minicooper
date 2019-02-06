@@ -10,7 +10,7 @@ build:
     - sudo apt -y install libtesseract-dev
     - sudo apt -y install zip
   script:
-    - pip3 install -r dependencies.txt --user
+    - pip3 install -r dependencies.txt
     - pip3 list
     - cd MCapp
     - python3 tests.py
