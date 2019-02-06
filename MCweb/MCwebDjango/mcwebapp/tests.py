@@ -117,7 +117,7 @@ class UploadPdfTest(TestCase):
             'username': 'testuser',
             'password': 'secret'}
         User.objects.create_user(**self.credentials)
-        TemplateFile.objects.create(name="testTemp",upload_date=timezone.now(),
+        TemplateFile.objects.create(name="SampleTemplate",upload_date=timezone.now(),
                                     user=User.objects.get(username = 'testuser'))
     def testPost(self):
         c = Client()
@@ -181,6 +181,7 @@ class SearchTest(TestCase):
         response = self.client.get(url)
         self.assertQuerysetEqual(response.context['elems'], [repr(elt) for elt in files])
 
+
 class PdfProcessTest(TestCase):
     def test_processing_output_correct(self):
         pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
@@ -188,3 +189,12 @@ class PdfProcessTest(TestCase):
             json_output = json.loads(template.read())
         test_string = {"cost": "£1000", "tax": "£125", "total": "£1125", "address_line1": "Address line 1", "address_line2": "Address line 2", "city": "City", "post_code": "Post Code"}
         self.assertEqual(json_output, test_string)
+
+#this test does not work hence, commenting it out
+    def test_mandatory_field_fails(self):
+        success = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        self.assertFalse(success)
+
+    def test_mandatory_field_suceeds(self):
+        success = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        self.assertTrue(success)
