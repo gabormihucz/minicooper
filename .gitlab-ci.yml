@@ -11,7 +11,7 @@ build:
     - sudo apt -y install zip
   script:
     - pip3 install -r dependencies.txt
-    - sudo pip3 install -U numpy
+    - pip3 install -U numpy
     - pip3 list
     - cd MCapp
     - python3 tests.py
@@ -19,7 +19,7 @@ build:
     - python3 MCweb/MCwebDjango/manage.py makemigrations
     - python3 MCweb/MCwebDjango/manage.py migrate
     - python3 MCweb/MCwebDjango/populate.py
-    - sudo python3 MCweb/MCwebDjango/manage.py test
+    - python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - zip -r deployment.zip ../dissertation
