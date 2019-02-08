@@ -90,9 +90,45 @@ def search_templates(request):
 
 
 def manage_templates(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        if data['code'] == "editPattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            patternsMatching = MatchPattern.objects.filter(template=template)
+
+            for element in patternsMatching:
+                if element.name == data["pattern_name"]:
+                    pattern = element
+                    break
+
+            pattern.name=data["edited_name"]
+            pattern.regex=data["edited_regex"]
+            pattern.save()
+
+        elif data['code'] == "deletePattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            patternsMatching = MatchPattern.objects.filter(template=template)
+
+            for element in patternsMatching:
+                if element.name == data["pattern_name"]:
+                    pattern = element
+                    break
+
+            pattern.delete()
+
+        elif data['code'] == "addPattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            pattern = MatchPattern()
+            pattern.name = data["new_name"]
+            pattern.regex = data["new_regex"]
+            pattern.template = template
+
     templates = TemplateFile.objects.all()
+    patterns = MatchPattern.objects.all()
+
     context_dict = paginate(templates, request)
-    print(context_dict)
+    context_dict['patterns'] = patterns
+
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 

@@ -3,6 +3,7 @@
 {% block css_block %}{% endblock %}
 
 {% block body_block %}
+
     <div class="container">
         <h2>Template Manager</h2>
         <!-- create table and loop through all jsons to fill it in according to needed data -->
@@ -15,55 +16,204 @@
                 </div>
             </form>
 
-
+<!-- Iterating over elems that is templates stored on DB and puting them into table rows-->
         {% if elems %}
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Template</th>
-                    <th>Upload Date</th>
-                    <th>User</th>
-                </tr>
-                </thead>
-                <tbody>
+        <table class="table table-responsive table-hover">
+          <thead>
+              <tr><th>Template</th><th>User</th><th>Upload Date</th><th>Pattern</th></tr>
+          </thead>
+          {% for elem in elems %}
+          <tbody>
+              <tr class="clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="false" aria-controls="group-of-rows-1">
+                  <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
+                  <td>{{ elem.user.username  }}</td>
+                  <td>{{ elem.upload_date }}</td>
+                  <td><a href="#">Show Patterns</a><td>
+              </tr>
+          </tbody>
 
-                {% for elem in elems %}
-                    <tr>
-                        <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
-                        <td>{{ elem.upload_date }}</td>
-                        <td>{{ elem.user.username  }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <!-- paginator business -->
-            {% if elems.has_other_pages %}
-                <ul class="pagination">
-                    {% if elems.has_previous %}
-                        <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
-                    {% for i in elems.paginator.page_range %}
-                        {% if elems.number == i %}
-                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                        {% else %}
-                            <li><a href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if elems.has_next %}
-                        <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                </ul>
-            {% endif %}
+          <!-- Collapable table triggered by clicking on a row -->
+          <!-- Firs row holds a button that allows user to add a pattern -->
+          <tbody id="{{elem.name}}{{elem.user.username}}" class="collapse">
+            <tr id="Add_{{elem.name}} style="display:""">
+              <td><input type ="button" id = "AddBtn_{{elem.name}}" value = "Add" onclick="addPattern(id)"></td>
+            </tr>
+            <tr id="HiddenAdd_{{elem.name}}" style="display:none;">
+                <td><input type="text" id="EditedNameAdd_{{elem.name}}" value=""></td>
+                <td><input type="text" id="EditedRegexAdd_{{elem.name}}" value=""></td>
+                <td>{{elem.name}}</td>
+                <td><input type ="button" id = "SaveAddBtn_{{elem.name}}" value = "Add Pattern" onclick="saveAddPattern(id)"></td>
+            </tr>
+          </tbody>
+
+          <!--  Next rows represent patterns stored on a DB releted to a specific template-->
+          {% for pattern in patterns %}
+          <!-- Checking if pattern is releted to a template from row above -->
+          {% ifequal pattern.template elem %}
+          <tbody id="{{elem.name}}{{elem.user.username}}" class="collapse">
+          <tr id="Display_{{pattern.name}}%;split;%{{elem.name}}" style="display:""">
+                <td id="PatName{{pattern.name}}{{elem.name}}">{{pattern.name}}</td>
+                <td id="RegName{{pattern.name}}{{elem.name}}">{{pattern.regex}}</td>
+                <td><input type ="button" id = "EditBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Edit" onclick="editPattern(id)"></td>
+                <td><input type ="button" id = "DelBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Delete" onclick="deletePattern(id)"></td>
+          </tr>
+          <tr id="Hidden_{{pattern.name}}%;split;%{{elem.name}}" style="display:none;">
+              <td><input type="text" id="EditedName_{{pattern.name}}%;split;%{{elem.name}}" value="{{pattern.name}}"></td>
+              <td><input type="text" id="EditedRegex_{{pattern.name}}%;split;%{{elem.name}}" value="{{pattern.regex}}"></td>
+              <td><input type ="button" id = "SaveBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Save Pattern" onclick="savePattern(id)"></td>
+          </tr>
+          </tbody>
+          {% endifequal %}
+          {% endfor %}
+          {% endfor %}
+        </table>
         {% else %}
             You are out of luck! There is no data to display! <br/>
-
 
         {% endif %}
     </div>
 {% endblock %}
 
-{% block script_block %}{% endblock %}
+{% block script_block %}
+<script>
+  function getCookie(c_name)
+   {
+       if (document.cookie.length > 0)
+       {
+           c_start = document.cookie.indexOf(c_name + "=");
+           if (c_start != -1)
+           {
+               c_start = c_start + c_name.length + 1;
+               c_end = document.cookie.indexOf(";", c_start);
+               if (c_end == -1) c_end = document.cookie.length;
+               return unescape(document.cookie.substring(c_start,c_end));
+           }
+       }
+       return "";
+    }
+
+
+   function editPattern(id) {
+     var parameters= id.substr(8);
+     document.getElementById("Hidden_"+parameters).style.display = "";
+     document.getElementById("Display_"+parameters).style.display = "none";
+     }
+
+
+   function savePattern(id) {
+     var parameters= id.substr(8);
+     var editedName = document.getElementById("EditedName_"+parameters).value;
+     var editedRegex = document.getElementById("EditedRegex_"+parameters).value;
+
+     var parametersSplited = parameters.split("%;split;%");
+     var parameterName = parametersSplited[0];
+     var templateName =  parametersSplited[1];
+
+     // send a post request
+     var message = {};
+     message["code"] = "editPattern";
+     message["pattern_name"] = parameterName;
+     message["template_name"] = templateName;
+     message["edited_name"] = editedName;
+     message["edited_regex"] = editedRegex;
+
+     var xhr = new XMLHttpRequest();
+     var url = "http://127.0.0.1:8000/template_manager/";
+
+     var response;
+
+     xhr.onreadystatechange = function() {
+         if (xhr.readyState == XMLHttpRequest.DONE) {
+             response = xhr.responseText;
+         }
+     }
+
+     xhr.open("POST", url, true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+     xhr.send(JSON.stringify(message));
+     // console.log(JSON.stringify(message));
+     console.log("post_sent");
+
+
+     document.getElementById("PatName"+parameterName+templateName).innerHTML = editedName;
+     document.getElementById("RegName"+parameterName+templateName).innerHTML = editedRegex;
+
+     document.getElementById("Hidden_"+parameters).style.display = "none";
+     document.getElementById("Display_"+parameters).style.display = "";
+     }
+
+
+   function deletePattern(id) {
+     var parameters= id.substr(7);
+     var parametersSplited = parameters.split("%;split;%");
+     var parameterName = parametersSplited[0];
+     var templateName =  parametersSplited[1];
+
+     // send a post request
+     var message = {};
+     message["code"] = "deletePattern";
+     message["pattern_name"] = parameterName;
+     message["template_name"] = templateName;
+
+     var xhr = new XMLHttpRequest();
+     var url = "http://127.0.0.1:8000/template_manager/";
+
+     var response;
+
+     xhr.onreadystatechange = function() {
+         if (xhr.readyState == XMLHttpRequest.DONE) {
+             response = xhr.responseText;
+         }
+     }
+
+     xhr.open("POST", url, true);
+     xhr.setRequestHeader("Content-Type", "application/json");
+     xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+     xhr.send(JSON.stringify(message));
+     // console.log(JSON.stringify(message));
+     console.log("post_sent");
+
+     document.getElementById("Display_"+parameters).style.display = "none";
+     }
+
+
+  function addPattern(id) {
+    var parameters = id.substr(7);
+    document.getElementById("HiddenAdd_"+parameters).style.display = "";
+    }
+
+
+  function saveAddPattern(id) {
+    var template_name = id.substr(11);
+    var newName = document.getElementById("EditedNameAdd_"+template_name).value;
+    var newRegex = document.getElementById("EditedRegexAdd_"+template_name).value;
+
+    // send a post request
+    var message = {};
+    message["code"] = "addPattern";
+    message["new_name"] = newName;
+    message["new_regex"] = newRegex;
+    message["template_name"] = template_name;
+
+    var xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:8000/template_manager/";
+
+    var response;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            response = xhr.responseText;
+        }
+    }
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    xhr.send(JSON.stringify(message));
+    // console.log(JSON.stringify(message));
+    console.log("post_sent");
+    location.reload();
+  }
+</script>
+{% endblock %}
