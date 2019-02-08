@@ -204,6 +204,7 @@
     xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             response = xhr.responseText;
+            window.location.reload(true);
         }
     }
 
@@ -212,8 +213,8 @@
     xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
     xhr.send(JSON.stringify(message));
     // console.log(JSON.stringify(message));
+
     console.log("post_sent");
-    location.reload();
   }
 </script>
 {% endblock %}

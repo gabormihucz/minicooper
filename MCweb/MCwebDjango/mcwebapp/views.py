@@ -122,7 +122,8 @@ def manage_templates(request):
             pattern.name = data["new_name"]
             pattern.regex = data["new_regex"]
             pattern.template = template
-
+            pattern.save()
+    
     templates = TemplateFile.objects.all()
     patterns = MatchPattern.objects.all()
 
