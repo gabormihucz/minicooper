@@ -243,7 +243,7 @@ $("#save-button").on('click',function(){
       }
       boxes["size"] = {};
       boxes["size"]["x"] = bounds.right - bounds.left
-      boxes["size"]["y"] = bounds.bottom - bounds.topS
+      boxes["size"]["y"] = bounds.bottom - bounds.top
       result['rectangles'] = boxes;
 
       console.log(result);
