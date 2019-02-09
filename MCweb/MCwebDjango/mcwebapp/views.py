@@ -48,7 +48,7 @@ def index(request):
     if not TemplateFile.objects.all() and request.user.is_superuser:
         return HttpResponseRedirect("/template_creator/")
 
-    jsons = JSONFile.objects.all()
+    jsons = JSONFile.objects.all().order_by('-upload_date')
     context_dict = paginate(jsons, request)
 
     response = render(request,'mcwebapp/index.html',context_dict)
