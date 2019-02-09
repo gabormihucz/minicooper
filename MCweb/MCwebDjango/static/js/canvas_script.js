@@ -241,6 +241,9 @@ $("#save-button").on('click',function(){
         boxes[name]["y2"] = y2;
         boxes[name]["mandatory"] = mandatory;
       }
+      boxes["size"] = {};
+      boxes["size"]["x"] = bounds.right - bounds.left
+      boxes["size"]["y"] = bounds.bottom - bounds.topS
       result['rectangles'] = boxes;
 
       console.log(result);

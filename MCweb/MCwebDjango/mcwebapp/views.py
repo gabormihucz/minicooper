@@ -171,7 +171,7 @@ def upload_pdf(request):
                 jsonFile.status_string = "Pass"
             else:
                 jsonFile.status_string = "Fail"
-            
+
             jsonFile.save()
             return HttpResponse("Post request parsed succesfully")
         except:
