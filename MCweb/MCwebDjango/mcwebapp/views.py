@@ -165,11 +165,13 @@ def upload_pdf(request):
             jsonFile.upload_date = upload_date
             jsonFile.file_name.name = "jsonFiles/" + name + ".json"
             jsonFile.pdf = pdfFile
+            """
             jsonFile.mandatory_fulfilled = success
             if success:
                 jsonFile.status_string = "Pass"
             else:
                 jsonFile.status_string = "Fail"
+            """
             jsonFile.save()
             return HttpResponse("Post request parsed succesfully")
         except:
