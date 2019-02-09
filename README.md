@@ -17,7 +17,5 @@ To login as a superuser:
 username: superuser  
 password: superpass  
 
-To open the admin page to manage users, go to: http://127.0.0.1:8000/admin
-
 For further instructions on what you can do on the website, please refer to README.txt
 
