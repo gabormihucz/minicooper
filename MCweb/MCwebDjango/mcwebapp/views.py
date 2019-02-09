@@ -158,20 +158,20 @@ def upload_pdf(request):
         pdfFile.save()
 
         try:
-            pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
+            success = pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
             # creating json model instance
             jsonFile = JSONFile()
             jsonFile.name = name
             jsonFile.upload_date = upload_date
             jsonFile.file_name.name = "jsonFiles/" + name + ".json"
             jsonFile.pdf = pdfFile
-            """
+
             jsonFile.mandatory_fulfilled = success
             if success:
                 jsonFile.status_string = "Pass"
             else:
                 jsonFile.status_string = "Fail"
-            """
+            
             jsonFile.save()
             return HttpResponse("Post request parsed succesfully")
         except:
