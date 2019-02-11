@@ -176,7 +176,7 @@ class GetPdfInfoTest(TestCase):
 
     def testVisit(self):
         response = self.client.get('/get_pdf_info/')
-        print(response.status_code)
+        # print(response.status_code)
         self.assertEqual(response.status_code, 200)
 
 
@@ -222,3 +222,82 @@ class PdfProcessTest(TestCase):
     def test_mandatory_field_suceeds(self):
         success = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
         self.assertTrue(success)
+
+
+#Test which checks template_editor() view
+class TemplateEditorTest(TestCase):
+
+    def setUp(self):
+        populate.populate()
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+
+    def test_template_editor_with_existing_template(self):
+        # the populate.py script was ran so SampleTemplate should exist, together with actual .json file with each content
+        # test is checking if context_dictionary sent later to view was loaded correctly
+        response = self.client.post('/template_editor/SampleTemplate', self.credentials, follow=True)
+        self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
+
+    def test_template_editor_with_non_existent_template(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        response = self.client.post('/template_editor/TemplateWhichDefinetelyNotExist', self.credentials, follow=True)
+        self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
+
+
+class ManageTemplatesTest(TestCase):
+
+    def setUp(self):
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+        TemplateFile.objects.create(name="TestTemp",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        MatchPattern.objects.create(name="TestMatchPattern",regex="TestRegex",
+                                    template=TemplateFile.objects.get(name = 'TestTemp'))
+
+
+    def test_template_manager_with_pattern_edit(self):
+        c = Client()
+        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestTempEdited","edited_regex":"TestRegexEdited"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[0].name,"TestTempEdited")
+
+
+    def test_template_manager_with_pattern_edit(self):
+        c = Client()
+        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestPatternEdited","edited_regex":"TestRegexEdited"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[0].name,"TestPatternEdited")
+
+
+    def test_template_manager_with_pattern_add(self):
+        c = Client()
+        message = {"code":"addPattern","new_name":"TestAddPattern","new_regex":"TestAddRegex","template_name":"TestTemp"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[1].name,"TestAddPattern")
+
+
+    def test_template_manager_with_pattern_delete(self):
+        c = Client()
+        message = {"code":"addPattern","new_name":"TestDeletePattern","new_regex":"TestDeleteRegex","template_name":"TestTemp"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+
+        count1 = 0
+        for pattern in response.context.get('patterns'):
+            count1 += 1
+
+        message = {"code":"deletePattern","pattern_name":"TestDeletePattern","template_name":"TestTemp"}
+        response = c.post('/template_manager/',message, content_type="application/json")
+
+        count2 = 0
+        for pattern in response.context.get('patterns'):
+            count2 += 1
+
+        self.assertFalse(count1==count2)

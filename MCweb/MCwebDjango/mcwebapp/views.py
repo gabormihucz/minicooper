@@ -62,16 +62,16 @@ def template_creator(request):
 
 
 def template_editor(request, temp_name):
-    temp = TemplateFile.objects.get(name=temp_name)
-    # print(temp.file_name)
-    # print(os.getcwd())
+    try:
+        temp = TemplateFile.objects.get(name=temp_name)
 
-    with open("media/"+str(temp.file_name),"r") as t:
-        file = t.read()
-    tempDictJSON = {"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
-    tempDict ={"JSON":tempDictJSON}
-    print("success")
-    return render(request,'mcwebapp/template_editor.html',tempDict)
+        with open("media/"+str(temp.file_name),"r") as t:
+            file = t.read()
+        tempDictJSON = {"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
+        tempDict ={"JSON":tempDictJSON}
+        return render(request,'mcwebapp/template_editor.html',tempDict)
+    except:
+        return HttpResponse("Template could not be found")
 
 # get the search query, and filter JSON files whether the query appears in them
 # and return the matching JSON objects in a paginated list
@@ -81,41 +81,11 @@ def search(request):
     context_dict = paginate(jsons, request)
     return render(request, 'mcwebapp/search_files.html', context_dict)
 
-
+#start
 def search_templates(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        if data['code'] == "editPattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            patternsMatching = MatchPattern.objects.filter(template=template)
-
-            for element in patternsMatching:
-                if element.name == data["pattern_name"]:
-                    pattern = element
-                    break
-
-            pattern.name=data["edited_name"]
-            pattern.regex=data["edited_regex"]
-            pattern.save()
-
-        elif data['code'] == "deletePattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            patternsMatching = MatchPattern.objects.filter(template=template)
-
-            for element in patternsMatching:
-                if element.name == data["pattern_name"]:
-                    pattern = element
-                    break
-
-            pattern.delete()
-
-        elif data['code'] == "addPattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            pattern = MatchPattern()
-            pattern.name = data["new_name"]
-            pattern.regex = data["new_regex"]
-            pattern.template = template
-            pattern.save()
+        template_manager_code_check(data)
 
     query = request.GET.get('search-bar', '')
     templates = TemplateFile.objects.filter(name__icontains=query)
@@ -125,49 +95,18 @@ def search_templates(request):
     context_dict['patterns'] = patterns
 
     return render(request, 'mcwebapp/search_templates.html', context_dict)
-
+#end
 
 def manage_templates(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        if data['code'] == "editPattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            patternsMatching = MatchPattern.objects.filter(template=template)
-
-            for element in patternsMatching:
-                if element.name == data["pattern_name"]:
-                    pattern = element
-                    break
-
-            pattern.name=data["edited_name"]
-            pattern.regex=data["edited_regex"]
-            pattern.save()
-
-        elif data['code'] == "deletePattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            patternsMatching = MatchPattern.objects.filter(template=template)
-
-            for element in patternsMatching:
-                if element.name == data["pattern_name"]:
-                    pattern = element
-                    break
-
-            pattern.delete()
-
-        elif data['code'] == "addPattern":
-            template = TemplateFile.objects.get(name=data["template_name"])
-            pattern = MatchPattern()
-            pattern.name = data["new_name"]
-            pattern.regex = data["new_regex"]
-            pattern.template = template
-            pattern.save()
+        template_manager_code_check(data)
 
     templates = TemplateFile.objects.all()
     patterns = MatchPattern.objects.all()
 
     context_dict = paginate(templates, request)
     context_dict['patterns'] = patterns
-
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
@@ -194,8 +133,10 @@ def save_template(request):
 
             template.save()
             return HttpResponse("Post request parsed succesfully")
+            #start
         except:
             return HttpResponse("Template coudn't be save")
+            #end
     return render(request,'mcwebapp/saveTemplate.html',{})
 
 
@@ -231,7 +172,7 @@ def upload_pdf(request):
         pdfFile.template=template
 
         pdfFile.save()
-
+#start
         try:
             success = pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
             # creating json model instance
@@ -249,6 +190,7 @@ def upload_pdf(request):
 
             jsonFile.save()
             return HttpResponse("Post request parsed succesfully")
+#end
         except:
             return HttpResponse("Pdf sent over post seems to be corrupted")
     #if not a post visualise the template that is responsible for handeling posts
@@ -272,3 +214,39 @@ def get_pdf_info(request):
                 # jsonresp = json.dumps(response)
             except:
                 return HttpResponse("File not stored on the server")
+
+#helper functions
+
+def template_manager_code_check(data):
+    if data['code'] == "editPattern":
+        template = TemplateFile.objects.get(name=data["template_name"])
+        patternsMatching = MatchPattern.objects.filter(template=template)
+
+        for element in patternsMatching:
+            if element.name == data["pattern_name"]:
+                pattern = element
+                break
+
+        pattern.name=data["edited_name"]
+        pattern.regex=data["edited_regex"]
+        pattern.save()
+
+    elif data['code'] == "deletePattern":
+        template = TemplateFile.objects.get(name=data["template_name"])
+        patternsMatching = MatchPattern.objects.filter(template=template)
+
+
+        for element in patternsMatching:
+            if element.name == data["pattern_name"]:
+                pattern = element
+                pattern.delete()
+                break
+
+
+    elif data['code'] == "addPattern":
+        template = TemplateFile.objects.get(name=data["template_name"])
+        pattern = MatchPattern()
+        pattern.name = data["new_name"]
+        pattern.regex = data["new_regex"]
+        pattern.template = template
+        pattern.save()
