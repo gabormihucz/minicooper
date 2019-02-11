@@ -83,9 +83,47 @@ def search(request):
 
 
 def search_templates(request):
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        if data['code'] == "editPattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            patternsMatching = MatchPattern.objects.filter(template=template)
+
+            for element in patternsMatching:
+                if element.name == data["pattern_name"]:
+                    pattern = element
+                    break
+
+            pattern.name=data["edited_name"]
+            pattern.regex=data["edited_regex"]
+            pattern.save()
+
+        elif data['code'] == "deletePattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            patternsMatching = MatchPattern.objects.filter(template=template)
+
+            for element in patternsMatching:
+                if element.name == data["pattern_name"]:
+                    pattern = element
+                    break
+
+            pattern.delete()
+
+        elif data['code'] == "addPattern":
+            template = TemplateFile.objects.get(name=data["template_name"])
+            pattern = MatchPattern()
+            pattern.name = data["new_name"]
+            pattern.regex = data["new_regex"]
+            pattern.template = template
+            pattern.save()
+
     query = request.GET.get('search-bar', '')
     templates = TemplateFile.objects.filter(name__icontains=query)
+    patterns = MatchPattern.objects.all()
+
     context_dict = paginate(templates, request)
+    context_dict['patterns'] = patterns
+
     return render(request, 'mcwebapp/search_templates.html', context_dict)
 
 
@@ -123,7 +161,7 @@ def manage_templates(request):
             pattern.regex = data["new_regex"]
             pattern.template = template
             pattern.save()
-    
+
     templates = TemplateFile.objects.all()
     patterns = MatchPattern.objects.all()
 
