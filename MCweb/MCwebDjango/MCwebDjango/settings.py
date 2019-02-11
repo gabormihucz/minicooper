@@ -28,14 +28,14 @@ SECRET_KEY = 'g#497&p0yr$u+#@v8sk@tnjx=9sk+4%2^b^+#36bihs0=x1l@f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://minicooper.pythonanywhere.com', 'minicooper.pythonanywhere.com','127.0.0.1','localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'mcwebapp.apps.McwebappConfig',
-
+    'django_nose',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -149,5 +149,10 @@ LOGIN_REDIRECT_URL = '/'
 # The page users are directed to if they are not logged in,
 # and are trying to access pages requiring authentication
 LOGIN_URL = '/accounts/login/'
-ALLOWED_HOSTS = ['http://minicooper.pythonanywhere.com', 'minicooper.pythonanywhere.com','127.0.0.1','localhost']
 
+# Tell nose to measure coverage on mcwebap
+NOSE_ARGS = [
+    '--cover-erase',
+    '--cover-package=mcwebapp',
+
+]
