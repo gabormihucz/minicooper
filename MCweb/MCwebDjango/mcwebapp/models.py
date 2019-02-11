@@ -38,7 +38,8 @@ class JSONFile(models.Model):
     upload_date = models.DateTimeField('date uploaded', null=True)
     file_name = models.FileField(upload_to='jsonFiles/', null=True)
     pdf = models.OneToOneField(PDFFile, on_delete=models.PROTECT, null=True)
-
+    mandatory_fulfilled = models.BooleanField(null=True)
+    status_string = models.CharField(max_length=4, default='Pass')
     def __str__(self):
         return self.name
 
@@ -50,4 +51,3 @@ class MatchPattern(models.Model):
 
     def __str__(self):
         return self.name
-

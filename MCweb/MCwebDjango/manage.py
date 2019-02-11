@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     if is_testing:
         import coverage
-        cov = coverage.coverage(source=['mcwebapp'], omit=['*/tests/*'])
+        cov = coverage.coverage(source=['mcwebapp'])
         cov.set_option('report:show_missing', True)
         cov.erase()
         cov.start()
