@@ -8,6 +8,7 @@ import urllib.request, json, datetime, pytz, populate
 from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process, crop
 
+import os
 
 # Create your tests here.
 
@@ -176,7 +177,7 @@ class GetPdfInfoTest(TestCase):
 
     def testVisit(self):
         response = self.client.get('/get_pdf_info/')
-        print(response.status_code)
+        # print(response.status_code)
         self.assertEqual(response.status_code, 200)
 
 
@@ -209,16 +210,139 @@ class SearchTest(TestCase):
 class PdfProcessTest(TestCase):
     # test passes if the result of pdfprocess on the Sample PDF using the SampleTemplate matches the expected output
     def test_processing_output_correct(self):
-        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
-        with open("media/jsonFiles/" + "SamplePDF" + ".json", "r") as template:
-            json_output = json.loads(template.read())
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+
+        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
+            json_output = json.loads(output.read())
+
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+
         test_string = {"cost": "£1000", "tax": "£125", "total": "£1125", "address_line1": "Address line 1", "address_line2": "Address line 2", "city": "City", "post_code": "Post Code"}
         self.assertEqual(json_output, test_string)
+
+    # test passes if the json output of a pdf is not overwritten when the pdf is processed again with the same template
+    def test_proccess_handles_duplicate_pdf(self):
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF(2)" + ".json")
+        except OSError:
+            pass
+        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+
+        pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
+            json_output = json.loads(output.read())
+
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF(2)" + ".json")
+
+        test_string = {"default0": "£1000", "default1": ""}
+        self.assertNotEqual(json_output, test_string)
+
     # test passes if pdf_process if pdf_process returns false, indicating that a mandatory field was not filled
     def test_mandatory_field_fails(self):
-        success = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+        process_dict = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        success = process_dict["mand_filled"]
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertFalse(success)
     # test passes if pdf_process if pdf_process returns true, indicating that all mandatory fields were filled
     def test_mandatory_field_suceeds(self):
-        success = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+        process_dict = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        success = process_dict["mand_filled"]
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertTrue(success)
+
+
+#Test which checks template_editor() view
+class TemplateEditorTest(TestCase):
+
+    def setUp(self):
+        populate.populate()
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+
+    def test_template_editor_with_existing_template(self):
+        # the populate.py script was ran so SampleTemplate should exist, together with actual .json file with each content
+        # test is checking if context_dictionary sent later to view was loaded correctly
+        response = self.client.post('/template_editor/SampleTemplate', self.credentials, follow=True)
+        self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
+
+    def test_template_editor_with_non_existent_template(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        response = self.client.post('/template_editor/TemplateWhichDefinetelyNotExist', self.credentials, follow=True)
+        self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
+
+
+class ManageTemplatesTest(TestCase):
+
+    def setUp(self):
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+        TemplateFile.objects.create(name="TestTemp",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        MatchPattern.objects.create(name="TestMatchPattern",regex="TestRegex",
+                                    template=TemplateFile.objects.get(name = 'TestTemp'))
+
+
+    def test_template_manager_with_pattern_edit(self):
+        c = Client()
+        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestTempEdited","edited_regex":"TestRegexEdited"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[0].name,"TestTempEdited")
+
+
+    def test_template_manager_with_pattern_edit(self):
+        c = Client()
+        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestPatternEdited","edited_regex":"TestRegexEdited"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[0].name,"TestPatternEdited")
+
+
+    def test_template_manager_with_pattern_add(self):
+        c = Client()
+        message = {"code":"addPattern","new_name":"TestAddPattern","new_regex":"TestAddRegex","template_name":"TestTemp"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.context.get('patterns')[1].name,"TestAddPattern")
+
+
+    def test_template_manager_with_pattern_delete(self):
+        c = Client()
+        message = {"code":"addPattern","new_name":"TestDeletePattern","new_regex":"TestDeleteRegex","template_name":"TestTemp"}
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+
+        count1 = 0
+        for pattern in response.context.get('patterns'):
+            count1 += 1
+
+        message = {"code":"deletePattern","pattern_name":"TestDeletePattern","template_name":"TestTemp"}
+        response = c.post('/template_manager/',message, content_type="application/json")
+
+        count2 = 0
+        for pattern in response.context.get('patterns'):
+            count2 += 1
+
+        self.assertFalse(count1==count2)
