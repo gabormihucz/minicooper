@@ -14,27 +14,41 @@ $("#save-button").on('click',function(){
     }else{
       //Convert temp JSON object into template JSON format
       result = convert_to_save_format(rectangles);
+      result['template_id'] = tempID;
       console.log(result);
       // Sending and receiving data in JSON format using POST method
       var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8000/save_template/";
+      var url = "http://127.0.0.1:8000/template_editor/"+originalTempName;
+
+      function getCookie(c_name)
+       {
+           if (document.cookie.length > 0)
+           {
+               c_start = document.cookie.indexOf(c_name + "=");
+               if (c_start != -1)
+               {
+                   c_start = c_start + c_name.length + 1;
+                   c_end = document.cookie.indexOf(";", c_start);
+                   if (c_end == -1) c_end = document.cookie.length;
+                   return unescape(document.cookie.substring(c_start,c_end));
+               }
+           }
+           return "";
+        }
 
       var response ;
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
               response = xhr.responseText;
-              console.log(response)
-              console.log(xhr.responseText)
-              if(response == "Post request parsed succesfully"){
-                alert("Template saved succesfully")
-              }else{
-                alert("Something went wrong, try again")
-              }
+              alert("Template has been overwritten");
+              window.location = response;
+              // console.log(response)
           }
       }
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
       xhr.send(JSON.stringify(result));
       console.log("post_sent");
     }
@@ -43,7 +57,10 @@ $("#save-button").on('click',function(){
 
 //Setting up canvas
 var coordinates = document.getElementById("coordinates").value;
-coordinates = JSON.parse(coordinates)
+var originalTempName = document.getElementById("tempName").value;
+var tempID = document.getElementById("tempID").value;
+
+coordinates = JSON.parse(coordinates);
 
 //Set PDF as background and update the dimensions of canvas
 $( "#file-input" ).change(function() {

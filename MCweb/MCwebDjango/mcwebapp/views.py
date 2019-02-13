@@ -62,12 +62,30 @@ def template_creator(request):
 
 
 def template_editor(request, temp_name):
+    if request.method == "POST":
+        print("it's a post, temp to be edited")
+        data = json.loads(request.body.decode('utf-8'))
+        template = TemplateFile.objects.get(id=data['template_id'])
+
+        os.remove("media/templateFiles/"+template.name+".json")
+
+        template.name = data['template_name']
+
+        with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+            o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+
+        template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+
+        template.save()
+
+        return HttpResponse("http://127.0.0.1:8000/template_manager/")
+
     try:
         temp = TemplateFile.objects.get(name=temp_name)
 
         with open("media/"+str(temp.file_name),"r") as t:
             file = t.read()
-        tempDictJSON = {"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
+        tempDictJSON = {"id":temp.id,"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
         tempDict ={"JSON":tempDictJSON}
         return render(request,'mcwebapp/template_editor.html',tempDict)
     except:
