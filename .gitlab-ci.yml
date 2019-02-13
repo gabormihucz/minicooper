@@ -22,7 +22,7 @@ build:
     - python3 MCweb/MCwebDjango/manage.py makemigrations
     - python3 MCweb/MCwebDjango/manage.py migrate
     - python3 MCweb/MCwebDjango/populate.py
-    - python3 MCweb/MCwebDjango/manage.py test
+    - sudo python3 MCweb/MCwebDjango/manage.py test
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - zip -r deployment.zip ../dissertation
