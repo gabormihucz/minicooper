@@ -174,12 +174,18 @@ def upload_pdf(request):
         pdfFile.save()
 #start
         try:
-            success = pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
+            process_dict = pdf_process.pdf_proccess(template.name,"media/templateFiles/", name,"media/pdfFiles/", "media/jsonFiles/")
+            success = process_dict["mand_filled"]
+            copies = process_dict["copies"]
+            if copies == 1:
+                Jname = name
+            else:
+                Jname = name + "(" + str(copies) + ")"
             # creating json model instance
             jsonFile = JSONFile()
-            jsonFile.name = name
+            jsonFile.name = Jname
             jsonFile.upload_date = upload_date
-            jsonFile.file_name.name = "jsonFiles/" + name + ".json"
+            jsonFile.file_name.name = "jsonFiles/" + Jname + ".json"
             jsonFile.pdf = pdfFile
 
             jsonFile.mandatory_fulfilled = success
