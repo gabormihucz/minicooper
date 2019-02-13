@@ -282,12 +282,12 @@ class TemplateEditorTest(TestCase):
     def test_template_editor_with_existing_template(self):
         # the populate.py script was ran so SampleTemplate should exist, together with actual .json file with each content
         # test is checking if context_dictionary sent later to view was loaded correctly
-        response = self.client.post('/template_editor/SampleTemplate', self.credentials, follow=True)
+        response = self.client.get('/template_editor/SampleTemplate', self.credentials, follow=True)
         self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
 
     def test_template_editor_with_non_existent_template(self):
         # test checks if asking for a non-existent template returns correct HttpResponse
-        response = self.client.post('/template_editor/TemplateWhichDefinetelyNotExist', self.credentials, follow=True)
+        response = self.client.get('/template_editor/TemplateWhichDefinetelyNotExist', self.credentials, follow=True)
         self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
 
 

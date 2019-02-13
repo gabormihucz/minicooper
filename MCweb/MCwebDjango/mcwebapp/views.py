@@ -63,7 +63,6 @@ def template_creator(request):
 
 def template_editor(request, temp_name):
     if request.method == "POST":
-        print("it's a post, temp to be edited")
         data = json.loads(request.body.decode('utf-8'))
         template = TemplateFile.objects.get(id=data['template_id'])
 
