@@ -1,14 +1,18 @@
 image: blang/latex
 build:
   before_script:
+
     - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
+    - sudo apt-get remove python3-pip
+    - sudo apt-get install python3-pip
     - sudo apt-get update
     - sudo apt update
     - sudo apt -y install tesseract-ocr
     - sudo apt -y install libtesseract-dev
     - sudo apt -y install zip
+
   script:
     - pip3 install -r dependencies.txt
     - pip3 install -U numpy
