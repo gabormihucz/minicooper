@@ -4,7 +4,6 @@ build:
     - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
-    - sudo git clean -ffxd
     - sudo apt-get update -qy
     - sudo apt-get upgrade -y
     - sudo apt-get autoremove -y
@@ -28,6 +27,7 @@ build:
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - zip -r deployment.zip ../dissertation
+    - sudo git clean -ffxd
   artifacts:
     paths:
       - "*.pdf"
