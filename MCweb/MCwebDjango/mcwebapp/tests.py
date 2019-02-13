@@ -211,15 +211,15 @@ class PdfProcessTest(TestCase):
     # test passes if the result of pdfprocess on the Sample PDF using the SampleTemplate matches the expected output
     def test_processing_output_correct(self):
         try:
-            os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
 
-        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
-        with open("media/jsonFiles/" + "SamplePDF" + ".json", "r") as output:
+        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
             json_output = json.loads(output.read())
 
-        os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
 
         test_string = {"cost": "£1000", "tax": "£125", "total": "£1125", "address_line1": "Address line 1", "address_line2": "Address line 2", "city": "City", "post_code": "Post Code"}
         self.assertEqual(json_output, test_string)
@@ -227,22 +227,22 @@ class PdfProcessTest(TestCase):
     # test passes if the json output of a pdf is not overwritten when the pdf is processed again with the same template
     def test_proccess_handles_duplicate_pdf(self):
         try:
-            os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
 
         try:
-            os.remove("media/jsonFiles/" + "SamplePDF(2)" + ".json")
+            os.remove("media/jsonFiles/" + "TestPDF(2)" + ".json")
         except OSError:
             pass
-        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
 
-        pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
-        with open("media/jsonFiles/" + "SamplePDF" + ".json", "r") as output:
+        pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
             json_output = json.loads(output.read())
 
-        os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
-        os.remove("media/jsonFiles/" + "SamplePDF(2)" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF(2)" + ".json")
 
         test_string = {"default0": "£1000", "default1": ""}
         self.assertNotEqual(json_output, test_string)
@@ -250,22 +250,22 @@ class PdfProcessTest(TestCase):
     # test passes if pdf_process if pdf_process returns false, indicating that a mandatory field was not filled
     def test_mandatory_field_fails(self):
         try:
-            os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
-        process_dict = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        process_dict = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
         success = process_dict["mand_filled"]
-        os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertFalse(success)
     # test passes if pdf_process if pdf_process returns true, indicating that all mandatory fields were filled
     def test_mandatory_field_suceeds(self):
         try:
-            os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
-        process_dict = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "SamplePDF", "media/pdfFiles/", "media/jsonFiles/")
+        process_dict = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
         success = process_dict["mand_filled"]
-        os.remove("media/jsonFiles/" + "SamplePDF" + ".json")
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertTrue(success)
 
 
