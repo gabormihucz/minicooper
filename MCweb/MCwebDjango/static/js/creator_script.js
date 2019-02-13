@@ -1,3 +1,47 @@
+/*
+  Converts the temporary JSON to our template format and
+  provide error message appropriately
+*/
+$("#save-button").on('click',function(){
+  //Check if template is given a name
+  if ($("#template-name-label").val() == ""){
+    alert("Please input template name");
+    $("#template-name-label").focus();
+  }else{
+    //Then check if template has content
+    if (Object.keys(rectangles).length === 0){
+      alert("The template is empty, please create some boxes");
+    }else{
+      //Convert temp JSON object into template JSON format
+      result = convert_to_save_format(rectangles);
+      console.log(result);
+      // Sending and receiving data in JSON format using POST method
+      var xhr = new XMLHttpRequest();
+      var url = "http://127.0.0.1:8000/save_template/";
+
+      var response ;
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+              response = xhr.responseText;
+              console.log(response)
+              console.log(xhr.responseText)
+              if(response == "Post request parsed succesfully"){
+                alert("Template saved succesfully")
+              }else{
+                alert("Something went wrong, try again")
+              }
+          }
+      }
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(JSON.stringify(result));
+      console.log("post_sent");
+    }
+  }
+});
+
+
 
 //Set PDF as background and update the dimensions of canvas
 $( "#file-input" ).change(function() {
