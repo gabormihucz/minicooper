@@ -26,10 +26,10 @@ if __name__ == '__main__':
     execute_from_command_line(sys.argv)
 
     # and these 5 for the report
-    """
+    
     if is_testing:
         cov.stop()
         cov.save()
         cov.html_report(directory='covhtml') # put html report in the directory 'covhtml'
         cov.report()
-    """
+    
