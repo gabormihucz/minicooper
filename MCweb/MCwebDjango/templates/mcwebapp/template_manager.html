@@ -30,25 +30,27 @@
             <!-- REMEMBER to set the collapsable -->
             <div class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}">
               <div class="row">
-                <div class="column ml-3">
+                <div class="column ml-3 col-sm">
                   <small class="form-text text-muted">Template</small>
                   <!-- INSERT Template name here -->
                   <h5 class="card-title">{{elem.name}}</h5>
                 </div>
 
-                <div class="column ml-auto">
+                <div class="column ml-auto col-sm">
                   <small class="form-text text-muted">User</small>
                   <!-- INSERT User name here -->
                   <h5 class="card-title">{{elem.user.username}}</h5>
                 </div>
 
-                <div class="column ml-auto">
+                <div class="column ml-auto col-sm">
                   <!-- INSERT Upload date and time here -->
                   <small class="form-text text-muted">Upload Date</small>
                   <h5 class="card-title">{{ elem.upload_date }}</h5>
                 </div>
 
+                <!-- ATTACH function to redirect to template editor -->
                 <button type="button" class="btn btn-info ml-auto my-1">Edit Template</button>
+                <!-- ATTACH function to delete template -->
                 <button type="button" class="btn btn-danger ml-1 mr-3 my-1">Delete</button>
               </div>
 
