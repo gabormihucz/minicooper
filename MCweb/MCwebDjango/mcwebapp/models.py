@@ -45,9 +45,8 @@ class JSONFile(models.Model):
 
 
 class MatchPattern(models.Model):
-    name = models.CharField(max_length=30)
     regex = models.CharField(max_length=60, null=True)
     template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return self.name
+        return self.regex

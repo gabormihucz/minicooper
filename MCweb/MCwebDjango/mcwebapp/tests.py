@@ -300,45 +300,32 @@ class ManageTemplatesTest(TestCase):
         User.objects.create_user(**self.credentials)
         TemplateFile.objects.create(name="TestTemp",upload_date=timezone.now(),file_name="sth",
                                     user=User.objects.get(username = 'testuser'))
-        MatchPattern.objects.create(name="TestMatchPattern",regex="TestRegex",
-                                    template=TemplateFile.objects.get(name = 'TestTemp'))
-
-
-    def test_template_manager_with_pattern_edit(self):
-        c = Client()
-        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestTempEdited","edited_regex":"TestRegexEdited"}
-        c.login(username='testuser', password='secret')
-        response = c.post('/template_manager/',message, content_type="application/json")
-        self.assertEqual(response.context.get('patterns')[0].name,"TestTempEdited")
-
-
-    def test_template_manager_with_pattern_edit(self):
-        c = Client()
-        message = {"code":"editPattern","pattern_name":"TestMatchPattern","template_name":"TestTemp","edited_name":"TestPatternEdited","edited_regex":"TestRegexEdited"}
-        c.login(username='testuser', password='secret')
-        response = c.post('/template_manager/',message, content_type="application/json")
-        self.assertEqual(response.context.get('patterns')[0].name,"TestPatternEdited")
 
 
     def test_template_manager_with_pattern_add(self):
+        template = TemplateFile.objects.get(name="TestTemp")
         c = Client()
-        message = {"code":"addPattern","new_name":"TestAddPattern","new_regex":"TestAddRegex","template_name":"TestTemp"}
+        message = {"code":"addPattern","regex":"TestAddRegex","template_id":template.id}
         c.login(username='testuser', password='secret')
         response = c.post('/template_manager/',message, content_type="application/json")
-        self.assertEqual(response.context.get('patterns')[1].name,"TestAddPattern")
+        self.assertEqual(response.context.get('patterns')[0].regex,"TestAddRegex")
 
 
     def test_template_manager_with_pattern_delete(self):
+        template = TemplateFile.objects.get(name="TestTemp")
         c = Client()
-        message = {"code":"addPattern","new_name":"TestDeletePattern","new_regex":"TestDeleteRegex","template_name":"TestTemp"}
+        message = {"code":"addPattern","regex":"TestDeleteRegex","template_id":template.id}
         c.login(username='testuser', password='secret')
         response = c.post('/template_manager/',message, content_type="application/json")
 
         count1 = 0
+        testDelPatternId = None
         for pattern in response.context.get('patterns'):
+            if pattern.regex=="TestDeleteRegex":
+                testDelPatternId = pattern.id
             count1 += 1
 
-        message = {"code":"deletePattern","pattern_name":"TestDeletePattern","template_name":"TestTemp"}
+        message = {"code":"deletePattern","pattern_id":testDelPatternId}
         response = c.post('/template_manager/',message, content_type="application/json")
 
         count2 = 0

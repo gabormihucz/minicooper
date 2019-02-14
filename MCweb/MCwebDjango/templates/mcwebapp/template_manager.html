@@ -19,6 +19,8 @@
                 </div>
             </form>
 
+        {% if elems %}
+        {% for elem in elems %}
         <!-- DIV to center cards -->
         <div class="mx-auto col-ml-10">
           <!-- Example Card -->
@@ -26,24 +28,24 @@
           <div class="card mt-3">
             <!-- BEGIN Card header -->
             <!-- REMEMBER to set the collapsable -->
-            <div class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#itsbody" aria-expanded="true" aria-controls="itsbody">
+            <div class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}">
               <div class="row">
                 <div class="column ml-3">
                   <small class="form-text text-muted">Template</small>
                   <!-- INSERT Template name here -->
-                  <h5 class="card-title">Template Name</h5>
+                  <h5 class="card-title">{{elem.name}}</h5>
                 </div>
 
                 <div class="column ml-auto">
                   <small class="form-text text-muted">User</small>
                   <!-- INSERT User name here -->
-                  <h5 class="card-title">Username</h5>
+                  <h5 class="card-title">{{elem.user.username}}</h5>
                 </div>
 
                 <div class="column ml-auto">
                   <!-- INSERT Upload date and time here -->
                   <small class="form-text text-muted">Upload Date</small>
-                  <h5 class="card-title">Date and Time</h5>
+                  <h5 class="card-title">{{ elem.upload_date }}</h5>
                 </div>
 
                 <button type="button" class="btn btn-info ml-auto my-1">Edit Template</button>
@@ -60,39 +62,41 @@
 
             <!-- BEGIN Card body -->
             <!-- REMEMBER to set the collapsable -->
-            <div id="itsbody" class="card-body collapse text-center py-0">
-
+            <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse text-center py-0">
               <!-- BEGIN List of patterns -->
               <ul class="list-group list-group-flush py-0 ">
-
                 <!-- LOOP Pattern list -->
+
+              {% for pattern in patterns %}
+              {% ifequal pattern.template elem %}
                 <li class="list-group-item">
-                  <div class="row ml-4">
+                  <div id="Pattern_{{pattern.id}}" class="row ml-4" style="display:""">
                     <!-- ATTACH Event to span buttons -->
-                    <span class="btn btn-xs btn-default py-0" style="background-color:red;
-                      color: white; font-weight: bold;"> x </span>
-                    <!-- INSERT Pattern name -->
-                    <p class="mb-0 ml-4 mt-1">Pattern 1</p>
+                    <span id = "DelBtn_{{pattern.id}}" class="btn btn-xs btn-default py-0" style="background-color:red;
+                      color: white; font-weight: bold;" onclick="deletePattern(id)"> x </span>
+                    <!-- INSERT Pattern regex -->
+                    <p class="mb-0 ml-4 mt-1">{{pattern.regex}}</p>
                   </div>
                 </li>
                 <!-- END LOOP HERE -->
-
+                {% endifequal %}
+                {% endfor %}
                 <!-- BEGIN Last list item (Adding new pattern field) -->
                 <li class="list-group-item">
                   <div class="row ml-4">
                     <!-- ATTACH Event/function to drop down -->
-                    <select class="form-control col-sm-2">
-                      <option>Starts With</option>
-                      <option>Ends With</option>
-                      <option>Contains</option>
+                    <select id = "RegexLoc_{{elem.id}}" class="form-control col-sm-2">
+                      <option value="1">Starts With</option>
+                      <option value="2">Ends With</option>
+                      <option value="3">Contains</option>
                     </select>
 
                     <!-- TEXT FIELD for pattern name -->
-                    <input class="form-control col-sm-3 ml-2" type="text" placeholder="Pattern">
+                    <input class="form-control col-sm-3 ml-2" type="text" id = "AddRegex_{{elem.id}}" placeholder="Pattern" value="">
 
                     <!-- Add pattern button -->
-                    <span class="btn btn-dark btn-xs btn-default ml-2" style="
-                      color: white; font-weight: bold;"> Add Pattern </span>
+                    <span id = "AddBtn_{{elem.id}}" class="btn btn-dark btn-xs btn-default ml-2" style="
+                      color: white; font-weight: bold;" onclick="addPattern(id)"> Add Pattern </span>
                   </div>
                 </li>
                 <!-- END Last list item (Adding new pattern field) -->
@@ -103,59 +107,7 @@
           </div>
           <!--END Example Card -->
         </div>
-
-
-<!-- Iterating over elems that is templates stored on DB and puting them into table rows-->
-        {% if elems %}
-        <table class="table table-responsive table-hover">
-          <thead>
-              <tr><th>Template</th><th>User</th><th>Upload Date</th><th>Pattern</th></tr>
-          </thead>
-          {% for elem in elems %}
-          <tbody>
-              <tr class="clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="false" aria-controls="group-of-rows-1">
-                  <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
-                  <td>{{ elem.user.username  }}</td>
-                  <td>{{ elem.upload_date }}</td>
-                  <td><a href="#">Show Patterns</a><td>
-              </tr>
-          </tbody>
-
-          <!-- Collapable table triggered by clicking on a row -->
-          <!-- Firs row holds a button that allows user to add a pattern -->
-          <tbody id="{{elem.name}}{{elem.user.username}}" class="collapse">
-            <tr id="Add_{{elem.name}} style="display:""">
-              <td><input type ="button" id = "AddBtn_{{elem.name}}" value = "Add" onclick="addPattern(id)"></td>
-            </tr>
-            <tr id="HiddenAdd_{{elem.name}}" style="display:none;">
-                <td><input type="text" id="EditedNameAdd_{{elem.name}}" value=""></td>
-                <td><input type="text" id="EditedRegexAdd_{{elem.name}}" value=""></td>
-                <td>{{elem.name}}</td>
-                <td><input type ="button" id = "SaveAddBtn_{{elem.name}}" value = "Add Pattern" onclick="saveAddPattern(id)"></td>
-            </tr>
-          </tbody>
-
-          <!--  Next rows represent patterns stored on a DB releted to a specific template-->
-          {% for pattern in patterns %}
-          <!-- Checking if pattern is releted to a template from row above -->
-          {% ifequal pattern.template elem %}
-          <tbody id="{{elem.name}}{{elem.user.username}}" class="collapse">
-          <tr id="Display_{{pattern.name}}%;split;%{{elem.name}}" style="display:""">
-                <td id="PatName{{pattern.name}}{{elem.name}}">{{pattern.name}}</td>
-                <td id="RegName{{pattern.name}}{{elem.name}}">{{pattern.regex}}</td>
-                <td><input type ="button" id = "EditBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Edit" onclick="editPattern(id)"></td>
-                <td><input type ="button" id = "DelBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Delete" onclick="deletePattern(id)"></td>
-          </tr>
-          <tr id="Hidden_{{pattern.name}}%;split;%{{elem.name}}" style="display:none;">
-              <td><input type="text" id="EditedName_{{pattern.name}}%;split;%{{elem.name}}" value="{{pattern.name}}"></td>
-              <td><input type="text" id="EditedRegex_{{pattern.name}}%;split;%{{elem.name}}" value="{{pattern.regex}}"></td>
-              <td><input type ="button" id = "SaveBtn_{{pattern.name}}%;split;%{{elem.name}}" value = "Save Pattern" onclick="savePattern(id)"></td>
-          </tr>
-          </tbody>
-          {% endifequal %}
-          {% endfor %}
-          {% endfor %}
-        </table>
+        {% endfor %}
         {% else %}
             You are out of luck! There is no data to display! <br/>
 
@@ -182,69 +134,14 @@
        return "";
     }
 
-
-   function editPattern(id) {
-     var parameters= id.substr(8);
-     document.getElementById("Hidden_"+parameters).style.display = "";
-     document.getElementById("Display_"+parameters).style.display = "none";
-     }
-
-
-   function savePattern(id) {
-     var parameters= id.substr(8);
-     var editedName = document.getElementById("EditedName_"+parameters).value;
-     var editedRegex = document.getElementById("EditedRegex_"+parameters).value;
-
-     var parametersSplited = parameters.split("%;split;%");
-     var parameterName = parametersSplited[0];
-     var templateName =  parametersSplited[1];
-
-     // send a post request
-     var message = {};
-     message["code"] = "editPattern";
-     message["pattern_name"] = parameterName;
-     message["template_name"] = templateName;
-     message["edited_name"] = editedName;
-     message["edited_regex"] = editedRegex;
-
-     var xhr = new XMLHttpRequest();
-     var url = "http://127.0.0.1:8000/template_manager/";
-
-     var response;
-
-     xhr.onreadystatechange = function() {
-         if (xhr.readyState == XMLHttpRequest.DONE) {
-             response = xhr.responseText;
-         }
-     }
-
-     xhr.open("POST", url, true);
-     xhr.setRequestHeader("Content-Type", "application/json");
-     xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-     xhr.send(JSON.stringify(message));
-     // console.log(JSON.stringify(message));
-     console.log("post_sent");
-
-
-     document.getElementById("PatName"+parameterName+templateName).innerHTML = editedName;
-     document.getElementById("RegName"+parameterName+templateName).innerHTML = editedRegex;
-
-     document.getElementById("Hidden_"+parameters).style.display = "none";
-     document.getElementById("Display_"+parameters).style.display = "";
-     }
-
-
    function deletePattern(id) {
-     var parameters= id.substr(7);
-     var parametersSplited = parameters.split("%;split;%");
-     var parameterName = parametersSplited[0];
-     var templateName =  parametersSplited[1];
+     alert("hello from del btn");
+     var patternID= id.substr(7);
 
      // send a post request
      var message = {};
      message["code"] = "deletePattern";
-     message["pattern_name"] = parameterName;
-     message["template_name"] = templateName;
+     message["pattern_id"] = patternID;
 
      var xhr = new XMLHttpRequest();
      var url = "http://127.0.0.1:8000/template_manager/";
@@ -260,51 +157,66 @@
      xhr.open("POST", url, true);
      xhr.setRequestHeader("Content-Type", "application/json");
      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-     xhr.send(JSON.stringify(message));
      // console.log(JSON.stringify(message));
+     xhr.send(JSON.stringify(message));
      console.log("post_sent");
 
-     document.getElementById("Display_"+parameters).style.display = "none";
+     document.getElementById("Pattern_"+patternID).style.display = "none";
      }
 
 
   function addPattern(id) {
-    var parameters = id.substr(7);
-    document.getElementById("HiddenAdd_"+parameters).style.display = "";
+    var templateID = id.substr(7);
+    var regex = document.getElementById("AddRegex_"+templateID).value;
+    // alert(regex);
+    var regexLocationSelect = document.getElementById("RegexLoc_"+templateID);
+    var selectedRegexLocationVal = regexLocationSelect.options[regexLocationSelect.selectedIndex].value;
+
+    var error = false;
+
+    if(regex==""){
+      alert("Define the regex");
+      error = true;
     }
 
-
-  function saveAddPattern(id) {
-    var template_name = id.substr(11);
-    var newName = document.getElementById("EditedNameAdd_"+template_name).value;
-    var newRegex = document.getElementById("EditedRegexAdd_"+template_name).value;
+    if(selectedRegexLocationVal==1){
+      regex = "*"+regex;
+    }else if(selectedRegexLocationVal==2){
+      regex = regex+"*";
+    }else if(selectedRegexLocationVal==3){
+      regex = "*"+regex+"*";
+    }else{
+      alert("Wrong regex location has been selected, try again");
+      error=true;
+    }
 
     // send a post request
-    var message = {};
-    message["code"] = "addPattern";
-    message["new_name"] = newName;
-    message["new_regex"] = newRegex;
-    message["template_name"] = template_name;
+    if (error==false){
+      var message = {};
+      message["code"] = "addPattern";
+      message["regex"] = regex;
+      message["template_id"] = templateID;
 
-    var xhr = new XMLHttpRequest();
-    var url = "http://127.0.0.1:8000/template_manager/";
+      var xhr = new XMLHttpRequest();
+      var url = "http://127.0.0.1:8000/template_manager/";
 
-    var response;
+      var response;
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == XMLHttpRequest.DONE) {
-            response = xhr.responseText;
-            window.location.reload(true);
-        }
+      xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+              response = xhr.responseText;
+              window.location.reload(true);
+          }
+      }
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      xhr.send(JSON.stringify(message));
+      // console.log(JSON.stringify(message));
+
+      console.log("post_sent");
     }
-
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    xhr.send(JSON.stringify(message));
-    // console.log(JSON.stringify(message));
-
-    console.log("post_sent");
-  }
+}
 </script>
 {% endblock %}

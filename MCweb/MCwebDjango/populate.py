@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 
 def populate():
     curr_time = timezone.now()
-    
+
     # Create superuser.
     # Note: there does not seem to be a "get_or_create" for the superuser, hence the try structure.
     try:
@@ -46,8 +46,7 @@ def populate():
     j.save()
 
     # Create MatchPattern.
-    m = MatchPattern.objects.get_or_create(name='samplematchpattern')[0]
-    m.regex = '$stuff+(0-9)?'
+    m = MatchPattern.objects.get_or_create(regex='$stuff+(0-9)?')[0]
     m.template = t
     m.save()
 

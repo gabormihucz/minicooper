@@ -242,35 +242,13 @@ def get_pdf_info(request):
 #helper functions
 
 def template_manager_code_check(data):
-    if data['code'] == "editPattern":
-        template = TemplateFile.objects.get(name=data["template_name"])
-        patternsMatching = MatchPattern.objects.filter(template=template)
-
-        for element in patternsMatching:
-            if element.name == data["pattern_name"]:
-                pattern = element
-                break
-
-        pattern.name=data["edited_name"]
-        pattern.regex=data["edited_regex"]
-        pattern.save()
-
-    elif data['code'] == "deletePattern":
-        template = TemplateFile.objects.get(name=data["template_name"])
-        patternsMatching = MatchPattern.objects.filter(template=template)
-
-
-        for element in patternsMatching:
-            if element.name == data["pattern_name"]:
-                pattern = element
-                pattern.delete()
-                break
-
+    if data['code'] == "deletePattern":
+        pattern = MatchPattern.objects.filter(id=data['pattern_id'])
+        pattern.delete()
 
     elif data['code'] == "addPattern":
-        template = TemplateFile.objects.get(name=data["template_name"])
+        template = TemplateFile.objects.get(id=data["template_id"])
         pattern = MatchPattern()
-        pattern.name = data["new_name"]
-        pattern.regex = data["new_regex"]
+        pattern.regex = data["regex"]
         pattern.template = template
         pattern.save()
