@@ -12,7 +12,7 @@ from .forms import UserForm
 from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process
 
-import json, base64, datetime, pytz, os
+import json, base64, datetime, pytz, os, re
 
 
 # helper function for paginated lists
