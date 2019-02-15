@@ -137,8 +137,10 @@ class UploadPdfTest(TestCase):
             'username': 'testuser',
             'password': 'secret'}
         User.objects.create_user(**self.credentials)
-        TemplateFile.objects.create(name="SampleTemplate",upload_date=timezone.now(),
+        template = TemplateFile.objects.create(name="SampleTemplate",upload_date=timezone.now(),
                                     user=User.objects.get(username = 'testuser'))
+        MatchPattern.objects.create(regex="test", template=template)
+
     def testPost(self):
         c = Client()
         data = "SGVsbG8gSSBhbSBhIHBkZiBtYWRlIGZvciB0ZXN0IHB1cnBvc2UK"
@@ -151,6 +153,12 @@ class UploadPdfTest(TestCase):
     def testVisit(self):
         response = self.client.get('/upload_pdf/')
         self.assertEqual(response.status_code, 200)
+
+    # check if the Pdf has been assigned the correct template
+    def testPdfToTemplateMatching(self):
+        pdf = PDFFile.objects.get(name="testPdf")
+        self.assertEqual(pdf.template.name, "SampleTemplate")
+
 
 
 class GetPdfInfoTest(TestCase):
@@ -257,6 +265,7 @@ class PdfProcessTest(TestCase):
         success = process_dict["mand_filled"]
         os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertFalse(success)
+
     # test passes if pdf_process if pdf_process returns true, indicating that all mandatory fields were filled
     def test_mandatory_field_suceeds(self):
         try:

@@ -172,11 +172,20 @@ def upload_pdf(request):
         content = data["content"].encode('utf-8')
         content = base64.b64decode(content)
 
-
         name = data["filename"]
         upload_date = timezone.now()
-        #TODO so far it works with precreated template, edit later
-        template = TemplateFile.objects.get(name="SampleTemplate")
+        
+        # Look through all MatchPatterns
+        for pattern in MatchPattern.objects.all():
+            x = re.findall(pattern.regex, name)
+            if x:  # if a match is found
+                template = pattern.template      # get the associated template
+                print("I found a template for " + name)
+                break                            # leave the loop
+        
+        # if no match was found, use the sample template
+        if not x:                                
+            template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
