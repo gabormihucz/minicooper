@@ -24,6 +24,7 @@ def paginate(input_list, request):
 
     return {'elems': elems}
 
+@login_required
 def index(request):
     # to work with templates:
     # - make a context_dict (standard python dictionary) to pass the data into the template
@@ -43,8 +44,6 @@ def index(request):
     # superuser in case of no templates is redirected to the template creator page
     # otherwise return a view with the list of jsons paginated
 
-    if request.user.is_anonymous:
-        return HttpResponseRedirect("/accounts/login")
     if not TemplateFile.objects.all() and request.user.is_superuser:
         return HttpResponseRedirect("/template_creator/")
 
@@ -54,13 +53,14 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
+@login_required
 # if not superuser redirect to homepage, otherwise go to template creator
 def template_creator(request):
     if not request.user.is_superuser:
         return HttpResponseRedirect("/")
     return render(request,'mcwebapp/template_creator.html',{})
 
-
+@login_required
 def template_editor(request, temp_name):
     if request.method == "POST":
 
@@ -91,6 +91,7 @@ def template_editor(request, temp_name):
     except:
         return HttpResponse("Template could not be found")
 
+@login_required
 # get the search query, and filter JSON files whether the query appears in them
 # and return the matching JSON objects in a paginated list
 def search(request):
@@ -99,6 +100,7 @@ def search(request):
     context_dict = paginate(jsons, request)
     return render(request, 'mcwebapp/search_files.html', context_dict)
 
+@login_required
 #start
 def search_templates(request):
     if request.method == 'POST':
@@ -115,6 +117,7 @@ def search_templates(request):
     return render(request, 'mcwebapp/search_templates.html', context_dict)
 #end
 
+@login_required
 def manage_templates(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
@@ -128,7 +131,7 @@ def manage_templates(request):
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
-
+@login_required
 @csrf_exempt
 def save_template(request):
     if request.method =="POST":
@@ -158,7 +161,7 @@ def save_template(request):
     return render(request,'mcwebapp/saveTemplate.html',{})
 
 
-
+@login_required
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
 @csrf_exempt
 def upload_pdf(request):
@@ -229,7 +232,7 @@ def upload_pdf(request):
     #if not a post visualise the template that is responsible for handeling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
 
-
+@login_required
 @csrf_exempt
 def get_pdf_info(request):
     if request.method =="GET":
