@@ -29,4 +29,5 @@ urlpatterns = [
 	    path('template_creator/',views.template_creator,name='template_creator'),
         path('template_editor/<str:temp_name>',views.template_editor,name='template_editor'),
 	    path('search_files/', views.search, name='search_files'),
+	    path('get_more_tables/', views.get_more_tables, name='get_more_tables'),
         ]
