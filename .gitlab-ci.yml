@@ -19,10 +19,10 @@ build:
     - python3 tests.py
     - cd ..
     - cd MCweb/MCwebDjango
-    - sudo python3 manage.py makemigrations
-    - sudo python3 manage.py migrate
+    - python3 manage.py makemigrations
+    - python3 manage.py migrate
     - sudo python3 populate.py
-    - sudo python3 manage.py test
+    - python3 manage.py test
     - cd ../..
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
