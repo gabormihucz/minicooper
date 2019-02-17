@@ -131,7 +131,7 @@ def manage_templates(request):
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
-@login_required
+
 @csrf_exempt
 def save_template(request):
     if request.method =="POST":
@@ -161,7 +161,7 @@ def save_template(request):
     return render(request,'mcwebapp/saveTemplate.html',{})
 
 
-@login_required
+
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
 @csrf_exempt
 def upload_pdf(request):
@@ -232,7 +232,7 @@ def upload_pdf(request):
     #if not a post visualise the template that is responsible for handeling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
 
-@login_required
+
 @csrf_exempt
 def get_pdf_info(request):
     if request.method =="GET":
