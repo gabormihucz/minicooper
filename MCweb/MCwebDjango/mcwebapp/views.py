@@ -174,7 +174,7 @@ def upload_pdf(request):
 
         name = data["filename"]
         upload_date = timezone.now()
-        
+
         # Look through all MatchPatterns
         for pattern in MatchPattern.objects.all():
             x = re.findall(pattern.regex, name)
@@ -182,9 +182,9 @@ def upload_pdf(request):
                 template = pattern.template      # get the associated template
                 print("I found a template for " + name)
                 break                            # leave the loop
-        
+
         # if no match was found, use the sample template
-        if not x:                                
+        if not x:
             template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
@@ -261,3 +261,11 @@ def template_manager_code_check(data):
         pattern.regex = data["regex"]
         pattern.template = template
         pattern.save()
+
+    elif data["code"] == "deleteTemplate":
+        template = TemplateFile.objects.get(id=data["template_id"])
+        pdfs = PDFFile.objects.filter(template = template)
+        for pdf in pdfs:
+            pdf.template=None
+            pdf.save()
+        template.delete()

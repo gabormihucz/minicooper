@@ -28,7 +28,7 @@
           <div class="card mt-3">
             <!-- BEGIN Card header -->
             <!-- REMEMBER to set the collapsable -->
-            <div class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}">
+            <div id = "Template_{{elem.id}}" class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}" style="display:""">
               <div class="row">
                 <div class="column ml-3 col-sm">
                   <small class="form-text text-muted">Template</small>
@@ -49,9 +49,9 @@
                 </div>
 
                 <!-- ATTACH function to redirect to template editor -->
-                <button type="button" class="btn btn-info ml-auto my-1">Edit Template</button>
+                <button id="EditTempBtn_{{elem.name}}" type="button" class="btn btn-info ml-auto my-1" onclick="editTemplate(id)">Edit Template</button>
                 <!-- ATTACH function to delete template -->
-                <button type="button" class="btn btn-danger ml-1 mr-3 my-1">Delete</button>
+                <button id="DelTempBtn_{{elem.id}}%split%{{elem.name}}{{elem.user.username}}" type="button" class="btn btn-danger ml-1 mr-3 my-1" style="display""" onclick="deleteTemplate(id)">Delete</button>
               </div>
 
               <!-- BEGIN Arrow Button -->
@@ -137,7 +137,6 @@
     }
 
    function deletePattern(id) {
-     alert("hello from del btn");
      var patternID= id.substr(7);
 
      // send a post request
@@ -219,6 +218,44 @@
 
       console.log("post_sent");
     }
-}
+  }
+  function deleteTemplate(id) {
+    var parameters= id.split("%split%");
+    var templateID = parameters[0].substr(11);
+    var rowIDHTML = parameters[1];
+
+    // send a post request
+    var message = {};
+    message["code"] = "deleteTemplate";
+    message["template_id"] = templateID;
+
+    var xhr = new XMLHttpRequest();
+    var url = "http://127.0.0.1:8000/template_manager/";
+
+    var response;
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            response = xhr.responseText;
+        }
+    }
+
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    // console.log(JSON.stringify(message));
+    xhr.send(JSON.stringify(message));
+    console.log("post_sent");
+
+    document.getElementById("Template_"+templateID).style.display = "none";
+    document.getElementById(rowIDHTML).style.display = "none";
+
+
+  }
+
+  function editTemplate(id){
+    var templateName = id.substr(12);
+    location.href = "http://127.0.0.1:8000/template_editor/"+templateName;
+  }
 </script>
 {% endblock %}
