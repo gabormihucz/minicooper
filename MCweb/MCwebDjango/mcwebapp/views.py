@@ -129,8 +129,6 @@ def manage_templates(request, temp_id=-9999):
     context_dict = paginate(templates, request)
     context_dict['patterns'] = patterns
     context_dict['unfolded_row'] = int(temp_id)
-    print(temp_id)
-    print("kasldhjhkjhjhjhjh")
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
@@ -274,4 +272,8 @@ def template_manager_code_check(data):
         for pdf in pdfs:
             pdf.template=None
             pdf.save()
+
+        patterns = MatchPattern.objects.filter(template=template)
+        for pattern in patterns:
+            pattern.delete()
         template.delete()
