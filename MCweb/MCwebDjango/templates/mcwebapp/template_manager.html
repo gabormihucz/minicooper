@@ -64,7 +64,11 @@
 
             <!-- BEGIN Card body -->
             <!-- REMEMBER to set the collapsable -->
-            <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse text-center py-0">
+            {% ifequal elem.id unfolded_row %}
+              <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse show text-center py-0">
+            {% else %}
+              <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse text-center py-0">
+            {% endifequal %}
               <!-- BEGIN List of patterns -->
               <ul class="list-group list-group-flush py-0 ">
                 <!-- LOOP Pattern list -->
@@ -199,14 +203,14 @@
       message["template_id"] = templateID;
 
       var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8000/template_manager/";
+      var url = "http://127.0.0.1:8000/template_manager/"+templateID;
 
       var response;
 
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
               response = xhr.responseText;
-              window.location.reload(true);
+              location.href = url;
           }
       }
 

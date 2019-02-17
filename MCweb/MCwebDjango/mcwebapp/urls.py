@@ -22,6 +22,7 @@ urlpatterns = [
         path('get_pdf_info/', views.get_pdf_info, name='getPDFInfo'),
         path('save_template/', views.save_template, name='saveTemplate'),
         path('search_files/', views.search, name='search'),
+        path('template_manager/<int:temp_id>', views.manage_templates,name='templateManager'),
         path('template_manager/', views.manage_templates,name='templateManager'),
         path('search_templates/', views.search_templates, name='searchTemplates'),
         path('accounts/', include('registration.backends.simple.urls')),

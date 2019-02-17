@@ -118,7 +118,7 @@ def search_templates(request):
 #end
 
 @login_required
-def manage_templates(request):
+def manage_templates(request, temp_id=-9999):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         template_manager_code_check(data)
@@ -128,6 +128,9 @@ def manage_templates(request):
 
     context_dict = paginate(templates, request)
     context_dict['patterns'] = patterns
+    context_dict['unfolded_row'] = int(temp_id)
+    print(temp_id)
+    print("kasldhjhkjhjhjhjh")
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
