@@ -28,6 +28,7 @@ build:
     - sudo rm -r venv/
     - zip -r deployment.zip ../dissertation
     - sudo git clean -ffxd
+    - sudo find . -type f -name '*.pyc' -delete
   artifacts:
     paths:
       - "*.pdf"
