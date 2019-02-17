@@ -31,6 +31,7 @@ build:
     - cd ~
     - cd ..
     - sudo find . -type f -name '*.pyc' -delete
+    - sudo rm -rf `find -type d -name __pycache__`
   artifacts:
     paths:
       - "*.pdf"
