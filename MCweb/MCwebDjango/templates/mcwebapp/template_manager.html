@@ -181,11 +181,11 @@ Search Results
       }
 
       if (selectedRegexLocationVal == 1) {
-        regex = "*" + regex;
+        regex = "^" + regex;
       } else if (selectedRegexLocationVal == 2) {
-        regex = regex + "*";
+        regex = regex + "$";
       } else if (selectedRegexLocationVal == 3) {
-        regex = "*" + regex + "*";
+        regex = regex;
       } else {
         alert("Wrong regex location has been selected, try again");
         error = true;
