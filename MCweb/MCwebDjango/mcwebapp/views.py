@@ -277,3 +277,10 @@ def template_manager_code_check(data):
         for pattern in patterns:
             pattern.delete()
         template.delete()
+        
+def json_popup(request, json_slug):
+    context_dict = {}
+    json = JSONFile.objects.get(slug = json_slug)
+    context_dict['json'] = json
+
+    return render(request, 'mcwebapp/json_popup.html', context_dict)
