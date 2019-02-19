@@ -7,6 +7,7 @@ import urllib.request, json, datetime, pytz, populate
 
 from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process, crop
+import post_to_server
 
 import os
 
@@ -159,6 +160,7 @@ class UploadPdfTest(TestCase):
 
     # check if the Pdf has been assigned the correct template
     def testPdfToTemplateMatching(self):
+        post_to_server.post("../media/pdfFiles/TestPDF.pdf")
         pdf = PDFFile.objects.get(name="testPdf")
         self.assertEqual(pdf.template.name, "SampleTemplate")
 
