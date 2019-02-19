@@ -198,15 +198,12 @@ class SearchTest(TestCase):
 
     def setUp(self):
         populate.populate()
-        self.credentials = {
-            'username': 'testuser',
-            'password': 'secret'}
-        User.objects.create_user(**self.credentials)
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user.save()
+        self.client.force_login(self.user)
 
     # test passes if the search page returns the status code 200
     def test_search_page_exists(self):
-        c = Client()
-        c.login(username='testuser', password='secret')
         files = JSONFile.objects.filter(name__icontains='File')[:10]
         url = reverse('search_files') + "?search-bar=File"
         response = self.client.get(url)
@@ -214,8 +211,6 @@ class SearchTest(TestCase):
 
     # test passes if search returns correct results
     def test_search_gives_correct_results(self):
-        c = Client()
-        c.login(username='testuser', password='secret')
         files = JSONFile.objects.filter(name__icontains='File')[:10]
         url = reverse('search_files') + "?search-bar=File"
         response = self.client.get(url)
