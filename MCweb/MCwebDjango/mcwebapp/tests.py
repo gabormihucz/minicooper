@@ -160,7 +160,8 @@ class UploadPdfTest(TestCase):
 
     # check if the Pdf has been assigned the correct template
     def testPdfToTemplateMatching(self):
-        post("/pdfs/testfile.pdf")
+        print(os.getcwd())
+        post("pdfs/testfile.pdf")
         pdf = PDFFile.objects.get(name="testfile")
         self.assertEqual(pdf.template.name, "SampleTemplate")
 
