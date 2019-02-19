@@ -31,4 +31,5 @@ urlpatterns = [
         path('template_editor/<str:temp_name>',views.template_editor,name='template_editor'),
 	    path('search_files/', views.search, name='search_files'),
         path('json/<slug:json_slug>/', views.json_popup, name='json_popup'),
+	    path('get_more_tables/', views.get_more_tables, name='get_more_tables'),
         ]

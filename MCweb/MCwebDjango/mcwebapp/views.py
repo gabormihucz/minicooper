@@ -44,14 +44,20 @@ def index(request):
     # superuser in case of no templates is redirected to the template creator page
     # otherwise return a view with the list of jsons paginated
 
+
     if not TemplateFile.objects.all() and request.user.is_superuser:
         return HttpResponseRedirect("/template_creator/")
 
     jsons = JSONFile.objects.all().order_by('-upload_date')
-    context_dict = paginate(jsons, request)
+    context_dict = {'elems':jsons}
 
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
+
+@login_required
+def get_more_tables(request):
+    jsons = JSONFile.objects.all().order_by('-upload_date')
+    return render(request, 'mcwebapp/get_more_tables.html', {'elems': jsons})
 
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
