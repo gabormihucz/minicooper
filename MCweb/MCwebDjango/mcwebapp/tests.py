@@ -159,10 +159,10 @@ class UploadPdfTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     # check if the Pdf has been assigned the correct template
-    def testPdfToTemplateMatching(self):
-        post("mcwebapp/pdfs/testfile.pdf")
-        pdf = PDFFile.objects.get(name="testfile")
-        self.assertEqual(pdf.template.name, "SampleTemplate")
+    #def testPdfToTemplateMatching(self):
+    #    post("mcwebapp/pdfs/testfile.pdf")
+    #    pdf = PDFFile.objects.get(name="testfile")
+    #    self.assertEqual(pdf.template.name, "SampleTemplate")
 
 
 
