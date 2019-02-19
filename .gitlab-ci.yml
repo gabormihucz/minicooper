@@ -21,7 +21,7 @@ build:
     - cd MCweb/MCwebDjango
     - python3 manage.py makemigrations
     - python3 manage.py migrate
-    #- sudo python3 populate.py
+    - sudo python3 populate.py
     - python3 manage.py test
     - cd ../..
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
