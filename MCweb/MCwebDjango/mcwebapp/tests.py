@@ -119,8 +119,9 @@ class SaveTemplateTest(TestCase):
         User.objects.create_user(**self.credentials)
 
     def testPost(self):
-        c = Client()
+        
         body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
+        c = Client()
         c.login(username='testuser', password='secret')
         response = c.post('/save_template/',body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8'),"Post request parsed succesfully")
@@ -151,6 +152,8 @@ class UploadPdfTest(TestCase):
         self.assertEqual(response.content.decode('utf-8'),"Pdf sent over post seems to be corrupted")
 
     def testVisit(self):
+        c = Client()
+        c.login(username='testuser', password='secret')
         response = self.client.get('/upload_pdf/')
         self.assertEqual(response.status_code, 200)
 
@@ -202,6 +205,8 @@ class SearchTest(TestCase):
 
     # test passes if the search page returns the status code 200
     def test_search_page_exists(self):
+        c = Client()
+        c.login(username='testuser', password='secret')
         files = JSONFile.objects.filter(name__icontains='File')[:10]
         url = reverse('search_files') + "?search-bar=File"
         response = self.client.get(url)
@@ -209,6 +214,8 @@ class SearchTest(TestCase):
 
     # test passes if search returns correct results
     def test_search_gives_correct_results(self):
+        c = Client()
+        c.login(username='testuser', password='secret')
         files = JSONFile.objects.filter(name__icontains='File')[:10]
         url = reverse('search_files') + "?search-bar=File"
         response = self.client.get(url)
