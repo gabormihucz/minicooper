@@ -7,7 +7,7 @@ import urllib.request, json, datetime, pytz, populate
 
 from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process, crop
-from post_to_server import post
+import post_to_server
 
 import os
 
