@@ -12,7 +12,7 @@ Gabor Mihucz (2239495m@student.gla.ac.uk)
    * Iteration 2: wiki, CI, gitlab organisation, customer communication, notetaking  
    * Iteration 3: file watching, signup/login functionality, PythonAnywhere hosting, gitlab organisation, customer communication  
    * Iteration 4: results page, search function, error checking in signup/login, coverage testing, mutation testing, customer communication  
-   * Iteration 5: 
+   * Iteration 5: user guide, CI/CD, AJAX  
 
 Nestoras Skiadas (2258257s@student.gla.ac.uk)  
  * Responsibilites:  

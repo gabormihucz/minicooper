@@ -2,68 +2,261 @@
 {%load staticfiles%}
 {% block css_block %}{% endblock %}
 
-{% block body_block %}
-    <div class="container">
-        <h2>Template Manager</h2>
-        <!-- create table and loop through all jsons to fill it in according to needed data -->
-
-            <form class="form-inline my-2 my-lg-0" action="{% url 'searchTemplates' %}" method="get">
-                <div class="input-group">
-                    <input required name="search-bar" type="text" class="form-control"
-                           placeholder="Search for templates">
-
-                </div>
-            </form>
-
-
-        {% if elems %}
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Template</th>
-                    <th>Upload Date</th>
-                    <th>User</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {% for elem in elems %}
-                    <tr>
-                        <td><a href="{{ elem.file_name.url }}">{{elem.name}}</a></td>
-                        <td>{{ elem.upload_date }}</td>
-                        <td>{{ elem.user.username  }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <!-- paginator business -->
-            {% if elems.has_other_pages %}
-                <ul class="pagination">
-                    {% if elems.has_previous %}
-                        <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&laquo;</span></li>
-                    {% endif %}
-                    {% for i in elems.paginator.page_range %}
-                        {% if elems.number == i %}
-                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-                        {% else %}
-                            <li><a href="?page={{ i }}">{{ i }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if elems.has_next %}
-                        <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
-                    {% else %}
-                        <li class="disabled"><span>&raquo;</span></li>
-                    {% endif %}
-                </ul>
-            {% endif %}
-        {% else %}
-            You are out of luck! There is no data to display! <br/>
-
-
-        {% endif %}
-    </div>
+{% block title_block %}
+Search Results
 {% endblock %}
+{% block body_block %}
 
-{% block script_block %}{% endblock %}
+<div class="container">
+  <h2>Template Manager</h2>
+  <!-- create table and loop through all jsons to fill it in according to needed data -->
+
+  <form class="form-inline my-2 my-lg-0" action="{% url 'searchTemplates' %}" method="get">
+    <div class="input-group">
+      <input required name="search-bar" type="text" class="form-control" placeholder="Search for templates">
+
+    </div>
+  </form>
+
+  {% if elems %}
+  {% for elem in elems %}
+  <!-- DIV to center cards -->
+  <div class="mx-auto col-ml-10">
+    <!-- Example Card -->
+    <!-- LOOP this -->
+    <div class="card mt-3">
+      <!-- BEGIN Card header -->
+      <!-- REMEMBER to set the collapsable -->
+      <div id="Template_{{elem.id}}" class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}" style="display:""">
+        <div class="row">
+          <div class="column ml-3 col-sm">
+            <small class="form-text text-muted">Template</small>
+            <!-- INSERT Template name here -->
+            <h5 class="card-title">{{elem.name}}</h5>
+          </div>
+
+          <div class="column ml-auto col-sm">
+            <small class="form-text text-muted">User</small>
+            <!-- INSERT User name here -->
+            <h5 class="card-title">{{elem.user.username}}</h5>
+          </div>
+
+          <div class="column ml-auto col-sm">
+            <!-- INSERT Upload date and time here -->
+            <small class="form-text text-muted">Upload Date</small>
+            <h5 class="card-title">{{ elem.upload_date }}</h5>
+          </div>
+
+          <!-- ATTACH function to redirect to template editor -->
+          <button id="EditTempBtn_{{elem.name}}" type="button" class="btn btn-info ml-auto my-1" onclick="editTemplate(id)">Edit Template</button>
+          <!-- ATTACH function to delete template -->
+          <button id="DelTempBtn_{{elem.id}}%split%{{elem.name}}{{elem.user.username}}" type="button" class="btn btn-danger ml-1 mr-3 my-1" style="display""" onclick="deleteTemplate(id)">Delete</button>
+        </div>
+
+        <!-- BEGIN Arrow Button -->
+        <div class="mx-auto text-center my-0 py-0">
+          <i class="fa fa-angle-double-down mx-auto" style="font-size:18px"></i>
+        </div>
+        <!-- END Arrow Button -->
+      </div>
+      <!-- END Card header -->
+
+      <!-- BEGIN Card body -->
+      <!-- REMEMBER to set the collapsable -->
+      {% ifequal elem.id unfolded_row %}
+      <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse show text-center py-0">
+        {% else %}
+        <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse text-center py-0">
+          {% endifequal %}
+          <!-- BEGIN List of patterns -->
+          <ul class="list-group list-group-flush py-0 ">
+            <!-- LOOP Pattern list -->
+
+            {% for pattern in patterns %}
+            {% ifequal pattern.template elem %}
+            <li class="list-group-item">
+              <div id="Pattern_{{pattern.id}}" class="row ml-4" style="display:""">
+                <!-- ATTACH Event to span buttons -->
+                <span id="DelBtn_{{pattern.id}}" class="btn btn-xs btn-default py-0" style="background-color:red;
+                      color: white; font-weight: bold;" onclick="deletePattern(id)"> x </span>
+                <!-- INSERT Pattern regex -->
+                <p class="mb-0 ml-4 mt-1">{{pattern.regex}}</p>
+              </div>
+            </li>
+            <!-- END LOOP HERE -->
+            {% endifequal %}
+            {% endfor %}
+            <!-- BEGIN Last list item (Adding new pattern field) -->
+            <li class="list-group-item">
+              <div class="row ml-4">
+                <!-- ATTACH Event/function to drop down -->
+                <select id="RegexLoc_{{elem.id}}" class="form-control col-sm-2">
+                  <option value="1">Starts With</option>
+                  <option value="2">Ends With</option>
+                  <option value="3">Contains</option>
+                </select>
+
+                <!-- TEXT FIELD for pattern name -->
+                <input class="form-control col-sm-3 ml-2" type="text" id="AddRegex_{{elem.id}}" placeholder="Pattern" value="">
+
+                <!-- Add pattern button -->
+                <span id="AddBtn_{{elem.id}}" class="btn btn-dark btn-xs btn-default ml-2" style="
+                      color: white; font-weight: bold;" onclick="addPattern(id)"> Add Pattern </span>
+              </div>
+            </li>
+            <!-- END Last list item (Adding new pattern field) -->
+          </ul>
+          <!-- END List of patterns (and pattern adding) -->
+        </div>
+        <!-- END Card body -->
+      </div>
+      <!--END Example Card -->
+    </div>
+    {% endfor %}
+    {% else %}
+    You are out of luck! There is no data to display! <br />
+
+    {% endif %}
+  </div>
+  {% endblock %}
+
+  {% block script_block %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script>
+    function getCookie(c_name) {
+      if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+          c_start = c_start + c_name.length + 1;
+          c_end = document.cookie.indexOf(";", c_start);
+          if (c_end == -1) c_end = document.cookie.length;
+          return unescape(document.cookie.substring(c_start, c_end));
+        }
+      }
+      return "";
+    }
+
+    function deletePattern(id) {
+      var patternID = id.substr(7);
+
+      // send a post request
+      var message = {};
+      message["code"] = "deletePattern";
+      message["pattern_id"] = patternID;
+
+      var xhr = new XMLHttpRequest();
+      var url = "http://127.0.0.1:8000/template_manager/";
+
+      var response;
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          response = xhr.responseText;
+        }
+      }
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      // console.log(JSON.stringify(message));
+      xhr.send(JSON.stringify(message));
+      console.log("post_sent");
+
+      document.getElementById("Pattern_" + patternID).style.display = "none";
+    }
+
+
+    function addPattern(id) {
+      var templateID = id.substr(7);
+      var regex = document.getElementById("AddRegex_" + templateID).value;
+      // alert(regex);
+      var regexLocationSelect = document.getElementById("RegexLoc_" + templateID);
+      var selectedRegexLocationVal = regexLocationSelect.options[regexLocationSelect.selectedIndex].value;
+
+      var error = false;
+
+      if (regex == "") {
+        alert("Define the regex");
+        error = true;
+      }
+
+      if (selectedRegexLocationVal == 1) {
+        regex = "^" + regex;
+      } else if (selectedRegexLocationVal == 2) {
+        regex = regex + "$";
+      } else if (selectedRegexLocationVal == 3) {
+        regex = regex;
+      } else {
+        alert("Wrong regex location has been selected, try again");
+        error = true;
+      }
+
+      // send a post request
+      if (error == false) {
+        var message = {};
+        message["code"] = "addPattern";
+        message["regex"] = regex;
+        message["template_id"] = templateID;
+
+        var xhr = new XMLHttpRequest();
+        var url = "http://127.0.0.1:8000/template_manager/" + templateID;
+
+        var response;
+
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == XMLHttpRequest.DONE) {
+            response = xhr.responseText;
+            location.href = url;
+          }
+        }
+
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+        xhr.send(JSON.stringify(message));
+        // console.log(JSON.stringify(message));
+
+        console.log("post_sent");
+      }
+    }
+
+    function deleteTemplate(id) {
+      var parameters = id.split("%split%");
+      var templateID = parameters[0].substr(11);
+      var rowIDHTML = parameters[1];
+
+      // send a post request
+      var message = {};
+      message["code"] = "deleteTemplate";
+      message["template_id"] = templateID;
+
+      var xhr = new XMLHttpRequest();
+      var url = "http://127.0.0.1:8000/template_manager/";
+
+      var response;
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          response = xhr.responseText;
+        }
+      }
+
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+      // console.log(JSON.stringify(message));
+      xhr.send(JSON.stringify(message));
+      console.log("post_sent");
+
+      document.getElementById("Template_" + templateID).style.display = "none";
+      document.getElementById(rowIDHTML).style.display = "none";
+
+
+    }
+
+    function editTemplate(id) {
+      var templateName = id.substr(12);
+      location.href = "http://127.0.0.1:8000/template_editor/" + templateName;
+    }
+  </script>
+  {% endblock %}

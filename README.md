@@ -17,5 +17,12 @@ To login as a superuser:
 username: superuser  
 password: superpass  
 
+
+In order to start the file watching, go to the MCapp folder and execute
+
+`python3 filewatcher.py`
+
+You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
+
 For further instructions on what you can do on the website, please refer to README.txt
 

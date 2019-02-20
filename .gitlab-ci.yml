@@ -4,11 +4,13 @@ build:
     - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
-    - sudo apt-get update
-    - sudo apt update
+    - sudo apt-get update -qy
+    - sudo apt-get upgrade -y
+    - sudo apt-get autoremove -y
     - sudo apt -y install tesseract-ocr
     - sudo apt -y install libtesseract-dev
     - sudo apt -y install zip
+
   script:
     - pip3 install -r dependencies.txt
     - pip3 install -U numpy
@@ -16,10 +18,12 @@ build:
     - cd MCapp
     - python3 tests.py
     - cd ..
-    - python3 MCweb/MCwebDjango/manage.py makemigrations
-    - python3 MCweb/MCwebDjango/manage.py migrate
-    - python3 MCweb/MCwebDjango/populate.py
-    - python3 MCweb/MCwebDjango/manage.py test
+    - cd MCweb/MCwebDjango
+    - python3 manage.py makemigrations
+    - python3 manage.py migrate
+    - sudo python3 populate.py
+    - python3 manage.py test
+    - cd ../..
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - zip -r deployment.zip ../dissertation

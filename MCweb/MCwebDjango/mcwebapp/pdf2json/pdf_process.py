@@ -5,6 +5,21 @@ import json
 from mcwebapp.pdf2json import crop
 from mcwebapp.pdf2json import simpleOCR
 
+def write_output_recur(output_path, pdf_name, textOutput, iter = 0):
+    try:
+        with open(output_path + pdf_name + "(" + str(2+iter) + ").json","x") as f:
+            f.write(textOutput)
+        return iter + 2
+    except:
+        return write_output_recur(output_path, pdf_name, textOutput, iter+1)
+
+def write_output(output_path, pdf_name, textOutput):
+    try:
+        with open(output_path + pdf_name + ".json","x") as f:
+            f.write(textOutput)
+        return 1
+    except:
+        return write_output_recur(output_path, pdf_name, textOutput)
 
 def pdf_proccess(template_name, template_path,  pdf_name, input_path, output_path):
     chosenTemplate = crop.load_template_json(template_name, template_path)
@@ -27,7 +42,8 @@ def pdf_proccess(template_name, template_path,  pdf_name, input_path, output_pat
 
     textOutput = json.dumps(textOutput, ensure_ascii=False)
 
-    with open(output_path + pdf_name + ".json","w") as f:
-        f.write(textOutput)
+    copies = write_output(output_path, pdf_name, textOutput)
 
-    return mandatory_field_fulfilled
+    return_dict = {"copies": copies, "mand_filled": mandatory_field_fulfilled}
+
+    return return_dict
