@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.template.defaultfilters import slugify
 
 
 class UserProfile(models.Model):
@@ -40,14 +41,19 @@ class JSONFile(models.Model):
     pdf = models.OneToOneField(PDFFile, on_delete=models.PROTECT, null=True)
     mandatory_fulfilled = models.BooleanField(null=True)
     status_string = models.CharField(max_length=4, default='Pass')
+    slug = models.SlugField(null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(JSONFile, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class MatchPattern(models.Model):
-    name = models.CharField(max_length=30)
     regex = models.CharField(max_length=60, null=True)
     template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
 
     def __str__(self):
-        return self.name
+        return self.regex

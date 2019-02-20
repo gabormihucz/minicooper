@@ -1,3 +1,6 @@
+try{
+  var originalTempName = document.getElementById("tempName").value;
+}catch{}
 var pdf_canvas = $("#pdf-canvas")[0];
 var drawing_canvas = $("#drawing-canvas")[0];
 var drawable = drawing_canvas.getContext('2d');
@@ -199,87 +202,11 @@ $('#upload-btn').on('click', function() {
     $('#file-input').trigger('click');
 });
 
-/*
-  Converts the temporary JSON to our template format and
-  provide error message appropriately
-*/
-$("#save-button").on('click',function(){
-  //Check if template is given a name
-  if ($("#template-name-label").val() == ""){
-    alert("Please input template name");
-    $("#template-name-label").focus();
-  }else{
-    //Then check if template has content
-    if (Object.keys(rectangles).length === 0){
-      alert("The template is empty, please create some boxes");
-    }else{
-
-      var result = {};
-      var boxes = {};
-      var name;
-      var mandatory;
-      var temp_rect;
-      var x1;
-      var y1;
-      var x2;
-      var y2;
-
-      result["template_name"] = $("#template-name-label").val();
-      //Convert temp JSON to template JSON format
-      for (var key in rectangles) {
-        name = rectangles[key]["name"];
-        mandatory = rectangles[key]["mandatory"];
-        temp_rect = rectangles[key]["object"];
-        x1 = temp_rect.bounds.topLeft._x;
-        y1 = temp_rect.bounds.topLeft._y;
-        x2 = temp_rect.bounds.bottomRight._x;
-        y2 = temp_rect.bounds.bottomRight._y;
-        boxes[name] = {};
-        boxes[name]["x1"] = x1;
-        boxes[name]["y1"] = y1;
-        boxes[name]["x2"] = x2;
-        boxes[name]["y2"] = y2;
-        boxes[name]["mandatory"] = mandatory;
-      }
-      boxes["size"] = {};
-      boxes["size"]["x"] = bounds.right - bounds.left
-      boxes["size"]["y"] = bounds.bottom - bounds.top
-      result['rectangles'] = boxes;
-
-      console.log(result);
-      // Sending and receiving data in JSON format using POST method
-      var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8000/save_template/";
-
-      var response ;
-      xhr.onreadystatechange = function() {
-          if (xhr.readyState == XMLHttpRequest.DONE) {
-              response = xhr.responseText;
-              console.log(response)
-              console.log(xhr.responseText)
-              if(response == "Post request parsed succesfully"){
-                alert("Template saved succesfully")
-              }else{
-                alert("Something went wrong, try again")
-              }
-          }
-      }
-
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify(result));
-      console.log("post_sent");
-    }
-  }
-});
-
-
-
 $( document ).ready(function() {
     $("#box-label").val("");
     $("#draw-btn").prop('disabled',true);
     disable_side_bar(true);
-    $("#template-name-label").val("");
+    $("#template-name-label").val(originalTempName);
     $("#x1-label").val("");
     $("#y1-label").val("");
     $("#x2-label").val("");
@@ -340,6 +267,7 @@ function disable_side_bar(state){
 }
 
 function resize_current_rectangle(rectangle){
+  //Check if any resizing field is empty, if it is not then reassign bounds for rectangle
   var coordinateArray = [$("#x1-label").val(),$("#y1-label").val(),$("#x2-label").val(),$("#y2-label").val()];
   var emptyfound = false;
   for (var i = 0; i < coordinateArray.length; i++){
@@ -365,4 +293,33 @@ function display_coordinates(rectangle){
   $("#y1-label").val(rectangle.bounds.topLeft._y.toFixed(0));
   $("#x2-label").val(rectangle.bounds.bottomRight._x.toFixed(0));
   $("#y2-label").val(rectangle.bounds.bottomRight._y.toFixed(0));
+}
+
+//Convert temp json object into a template object
+function convert_to_save_format(temp_json_object){
+  var result = {};
+  var boxes = {};
+  var name;
+  var mandatory;
+  var temp_rect;
+
+  result["template_name"] = $("#template-name-label").val();
+  //Convert temp JSON to template JSON format
+  for (var key in temp_json_object) {
+    name = temp_json_object[key]["name"];
+    mandatory = temp_json_object[key]["mandatory"];
+    temp_rect = temp_json_object[key]["object"];
+    boxes[name] = {};
+    boxes[name]["x1"] = temp_rect.bounds.topLeft._x;
+    boxes[name]["y1"] = temp_rect.bounds.topLeft._y;
+    boxes[name]["x2"] = temp_rect.bounds.bottomRight._x;
+    boxes[name]["y2"] = temp_rect.bounds.bottomRight._y;
+    boxes[name]["mandatory"] = mandatory;
+  }
+  boxes["size"] = {};
+  boxes["size"]["x"] = bounds.right - bounds.left
+  boxes["size"]["y"] = bounds.bottom - bounds.top
+  result['rectangles'] = boxes;
+
+  return result;
 }

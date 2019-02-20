@@ -7,13 +7,8 @@
 {% block body_block %}
 
 <div class="container-fluid mt-3 ml-4">
-  <h1 class="ml-3">Template Creator</h1>
-  {% if JSON %}
-  <p>{{JSON.file}}</p>
-  <p>here</p>
-  {% else %}
-  <p>no</p>
-  {% endif %}
+  <h1 class="ml-3">Template Editor</h1>
+
   <!-- Container for template name input -->
   <div class="row mx-auto justify-content-md-center mb-3">
     <label class="mt-1">Template Name:</label>
@@ -98,6 +93,8 @@
 </div>
 <!-- <input type="hidden" id="tempDict" name="tempDict" value="{{ JSON }}"> -->
 <input type="hidden" id="coordinates" name="coordinates" value="{{ JSON.file }}">
+<input type="hidden" id="tempName" name="tempName" value="{{ JSON.name }}">
+<input type="hidden" id="tempID" name="tempID" value="{{ JSON.id }}">
 {% endblock %}
 
 {% block script_block %}
