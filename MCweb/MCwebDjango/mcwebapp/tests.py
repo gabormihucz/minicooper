@@ -119,11 +119,11 @@ class SaveTemplateTest(TestCase):
             'password': 'secret'}
         User.objects.create_user(**self.credentials)
 
+
     def testPost(self):
-        
-        body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
         c = Client()
         c.login(username='testuser', password='secret')
+        body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
         response = c.post('/save_template/',body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8'),"Post request parsed succesfully")
 
@@ -163,35 +163,6 @@ class UploadPdfTest(TestCase):
     #    post("mcwebapp/pdfs/testfile.pdf")
     #    pdf = PDFFile.objects.get(name="testfile")
     #    self.assertEqual(pdf.template.name, "SampleTemplate")
-
-
-
-class GetPdfInfoTest(TestCase):
-
-    def setUp(self):
-        self.credentials = {
-            'username': 'testuser',
-            'password': 'secret'}
-        User.objects.create_user(**self.credentials)
-        TemplateFile.objects.create(name="testTemp",upload_date=timezone.now(),
-                                    user=User.objects.get(username = 'testuser'))
-        PDFFile.objects.create(name="testPdf",upload_date=timezone.now(),
-                                template=TemplateFile.objects.get(name='testTemp'))
-
-    def testGetExistingFile(self):
-        c = Client()
-        response = c.get("/get_pdf_info/?file_name=testPdf")
-        self.assertEqual(response.content.decode('utf-8'),"File exist")
-
-    def testGetNotExistingFile(self):
-        c = Client()
-        response = c.get("/get_pdf_info/?file_name=notFileLikeThis123456")
-        self.assertEqual(response.content.decode('utf-8'),"File not stored on the server")
-
-    def testVisit(self):
-        response = self.client.get('/get_pdf_info/')
-        # print(response.status_code)
-        self.assertEqual(response.status_code, 200)
 
 
 # this test requires populating the database
