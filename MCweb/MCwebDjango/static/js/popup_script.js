@@ -4,7 +4,6 @@ var matchClass=['popup'];
 var popup = 'width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20';
 
 function eventHandler() {
-  //var popupSpecs = 'width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20'
   var popupSpecs = matchClass[0]
   //Create a "unique" name for the window using a random number
   var popurl = this.href;
