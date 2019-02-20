@@ -274,14 +274,6 @@ def template_manager_code_check(data):
 
     elif data["code"] == "deleteTemplate":
         template = TemplateFile.objects.get(id=data["template_id"])
-        pdfs = PDFFile.objects.filter(template = template)
-        for pdf in pdfs:
-            pdf.template=None
-            pdf.save()
-
-        patterns = MatchPattern.objects.filter(template=template)
-        for pattern in patterns:
-            pattern.delete()
         template.delete()
         
 def json_popup(request, json_slug):

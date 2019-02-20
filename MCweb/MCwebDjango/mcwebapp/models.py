@@ -28,7 +28,7 @@ class PDFFile(models.Model):
     name = models.CharField(max_length = 200)
     upload_date = models.DateTimeField('date uploaded', null=True)
     file_name = models.FileField(upload_to='pdfFiles/', null=True)
-    template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
+    template = models.ForeignKey(TemplateFile, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -53,7 +53,8 @@ class JSONFile(models.Model):
 
 class MatchPattern(models.Model):
     regex = models.CharField(max_length=60, null=True)
-    template = models.ForeignKey(TemplateFile, on_delete=models.PROTECT, null=True)
+    # if a template is deleted, delete all its match patterns too
+    template = models.ForeignKey(TemplateFile, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.regex
