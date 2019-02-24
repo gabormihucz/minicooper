@@ -138,11 +138,9 @@ def save_template(request):
             template.file_name.name = "templateFiles/"+data["template_name"]+".json"
             template.user = request.user
             template.save()
-            return HttpResponse("Post request parsed succesfully")
-            #start
+            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
         except:
             return HttpResponse("Template coudn't be save")
-            #end
     return render(request,'mcwebapp/saveTemplate.html',{})
 
 
