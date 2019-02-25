@@ -114,59 +114,12 @@ $( "#file-input" ).change(function() {
             //Translate template back into temporary JSON
             for (var key in coordinates){
               var values = coordinates[key];
-              var rectangle = new paper.Path.Rectangle(parseInt(values['x1']),
+              new_box_element(parseInt(values['x1']),
                 parseInt(values['y1']),
                 parseInt(values['x2']) - parseInt(values['x1']),
-                parseInt(values['y2']) - parseInt(values['y1']));
-              var rectangle_name = "rect"+ rectangle_counter.toString();
-
-              rectangle.name = rectangle_name;
-              rectangle_counter++;
-
-              rectangle.strokeColor = "blue";
-              rectangle.fillColor = "blue";
-              rectangle.fillColor.alpha = 0.25;
-
-              current_rectangle = rectangle;
-              select_rectangle(current_rectangle);
-
-              rectangles[rectangle_name]={};
-              proposed_default_name = key;
-              rectangles[rectangle_name]["name"] = proposed_default_name;
-
-              rectangles[rectangle_name]["mandatory"] = values['mandatory'];
-              rectangles[rectangle_name]["object"] = rectangle;
-
-              //Re-assign events to rectangles
-              rectangle.onClick = function(e){
-                current_rectangle = this;
-                select_rectangle(current_rectangle);
-                $("#box-label").val(rectangles[current_rectangle.name]["name"]);
-                if (rectangles[current_rectangle.name]["mandatory"]){
-                  $("#mandatory-radio").prop("checked", true);
-                }else{
-                  $("#optional-radio").prop("checked", true);
-                }
-                display_coordinates(current_rectangle);
-                disable_side_bar(false);
-
-              }
-              //Drag to move the rectangle around
-              rectangle.onMouseDrag = function(e){
-                this.position = e.point;
-                display_coordinates(this);
-              }
-
-              //Update sidebar on creation of the rectangle
-              $("#box-label").val(rectangles[current_rectangle.name]["name"]);
-              if (rectangles[current_rectangle.name]["mandatory"]){
-                $("#mandatory-radio").prop("checked", true);
-              }else{
-                $("#optional-radio").prop("checked", true);
-              }
-
-              display_coordinates(current_rectangle);
-              disable_side_bar(false);
+                parseInt(values['y2']) - parseInt(values['y1']),
+                key,values['mandatory']
+              );
             }
           });
         }
