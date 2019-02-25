@@ -1,6 +1,3 @@
-try{
-  var originalTempName = document.getElementById("tempName").value;
-}catch{}
 var pdf_canvas = $("#pdf-canvas")[0];
 var drawing_canvas = $("#drawing-canvas")[0];
 var drawable = drawing_canvas.getContext('2d');
@@ -64,68 +61,15 @@ $(drawing_canvas).on('mouseup', function(e) {
     width = mousex-last_mousex;
     height = mousey-last_mousey;
 
-    //Create rectangle with provided Xs and Ys, set up coloring for rectangle
-    var rectangle = new paper.Path.Rectangle(last_mousex, last_mousey, width, height);
-    var rectangle_name = "rect"+ rectangle_counter.toString();
-
-    rectangle.name = rectangle_name;
-    rectangle_counter++;
-
-    rectangle.strokeColor = "blue";
-    rectangle.fillColor = "blue";
-    rectangle.fillColor.alpha = 0.25;
-
-    //Set the current rectangle to the newly created rectangle and select it
-    current_rectangle = rectangle;
-    select_rectangle(current_rectangle);
-
-    /*
-      Update temporary JSON with rectangle name as key and a dictionary
-      Containing name, mandatory status and its rectangle object as value
-    */
-
-    rectangles[rectangle_name]={};
-    //Choose suitable default name for box to avoid conflict in temp JSON
+    //Pick a suitable default name
     var proposed_default_name = "default" + name_counter.toString();
     while(check_box_label_exist(proposed_default_name,rectangles)){
       name_counter++;
       proposed_default_name = "default" + name_counter.toString();
     }
-    rectangles[rectangle_name]["name"] = proposed_default_name;
-    name_counter++;
-    rectangles[rectangle_name]["mandatory"] = true;
-    rectangles[rectangle_name]["object"] = rectangle;
 
-    /*
-      Attach event to rectangle, on click will select and
-      set the current rectangle to this
-      and display its properties on the side bar to be edited
-    */
-    rectangle.onClick = function(e){
-      current_rectangle = this;
-      select_rectangle(current_rectangle);
-      $("#box-label").val(rectangles[current_rectangle.name]["name"]);
-      if (rectangles[current_rectangle.name]["mandatory"]){
-        $("#mandatory-radio").prop("checked", true);
-      }else{
-        $("#optional-radio").prop("checked", true);
-      }
-      display_coordinates(current_rectangle);
-      disable_side_bar(false);
-    }
-
-    //Drag to move the rectangle around
-    rectangle.onMouseDrag = function(e){
-      rectangle.position = e.point;
-      display_coordinates(this);
-    }
-
-    //Update sidebar on creation of the rectangle
-    $("#box-label").val(rectangles[rectangle_name]["name"]);
-
-    $("#mandatory-radio").prop("checked", true);
-    display_coordinates(current_rectangle);
-    disable_side_bar(false);
+    //Create a new rectangle object, and populate the temporary json
+    new_box_element(last_mousex, last_mousey, width, height, proposed_default_name, true);
 
     //Stop drawing, reset draw button
     drawing = false;
@@ -206,14 +150,16 @@ $( document ).ready(function() {
     $("#box-label").val("");
     $("#draw-btn").prop('disabled',true);
     disable_side_bar(true);
-    $("#template-name-label").val(originalTempName);
+    $("#template-name-label").val("");
     $("#x1-label").val("");
     $("#y1-label").val("");
     $("#x2-label").val("");
     $("#y2-label").val("");
 });
 
-//Additional helper functions
+//---------------------------------------HELPER FUNCTIONS---------------------------
+
+//Given a box label name, check if it exists in the temporary json
 function check_box_label_exist(boxLabel, rectangle_JSON){
   var duplicate_name_flag = false;
 
@@ -322,4 +268,65 @@ function convert_to_save_format(temp_json_object){
   result['rectangles'] = boxes;
 
   return result;
+}
+
+//This method will create a new rectangle while populating the temporary json
+function new_box_element(x,y,width,height,name,mandatory_status){
+  var rectangle = new paper.Path.Rectangle(x, y, width, height);
+  var rectangle_name = "rect"+ rectangle_counter.toString();
+
+  rectangle.name = rectangle_name;
+  rectangle_counter++;
+
+  rectangle.strokeColor = "blue";
+  rectangle.fillColor = "blue";
+  rectangle.fillColor.alpha = 0.25;
+
+  //Set the current rectangle to the newly created rectangle and select it
+  current_rectangle = rectangle;
+  select_rectangle(current_rectangle);
+
+  /*
+    Update temporary JSON with rectangle name as key and a dictionary
+    Containing name, mandatory status and its rectangle object as value
+  */
+
+  rectangles[rectangle_name]={};
+  //Choose suitable default name for box to avoid conflict in temp JSON
+
+  rectangles[rectangle_name]["name"] = name;
+  name_counter++;
+  rectangles[rectangle_name]["mandatory"] = mandatory_status;
+  rectangles[rectangle_name]["object"] = rectangle;
+
+  /*
+    Attach event to rectangle, on click will select and
+    set the current rectangle to this
+    and display its properties on the side bar to be edited
+  */
+  rectangle.onClick = function(e){
+    current_rectangle = this;
+    select_rectangle(current_rectangle);
+    $("#box-label").val(rectangles[current_rectangle.name]["name"]);
+    if (rectangles[current_rectangle.name]["mandatory"]){
+      $("#mandatory-radio").prop("checked", true);
+    }else{
+      $("#optional-radio").prop("checked", true);
+    }
+    display_coordinates(current_rectangle);
+    disable_side_bar(false);
+  }
+
+  //Drag to move the rectangle around
+  rectangle.onMouseDrag = function(e){
+    rectangle.position = e.point;
+    display_coordinates(this);
+  }
+
+  //Update sidebar on creation of the rectangle
+  $("#box-label").val(rectangles[rectangle_name]["name"]);
+
+  $("#mandatory-radio").prop("checked", true);
+  display_coordinates(current_rectangle);
+  disable_side_bar(false);
 }
