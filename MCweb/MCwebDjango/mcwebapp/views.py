@@ -57,7 +57,7 @@ def template_creator(request):
     return render(request,'mcwebapp/template_creator.html',{})
 
 @login_required
-def template_editor(request, temp_name):
+def template_editor(request, temp_id=-1):
     #if uuser overwrites a template, it reads the request as a post, removes the old json representing old template,
     # create a new one and update the fields of an old template
     if request.method == "POST":
@@ -73,7 +73,7 @@ def template_editor(request, temp_name):
         return HttpResponse("http://127.0.0.1:8000/template_manager/")
     #Trying to preload a template so that it's fields can be seen by editor_script.js
     try:
-        temp = TemplateFile.objects.get(name=temp_name)
+        temp = TemplateFile.objects.get(id=temp_id)
         with open("media/"+str(temp.file_name),"r") as t:
             file = t.read()
         tempDictJSON = {"id":temp.id,"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}

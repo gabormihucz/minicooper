@@ -268,14 +268,15 @@ class TemplateEditorTest(TestCase):
         # test is checking if context_dictionary sent later to view was loaded correctly
         c = Client()
         c.login(username='testuser', password='secret')
-        response = c.get('/template_editor/SampleTemplate', follow=True)
+        template = TemplateFile.objects.get(name="SampleTemplate")
+        response = c.get('/template_editor/'+str(template.id), follow=True)
         self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
 
     def test_template_editor_with_non_existent_template(self):
         # test checks if asking for a non-existent template returns correct HttpResponse
         c = Client()
         c.login(username='testuser', password='secret')
-        response = c.get('/template_editor/TemplateWhichDefinetelyNotExist', follow=True)
+        response = c.get('/template_editor/999999999999999999999999999999999999', follow=True)
         self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
 
 

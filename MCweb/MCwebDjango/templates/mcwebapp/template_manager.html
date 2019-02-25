@@ -48,7 +48,7 @@ Search Results
           </div>
 
           <!-- ATTACH function to redirect to template editor -->
-          <button id="EditTempBtn_{{elem.name}}" type="button" class="btn btn-info ml-auto my-1" onclick="editTemplate(id)">Edit Template</button>
+          <button id="EditTempBtn_{{elem.id}}" type="button" class="btn btn-info ml-auto my-1" onclick="editTemplate(id)">Edit Template</button>
           <!-- ATTACH function to delete template -->
           <button id="DelTempBtn_{{elem.id}}%split%{{elem.name}}{{elem.user.username}}" type="button" class="btn btn-danger ml-1 mr-3 my-1" style="display""" onclick="deleteTemplate(id)">Delete</button>
         </div>
@@ -256,8 +256,8 @@ Search Results
     }
 
     function editTemplate(id) {
-      var templateName = id.substr(12);
-      location.href = "http://127.0.0.1:8000/template_editor/" + templateName;
+      var templateID = id.substr(12);
+      location.href = "http://127.0.0.1:8000/template_editor/" + templateID;
     }
   </script>
   {% endblock %}
