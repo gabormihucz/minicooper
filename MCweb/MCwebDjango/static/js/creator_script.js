@@ -23,9 +23,9 @@ $("#save-button").on('click',function(){
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
               response = xhr.responseText;
-              // console.log(response)
-              if(response == "Post request parsed succesfully"){
+              if(response.substr(0,2) == "OK"){
                 alert("Template saved succesfully")
+                window.location = response.substr(2);
               }else{
                 alert("Something went wrong, try again")
               }
