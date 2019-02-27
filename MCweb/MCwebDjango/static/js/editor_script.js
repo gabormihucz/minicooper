@@ -2,6 +2,7 @@
   Converts the temporary JSON to our template format and
   provide error message appropriately
 */
+var originalTempID = document.getElementById("tempID").value;
 $("#save-button").on('click',function(){
   //Check if template is given a name
   if ($("#template-name-label").val() == ""){
@@ -17,10 +18,12 @@ $("#save-button").on('click',function(){
       result['template_id'] = tempID;
       console.log(result);
       // Sending and receiving data in JSON format using POST method
+
       var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8000/template_editor/"+originalTempName;
+      var url = "http://127.0.0.1:8000/template_editor/"+originalTempID;
 
       function getCookie(c_name)
+
        {
            if (document.cookie.length > 0)
            {
