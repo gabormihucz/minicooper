@@ -19,7 +19,6 @@ class MyRegistrationView(RegistrationView):
 urlpatterns = [
         path('', views.index, name=''),
         path('upload_pdf/', views.upload_pdf, name='uploadPDF'),
-        path('get_pdf_info/', views.get_pdf_info, name='getPDFInfo'),
         path('save_template/', views.save_template, name='saveTemplate'),
         path('search_files/', views.search, name='search'),
         path('template_manager/<int:temp_id>', views.manage_templates,name='templateManager'),
@@ -28,7 +27,7 @@ urlpatterns = [
         path('accounts/', include('registration.backends.simple.urls')),
 	    path('accounts/register/',MyRegistrationView.as_view(),name='registration_register'),
 	    path('template_creator/',views.template_creator,name='template_creator'),
-        path('template_editor/<str:temp_name>',views.template_editor,name='template_editor'),
+        path('template_editor/<int:temp_id>',views.template_editor,name='template_editor'),
 	    path('search_files/', views.search, name='search_files'),
         path('json/<slug:json_slug>/', views.json_popup, name='json_popup'),
 	    path('get_more_tables/', views.get_more_tables, name='get_more_tables'),

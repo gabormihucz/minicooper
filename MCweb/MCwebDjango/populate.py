@@ -46,7 +46,7 @@ def populate():
     j.save()
 
     # Create MatchPattern.
-    m = MatchPattern.objects.get_or_create(regex='$stuff+(0-9)?')[0]
+    m = MatchPattern.objects.get_or_create(regex='Sample')[0]
     m.template = t
     m.save()
 

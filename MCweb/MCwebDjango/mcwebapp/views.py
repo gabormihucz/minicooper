@@ -26,25 +26,6 @@ def paginate(input_list, request):
 
 @login_required
 def index(request):
-    # to work with templates:
-    # - make a context_dict (standard python dictionary) to pass the data into the template
-    # - return render(request, 'mcwebapp/[html file].html', context=context_dict)
-    # note that the directory string above points to MCweb/MCwebDjango/templates as root.
-    #
-    # to access the values from inside the HTML:
-    # - {{ [dictionary key] }}
-    #
-    # to use static files (like the logo image):
-    # - write {% load staticfiles %} right before <html>
-    # - for a picture static/images/cat/jpg
-    #       <img src="{% static "images/cat.jpg" %}" alt="picture of a cat">
-    # @2277073z
-
-    # as user who is not logged in is redirected to the login page
-    # superuser in case of no templates is redirected to the template creator page
-    # otherwise return a view with the list of jsons paginated
-
-
     if not TemplateFile.objects.all() and request.user.is_superuser:
         return HttpResponseRedirect("/template_creator/")
 
@@ -54,10 +35,19 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
+#helper html file for ajax call (in index.html)
 @login_required
 def get_more_tables(request):
     jsons = JSONFile.objects.all().order_by('-upload_date')
     return render(request, 'mcwebapp/get_more_tables.html', {'elems': jsons})
+
+
+def json_popup(request, json_slug):
+    context_dict = {}
+    json = JSONFile.objects.get(slug = json_slug)
+    context_dict['json'] = json
+
+    return render(request, 'mcwebapp/json_popup.html', context_dict)
 
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
@@ -67,28 +57,23 @@ def template_creator(request):
     return render(request,'mcwebapp/template_creator.html',{})
 
 @login_required
-def template_editor(request, temp_name):
+def template_editor(request, temp_id=-1):
+    #if uuser overwrites a template, it reads the request as a post, removes the old json representing old template,
+    # create a new one and update the fields of an old template
     if request.method == "POST":
-
         data = json.loads(request.body.decode('utf-8'))
         template = TemplateFile.objects.get(id=data['template_id'])
-
         os.remove("media/templateFiles/"+template.name+".json")
-
         template.name = data['template_name']
-
         with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
             o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-
         template.file_name.name = "templateFiles/"+data["template_name"]+".json"
-
         template.save()
 
         return HttpResponse("http://127.0.0.1:8000/template_manager/")
-
+    #Trying to preload a template so that it's fields can be seen by editor_script.js
     try:
-        temp = TemplateFile.objects.get(name=temp_name)
-
+        temp = TemplateFile.objects.get(id=temp_id)
         with open("media/"+str(temp.file_name),"r") as t:
             file = t.read()
         tempDictJSON = {"id":temp.id,"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
@@ -116,7 +101,6 @@ def search_templates(request):
     query = request.GET.get('search-bar', '')
     templates = TemplateFile.objects.filter(name__icontains=query)
     patterns = MatchPattern.objects.all()
-
     context_dict = paginate(templates, request)
     context_dict['patterns'] = patterns
 
@@ -124,7 +108,7 @@ def search_templates(request):
 #end
 
 @login_required
-def manage_templates(request, temp_id=-9999):
+def manage_templates(request, temp_id=-1):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         template_manager_code_check(data)
@@ -143,30 +127,22 @@ def manage_templates(request, temp_id=-9999):
 def save_template(request):
     if request.method =="POST":
         try:
-            print("post request to save template")
-
             # translating post message json into python dictionary
             data = json.loads(request.body.decode('utf-8'))
-
             # creating template object
             template = TemplateFile()
             template.name = data["template_name"]
             template.upload_date = timezone.now()
-
             with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
                 o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-
             template.file_name.name = "templateFiles/"+data["template_name"]+".json"
             template.user = request.user
-
             template.save()
-            return HttpResponse("Post request parsed succesfully")
-            #start
+            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
         except:
             return HttpResponse("Template coudn't be save")
             #end
     return render(request,'mcwebapp/saveTemplate.html',{})
-
 
 
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
@@ -177,24 +153,21 @@ def upload_pdf(request):
         json_post = request.body.decode('utf-8')
         #translating json into python dictionary
         data = json.loads(json_post)
-
         #retranslating binary of the pdf into a system readable bytes
         content = data["content"].encode('utf-8')
         content = base64.b64decode(content)
-
         name = data["filename"]
         upload_date = timezone.now()
-
         # Look through all MatchPatterns
         for pattern in MatchPattern.objects.all():
-            x = re.findall(pattern.regex, name)
-            if x:  # if a match is found
+            match = re.findall(pattern.regex, name)
+            if match:  # if a match is found
                 template = pattern.template      # get the associated template
                 print("I found a template for " + name)
                 break                            # leave the loop
 
         # if no match was found, use the sample template
-        if not x:
+        if not match:
             template = TemplateFile.objects.get(name="SampleTemplate")
 
         #creating a pdf in media/pdffiles
@@ -207,7 +180,6 @@ def upload_pdf(request):
         pdfFile.upload_date=upload_date
         pdfFile.file_name.name = "pdfFiles/"+name+".pdf" #black magic use this for help: https://stackoverflow.com/questions/7514964/django-how-to-create-a-file-and-save-it-to-a-models-filefield
         pdfFile.template=template
-
         pdfFile.save()
 #start
         try:
@@ -239,25 +211,6 @@ def upload_pdf(request):
     #if not a post visualise the template that is responsible for handeling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
 
-
-@csrf_exempt
-def get_pdf_info(request):
-    if request.method =="GET":
-        #assigning the value of a parameter to a variable
-        file_name = request.GET.get('file_name','url query with no or wrong parameters') #the second part is whatto return when parameter is wrongly structure
-
-        if file_name == 'url query with no or wrong parameters':
-             #regular subpage to visit if get not send
-             return render(request,'mcwebapp/getPDFInfo.html',{})
-        else:
-            try:
-                #trying to find a right object
-                response = PDFFile.objects.get(name=file_name)
-                return HttpResponse("File exist")
-                # jsonresp = json.dumps(response)
-            except:
-                return HttpResponse("File not stored on the server")
-
 #helper functions
 
 def template_manager_code_check(data):
@@ -274,19 +227,4 @@ def template_manager_code_check(data):
 
     elif data["code"] == "deleteTemplate":
         template = TemplateFile.objects.get(id=data["template_id"])
-        pdfs = PDFFile.objects.filter(template = template)
-        for pdf in pdfs:
-            pdf.template=None
-            pdf.save()
-
-        patterns = MatchPattern.objects.filter(template=template)
-        for pattern in patterns:
-            pattern.delete()
         template.delete()
-        
-def json_popup(request, json_slug):
-    context_dict = {}
-    json = JSONFile.objects.get(slug = json_slug)
-    context_dict['json'] = json
-
-    return render(request, 'mcwebapp/json_popup.html', context_dict)
