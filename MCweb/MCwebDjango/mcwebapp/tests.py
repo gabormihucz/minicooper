@@ -124,12 +124,8 @@ class SaveTemplateTest(TestCase):
         c = Client()
         c.login(username='testuser', password='secret')
         body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
-        response = c.post('/save_template/',body, content_type="application/json")
+        response = c.post('/template_creator/',body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8')[0:2],"OK")
-
-    def testVisit(self):
-        response = self.client.get('/save_template/')
-        self.assertEqual(response.status_code, 200)
 
 
 class UploadPdfTest(TestCase):

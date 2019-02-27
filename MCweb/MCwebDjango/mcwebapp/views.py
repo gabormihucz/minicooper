@@ -52,9 +52,31 @@ def json_popup(request, json_slug):
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
 def template_creator(request):
+    if request.method =="POST":
+        try:
+            # translating post message json into python dictionary
+            data = json.loads(request.body.decode('utf-8'))
+
+            try:
+                template_already_exist = TemplateFile.objects.get(name=data["template_name"])
+                return HttpResponse("Template with this name already exist, pick a new name")
+            # creating template object
+            except:
+                template = TemplateFile()
+                template.name = data["template_name"]
+                template.upload_date = timezone.now()
+                with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+                    o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+                template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+                template.user = request.user
+                template.save()
+                return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
+        except:
+            return HttpResponse("Template coudn't be save")
     if not request.user.is_superuser:
         return HttpResponseRedirect("/")
     return render(request,'mcwebapp/template_creator.html',{})
+
 
 @login_required
 def template_editor(request, temp_id=-1):
@@ -123,25 +145,6 @@ def manage_templates(request, temp_id=-1):
     return response
 
 
-@csrf_exempt
-def save_template(request):
-    if request.method =="POST":
-        try:
-            # translating post message json into python dictionary
-            data = json.loads(request.body.decode('utf-8'))
-            # creating template object
-            template = TemplateFile()
-            template.name = data["template_name"]
-            template.upload_date = timezone.now()
-            with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
-                o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-            template.file_name.name = "templateFiles/"+data["template_name"]+".json"
-            template.user = request.user
-            template.save()
-            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
-        except:
-            return HttpResponse("Template coudn't be save")
-    return render(request,'mcwebapp/saveTemplate.html',{})
 
 
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required

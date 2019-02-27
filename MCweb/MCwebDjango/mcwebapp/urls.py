@@ -19,7 +19,7 @@ class MyRegistrationView(RegistrationView):
 urlpatterns = [
         path('', views.index, name=''),
         path('upload_pdf/', views.upload_pdf, name='uploadPDF'),
-        path('save_template/', views.save_template, name='saveTemplate'),
+        # path('save_template/', views.save_template, name='saveTemplate'),
         path('search_files/', views.search, name='search'),
         path('template_manager/<int:temp_id>', views.manage_templates,name='templateManager'),
         path('template_manager/', views.manage_templates,name='templateManager'),

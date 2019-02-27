@@ -17,7 +17,23 @@ $("#save-button").on('click',function(){
       console.log(result);
       // Sending and receiving data in JSON format using POST method
       var xhr = new XMLHttpRequest();
-      var url = "http://127.0.0.1:8000/save_template/";
+      var url = "http://127.0.0.1:8000/template_creator/";
+
+      function getCookie(c_name)
+       {
+           if (document.cookie.length > 0)
+           {
+               c_start = document.cookie.indexOf(c_name + "=");
+               if (c_start != -1)
+               {
+                   c_start = c_start + c_name.length + 1;
+                   c_end = document.cookie.indexOf(";", c_start);
+                   if (c_end == -1) c_end = document.cookie.length;
+                   return unescape(document.cookie.substring(c_start,c_end));
+               }
+           }
+           return "";
+        }
 
       var response ;
       xhr.onreadystatechange = function() {
@@ -26,14 +42,17 @@ $("#save-button").on('click',function(){
               if(response.substr(0,2) == "OK"){
                 alert("Template saved succesfully")
                 window.location = response.substr(2);
+              // }else if(respone == "Template with this name already exist, pick a new name") {
+              //   alert(response)
               }else{
-                alert("Something went wrong, try again")
+                alert(response);
               }
           }
       }
 
       xhr.open("POST", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
       xhr.send(JSON.stringify(result));
       console.log("post_sent");
     }
