@@ -1,3 +1,6 @@
+try{
+  var originalTempName = document.getElementById("tempName").value;
+}catch{}
 var pdf_canvas = $("#pdf-canvas")[0];
 var drawing_canvas = $("#drawing-canvas")[0];
 var drawable = drawing_canvas.getContext('2d');
@@ -150,7 +153,7 @@ $( document ).ready(function() {
     $("#box-label").val("");
     $("#draw-btn").prop('disabled',true);
     disable_side_bar(true);
-    $("#template-name-label").val("");
+    $("#template-name-label").val(originalTempName);
     $("#x1-label").val("");
     $("#y1-label").val("");
     $("#x2-label").val("");
