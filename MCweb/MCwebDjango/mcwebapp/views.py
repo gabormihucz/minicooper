@@ -146,7 +146,6 @@ def manage_templates(request, temp_id=-1):
 
 
 
-
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
 @csrf_exempt
 def upload_pdf(request):
