@@ -2,31 +2,79 @@
 
 {%load staticfiles%}
 
-{% block script_block %}
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="{% static 'js/DBupdate.js' %}"></script>
-<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.min.js' %}"></script>
+{% block css_block %}{% endblock %}
 
 
 
-{% endblock %}
 
 {% block body_block %}
-    <div class="container" >
-        <h2 >PDF-JSON pairs</h2>
+    <script src="/static/js/popup_script.js"></script>
+    <div class="container">
+        <h2>PDF-JSON pairs</h2>
         <!-- create table and loop through all jsons to fill it in according to needed data -->
         {% if elems %}
-            <div id="autotable">
-              
-            </div>
- 
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>PDF</th>
+                    <th>JSON</th>
+                    <th>Status</th>
+                    <th>Template</th>
+                    <th>User</th>
+                    <th>Date</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for elem in elems %}
+                    <tr>
+                        <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
+                        <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
+                        <td>{{ elem.status_string }}</td>
+                        <td>{{ elem.pdf.template.name }}</td>
+                        <td>{{ elem.pdf.template.user.username  }}</td>
+                        <td>{{ elem.upload_date }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <!-- paginator business -->
+            {% if elems.has_other_pages %}
+                <ul class="pagination">
+                    {% if elems.has_previous %}
+                        <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in elems.paginator.page_range %}
+                        {% if elems.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if elems.has_next %}
+                        <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li class="disabled"><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            {% endif %}
         {% else %}
-            No data to display! <br/>
+            You are out of luck! There is no data to display! <br/>
 
 
         {% endif %}
     </div>
+{% endblock %}
+{% block script_block %}
+
+
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script src="/static/js/popup_script.js"></script>
+
 {% endblock %}
