@@ -1,0 +1,36 @@
+{% extends 'mcwebapp/base.html' %}
+
+{%load staticfiles%}
+
+{% block script_block %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="{% static 'js/DBupdate.js' %}"></script>
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script src="/static/js/popup_script.js"></script>
+
+
+
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="container" >
+        <h2 >PDF-JSON pairs</h2>
+        <!-- create table and loop through all jsons to fill it in according to needed data -->
+                    <div id="autotable">
+              
+            </div>
+        {% if elems %}
+
+ 
+        {% else %}
+            No data to display! <br/>
+
+
+        {% endif %}
+    </div>
+{% endblock %}
+
