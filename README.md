@@ -5,6 +5,11 @@ CS15 --- team project
 
 If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then under the button CI Lint, click on the latest button with a cloud symbol and an arrow pointing downards and click on 'Download build artifacts'.  
 
+## OS Requirements:
+
+- Currently the website has been tested on Debian-based Linux environments
+- The app works on Windows and UNIX-based systems as well
+
 ## Deployment guide: 
 
 Extract the zipped project file to a directory of your choice.  
