@@ -94,15 +94,28 @@ def template_editor(request, temp_id=-1):
     # create a new one and update the fields of an old template
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
-        template = TemplateFile.objects.get(id=data['template_id'])
-        os.remove("media/templateFiles/"+template.name+".json")
-        template.name = data['template_name']
-        with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
-            o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-        template.file_name.name = "templateFiles/"+data["template_name"]+".json"
-        template.save()
 
-        return HttpResponse("http://127.0.0.1:8000/template_manager/")
+        try:
+            template_already_exist = TemplateFile.objects.get(name=data["template_name"])
+            print("temp with this name exist already")
+            print(template_already_exist.id)
+            print(type(data['template_id']))
+            if template_already_exist.id != int(data['template_id']):
+                return HttpResponse("Template with this name already exist, pick a new name")
+            else:
+                print("here")
+                go_to_except = 9/0 #go to except
+        except:
+            print("in except")
+            template = TemplateFile.objects.get(id=data['template_id'])
+            os.remove("media/templateFiles/"+template.name+".json")
+            template.name = data['template_name']
+            with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+                o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+            template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+            template.save()
+
+            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/")
     #Trying to preload a template so that it's fields can be seen by editor_script.js
     try:
         temp = TemplateFile.objects.get(id=temp_id)

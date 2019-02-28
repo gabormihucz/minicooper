@@ -43,8 +43,12 @@ $("#save-button").on('click',function(){
       xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
               response = xhr.responseText;
-              alert("Template has been overwritten");
-              window.location = response;
+              if(response.substr(0,2) == "OK"){
+                alert("Template has been overwritten");
+                window.location = response.substr(2);
+              }else{
+                alert(response);
+              }
               // console.log(response)
           }
       }
