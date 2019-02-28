@@ -30,7 +30,7 @@ def index(request):
         return HttpResponseRedirect("/template_creator/")
 
     jsons = JSONFile.objects.all().order_by('-upload_date')
-    context_dict = paginate(jsons,request)
+    context_dict = {'elems':jsons}
 
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
