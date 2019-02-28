@@ -117,7 +117,33 @@ Search Results
     You are out of luck! There is no data to display! <br />
 
     {% endif %}
+    {% if elems.has_other_pages %}
+        <ul class="pagination">
+            {% if elems.has_previous %}
+                <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in elems.paginator.page_range %}
+                {% if elems.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if elems.has_next %}
+                <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   {% endblock %}
 
   {% block script_block %}
