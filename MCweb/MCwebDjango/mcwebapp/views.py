@@ -251,4 +251,5 @@ def template_manager_code_check(data):
 
     elif data["code"] == "deleteTemplate":
         template = TemplateFile.objects.get(id=data["template_id"])
+        os.remove("media/"+template.file_name.name)
         template.delete()
