@@ -39,30 +39,26 @@ $(drawing_canvas).on('mousedown', function(e) {
   }
 });
 
+//While drawing and dragging, repeatedly create temporary rectangles (and deleting them) for animation
 $(drawing_canvas).on('mousemove',function(e){
   if (drawing && animate){
     if (animation_rectangle != null){
       animation_rectangle.remove();
     }
-    var animation_mousex = parseInt(e.clientX - bounds.left);
-    var animation_mousey = parseInt(e.clientY - bounds.top);
-    var animation_width = animation_mousex-last_mousex;
-    var animaton_height = animation_mousey-last_mousey;
-    animation_rectangle = new paper.Path.Rectangle(last_mousex, last_mousey, animation_width, animaton_height);
+    var rectangle_bounds = get_rectangle_dimensions();
+    animation_rectangle = new paper.Path.Rectangle(rectangle_bounds["x"], rectangle_bounds["y"], rectangle_bounds["width"], rectangle_bounds["height"]);
     animation_rectangle.strokeColor = "black";
   }
 });
 
 //Release mouse, create rectangle with end location for mouse
 $(drawing_canvas).on('mouseup', function(e) {
+  //Get rid of the last instance of animation rectangle
   if (drawing){
     if (animation_rectangle != null){
       animation_rectangle.remove();
     }
-    mousex = parseInt(e.clientX - bounds.left);
-    mousey = parseInt(e.clientY - bounds.top);
-    width = mousex-last_mousex;
-    height = mousey-last_mousey;
+    var rectangle_bounds = get_rectangle_dimensions();
 
     //Pick a suitable default name
     var proposed_default_name = "default" + name_counter.toString();
@@ -72,7 +68,7 @@ $(drawing_canvas).on('mouseup', function(e) {
     }
 
     //Create a new rectangle object, and populate the temporary json
-    new_box_element(last_mousex, last_mousey, width, height, proposed_default_name, true);
+    new_box_element(rectangle_bounds["x"], rectangle_bounds["y"], rectangle_bounds["width"], rectangle_bounds["height"], proposed_default_name, true);
 
     //Stop drawing, reset draw button
     drawing = false;
@@ -150,17 +146,25 @@ $('#upload-btn').on('click', function() {
 });
 
 $( document ).ready(function() {
-    $("#box-label").val("");
+
     $("#draw-btn").prop('disabled',true);
     disable_side_bar(true);
+    empty_side_bar_labels();
     $("#template-name-label").val(originalTempName);
-    $("#x1-label").val("");
-    $("#y1-label").val("");
-    $("#x2-label").val("");
-    $("#y2-label").val("");
+
 });
 
 //---------------------------------------HELPER FUNCTIONS---------------------------
+
+//Get dimensions needed to create a rectangle
+function get_rectangle_dimensions(){
+  bound_result = {};
+  bound_result["x"] = parseInt(e.clientX - bounds.left);
+  bound_result["y"] = parseInt(e.clientY - bounds.top);
+  bound_result["width"] = bound_result["x"] - last_mousex;
+  bound_result["height"] = bound_result["y"]-last_mousey;
+  return bound_result;
+}
 
 //Given a box label name, check if it exists in the temporary json
 function check_box_label_exist(boxLabel, rectangle_JSON){
@@ -193,13 +197,18 @@ function delete_current_rectangle(){
     current_rectangle.remove();
     current_rectangle == null;
 
-    $("#box-label").val("");
-    $("#x1-label").val("");
-    $("#y1-label").val("");
-    $("#x2-label").val("");
-    $("#y2-label").val("");
+    empty_side_bar_labels();
     disable_side_bar(true);
   }
+}
+
+
+function empty_side_bar_labels(){
+  $("#box-label").val("");
+  $("#x1-label").val("");
+  $("#y1-label").val("");
+  $("#x2-label").val("");
+  $("#y2-label").val("");
 }
 
 //Set the sidebar to disabled or enabled

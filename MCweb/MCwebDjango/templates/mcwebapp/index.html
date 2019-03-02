@@ -3,23 +3,14 @@
 {%load staticfiles%}
 
 {% block css_block %}
-
-
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-
-
 {% endblock %}
 
-
-
-
 {% block body_block %}
-
     <div class="container">
         <h2>PDF-JSON pairs</h2>
         <!-- create table and loop through all jsons to fill it in according to needed data -->
@@ -28,11 +19,11 @@
                     <tbody>
                         <tr>
                             <td>Minimum Date:</td>
-                            <td><input name="min" id="min" class="datepicker" type="text"></td>
+                            <td><input name="min" id="min" class="datepicker form-control" type="text"></td>
                         </tr>
                         <tr>
                             <td>Maximum Date:</td>
-                            <td><input name="max" id="max" class="datepicker" type="text"></td>
+                            <td><input name="max" id="max" class="datepicker form-control" type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -55,7 +46,7 @@
                     <tr>
                         <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
                         <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
-                        <td>{{ elem.status_string }}</td>
+                        <td class="status">{{ elem.status_string }}</td>
                         <td>{{ elem.pdf.template.name }}</td>
                         <td>{{ elem.pdf.template.user.username  }}</td>
                         <td>{{ elem.upload_date }}</td>
@@ -64,15 +55,11 @@
                 {% endfor %}
                 </tbody>
             </table>
-
-
-
         {% endif %}
     </div>
 {% endblock %}
+
 {% block script_block %}
-
-
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -82,5 +69,4 @@
 <script src="/static/js/popup_script.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="/static/js/dataTab.js"></script>
-
 {% endblock %}

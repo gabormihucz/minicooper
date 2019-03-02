@@ -47,9 +47,8 @@ function getMinusDaysDate(numDays){
 }
 
 
-
 /* Custom filtering function which will search data in column five between two values */
-$(document).ready(function () { 
+$(document).ready(function () {
     var flag = true
     $.fn.dataTable.ext.search.push(
         function (settings, data, dataIndex) {
@@ -73,10 +72,23 @@ $(document).ready(function () {
     $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true , dateFormat:"dd/mm/yy"});
     $("#max").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true, dateFormat:"dd/mm/yy" });
 
-    
+
 
     // Event listener to the two range filtering inputs to redraw on input
     $('#min, #max').change(function () {
         table.draw();
     });
+
+    //Empty inputs on load or refresh
+    $('.datepicker').val("");
+
+    //Set color of status according to its value
+    $( ".status" ).each(function( ) {
+      if ($(this).text() == "Pass"){
+        $(this).css("color","green");
+      }else{
+        $(this).css("color","red");
+      }
+    });
+
 });
