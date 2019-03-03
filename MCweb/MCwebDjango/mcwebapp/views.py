@@ -35,23 +35,6 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
-@login_required
-def autorefresh(request):
-    if not TemplateFile.objects.all() and request.user.is_superuser:
-        return HttpResponseRedirect("/template_creator/")
-
-    jsons = JSONFile.objects.all().order_by('-upload_date')
-    context_dict = {'elems':jsons}
-
-    response = render(request,'mcwebapp/autorefresh.html',context_dict)
-    return response
-#helper html file for ajax call (in index.html)
-@login_required
-def get_more_tables(request):
-    jsons = JSONFile.objects.all().order_by('-upload_date')
-    return render(request, 'mcwebapp/get_more_tables.html', {'elems': jsons})
-
-
 def json_popup(request, json_slug):
     context_dict = {}
     json = JSONFile.objects.get(slug = json_slug)
@@ -126,15 +109,6 @@ def template_editor(request, temp_id=-1):
         return render(request,'mcwebapp/template_editor.html',tempDict)
     except:
         return HttpResponse("Template could not be found")
-
-@login_required
-# get the search query, and filter JSON files whether the query appears in them
-# and return the matching JSON objects in a paginated list
-def search(request):
-    query = request.GET.get('search-bar', '')
-    jsons = JSONFile.objects.filter(name__icontains=query)
-    context_dict = paginate(jsons, request)
-    return render(request, 'mcwebapp/search_files.html', context_dict)
 
 @login_required
 #start
