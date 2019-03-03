@@ -200,7 +200,7 @@ class UploadPdfTest(TestCase):
 
 # this test requires populating the database
 # checks if there is any JSONFile, which has the pattern 'File' in it
-class SearchTest(TestCase):
+class SearchTemplateTest(TestCase):
 
     def setUp(self):
         populate.populate()
@@ -210,17 +210,17 @@ class SearchTest(TestCase):
 
     # test passes if the search page returns the status code 200
     def test_search_page_exists(self):
-        files = JSONFile.objects.filter(name__icontains='File')[:10]
-        url = reverse('search_files') + "?search-bar=File"
+        templates = TemplateFile.objects.filter(name__icontains='Sample')[:10]
+        url = reverse('searchTemplates') + "?search-bar=Sample"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     # test passes if search returns correct results
     def test_search_gives_correct_results(self):
-        files = JSONFile.objects.filter(name__icontains='File')[:10]
-        url = reverse('search_files') + "?search-bar=File"
+        templates = TemplateFile.objects.filter(name__icontains='Sample')[:10]
+        url = reverse('searchTemplates') + "?search-bar=Sample"
         response = self.client.get(url)
-        self.assertQuerysetEqual(response.context['elems'], [repr(elt) for elt in files])
+        self.assertQuerysetEqual(response.context['elems'], [repr(template) for template in templates])
 
 
 class PdfProcessTest(TestCase):
