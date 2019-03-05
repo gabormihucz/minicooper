@@ -45,8 +45,8 @@ $(drawing_canvas).on('mousemove',function(e){
     if (animation_rectangle != null){
       animation_rectangle.remove();
     }
-    var rectangle_bounds = get_rectangle_dimensions();
-    animation_rectangle = new paper.Path.Rectangle(rectangle_bounds["x"], rectangle_bounds["y"], rectangle_bounds["width"], rectangle_bounds["height"]);
+    var rectangle_bounds = get_rectangle_dimensions(e.clientX, e.clientY);
+    animation_rectangle = new paper.Path.Rectangle(last_mousex,last_mousey, rectangle_bounds["width"], rectangle_bounds["height"]);
     animation_rectangle.strokeColor = "black";
   }
 });
@@ -58,7 +58,7 @@ $(drawing_canvas).on('mouseup', function(e) {
     if (animation_rectangle != null){
       animation_rectangle.remove();
     }
-    var rectangle_bounds = get_rectangle_dimensions();
+    var rectangle_bounds = get_rectangle_dimensions(e.clientX, e.clientY);
 
     //Pick a suitable default name
     var proposed_default_name = "default" + name_counter.toString();
@@ -68,7 +68,7 @@ $(drawing_canvas).on('mouseup', function(e) {
     }
 
     //Create a new rectangle object, and populate the temporary json
-    new_box_element(rectangle_bounds["x"], rectangle_bounds["y"], rectangle_bounds["width"], rectangle_bounds["height"], proposed_default_name, true);
+    new_box_element(last_mousex,last_mousey, rectangle_bounds["width"], rectangle_bounds["height"], proposed_default_name, true);
 
     //Stop drawing, reset draw button
     drawing = false;
@@ -157,12 +157,12 @@ $( document ).ready(function() {
 //---------------------------------------HELPER FUNCTIONS---------------------------
 
 //Get dimensions needed to create a rectangle
-function get_rectangle_dimensions(){
+function get_rectangle_dimensions(x,y){
   bound_result = {};
-  bound_result["x"] = parseInt(e.clientX - bounds.left);
-  bound_result["y"] = parseInt(e.clientY - bounds.top);
+  bound_result["x"] = parseInt(x - bounds.left);
+  bound_result["y"] = parseInt(y - bounds.top);
   bound_result["width"] = bound_result["x"] - last_mousex;
-  bound_result["height"] = bound_result["y"]-last_mousey;
+  bound_result["height"] = bound_result["y"]- last_mousey;
   return bound_result;
 }
 
