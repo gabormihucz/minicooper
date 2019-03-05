@@ -28,7 +28,7 @@ class PDFFile(models.Model):
     name = models.CharField(max_length = 200)
     upload_date = models.DateTimeField('date uploaded', null=True)
     file_name = models.FileField(upload_to='pdfFiles/', null=True)
-    template = models.ForeignKey(TemplateFile, on_delete=models.SET_NULL, null=True)
+    template = models.ForeignKey(TemplateFile, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class JSONFile(models.Model):
     name = models.CharField(max_length=30)
     upload_date = models.DateTimeField('date uploaded', null=True)
     file_name = models.FileField(upload_to='jsonFiles/', null=True)
-    pdf = models.OneToOneField(PDFFile, on_delete=models.PROTECT, null=True)
+    pdf = models.OneToOneField(PDFFile, on_delete=models.CASCADE, null=True)
     mandatory_fulfilled = models.BooleanField(null=True)
     status_string = models.CharField(max_length=4, default='Pass')
     slug = models.SlugField(null=True)
