@@ -1,8 +1,33 @@
-    var table = $('#resultTable').DataTable({
-    	"order": [[ 5, "desc" ]]
 
 
-    });
+var table = $('#resultTable').dataTable( {
+"order": [[ 5, "desc" ]],
+
+"ajax": {"url":'get_more_tables',
+"type":"GET",
+"dataSrc":""
+},
+ "columns": [
+         { "data": "fields.name" },
+         { "data": "fields.file_name" },
+         { "data": "fields.status_string" },
+         { "data": "fields.name" },
+         { "data": "fields.name" },
+         { "data": "fields.upload_date" }
+     ],
+} );
+
+// var table = $('#resultTable').DataTable({
+//     	"order": [[ 5, "desc" ]],
+//         "ajax": jsonObject,
+//     });
+
+
+
+setInterval( function () {
+    table.api().ajax.reload( null, false ); // user paging is not reset on reload
+}, 1000 );
+
 
 
 //jquery function for the datepicker dropdown
@@ -55,7 +80,7 @@ $(document).ready(function () {
             var min = $('#min').datepicker( "getDate");
             var max = $('#max').datepicker("getDate");
             // need to change str order before making  date obect since it uses a new Date("mm/dd/yyyy") format for short date.
-            var startDate = new Date(formattedDate(data[5]));
+            var startDate = new Date(data[5]);
 
             if (min === null && max === null) { return true; }
             if (min === null && startDate <= max) { return true;}
@@ -66,7 +91,7 @@ $(document).ready(function () {
     );
     if (flag){
         $( "#min" ).datepicker( "setDate" , getMinusDaysDate(7));
-        table.draw();
+        table.api().ajax.reload( null, false ); 
         flag=false;
     }
     $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true , dateFormat:"dd/mm/yy"});
@@ -76,11 +101,10 @@ $(document).ready(function () {
 
     // Event listener to the two range filtering inputs to redraw on input
     $('#min, #max').change(function () {
-        table.draw();
+        table.api().ajax.reload( null, false );
     });
 
-    //Empty inputs on load or refresh
-    $('.datepicker').val("");
+
 
     //Set color of status according to its value
     $( ".status" ).each(function( ) {
