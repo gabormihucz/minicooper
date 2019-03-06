@@ -64,10 +64,10 @@ $("#save-button").on('click',function(){
 //Set PDF as background and update the dimensions of canvas
 $( "#file-input" ).change(function() {
   var uploaded_file = this.files[0];
-  var pdf_regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf)$/;
+  var uploaded_file_name = uploaded_file["name"];
 
   //Check if file provided is a pdf file
-  if (!pdf_regex.test(uploaded_file["name"])){
+  if (uploaded_file_name.substr(uploaded_file_name.length-4) != ".pdf"){
     alert("Invalid PDF file");
   }else{
     var reader = new FileReader();
