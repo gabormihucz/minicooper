@@ -11,17 +11,11 @@ var table = $('#resultTable').dataTable( {
          { "data": "fields.name" },
          { "data": "fields.file_name" },
          { "data": "fields.status_string" },
-         { "data": "fields.name" },
-         { "data": "fields.name" },
+         { "data": "fields.template_name" },
+         { "data": "fields.template_user" },
          { "data": "fields.upload_date" }
      ],
 } );
-
-// var table = $('#resultTable').DataTable({
-//     	"order": [[ 5, "desc" ]],
-//         "ajax": jsonObject,
-//     });
-
 
 
 setInterval( function () {
