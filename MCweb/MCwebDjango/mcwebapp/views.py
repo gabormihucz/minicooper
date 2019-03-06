@@ -115,7 +115,17 @@ def template_editor(request, temp_id=-1):
 def search_templates(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        template_manager_code_check(data)
+        response = template_manager_code_check(data)
+
+        if response != None:
+            message="PDF's that will be deleted as a result of deleting a template:\n"
+            pdfCounter = 0
+            for pdf in response:
+                message += pdf.name+"\n"
+                pdfCounter +=1
+            if pdfCounter == 0:
+                message += "No Pdf will be affected\n"
+            return HttpResponse(message)
 
     query = request.GET.get('search-bar', '')
     templates = TemplateFile.objects.filter(name__icontains=query)
@@ -130,7 +140,18 @@ def search_templates(request):
 def manage_templates(request, temp_id=-1):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        template_manager_code_check(data)
+        response = template_manager_code_check(data)
+
+        if response != None:
+            message="PDF's that will be deleted as a result of deleting a template:\n"
+            pdfCounter = 0
+            for pdf in response:
+                message += pdf.name+"\n"
+                pdfCounter +=1
+            if pdfCounter == 0:
+                message += "No Pdf will be affected\n"
+            return HttpResponse(message)
+
 
     templates = TemplateFile.objects.all()
     patterns = MatchPattern.objects.all()
@@ -223,7 +244,24 @@ def template_manager_code_check(data):
         pattern.template = template
         pattern.save()
 
+    elif data['code'] == "deleteTemplate_request":
+        template = TemplateFile.objects.get(id=data["template_id"])
+        pdfs_related = PDFFile.objects.filter(template=template)
+        return pdfs_related
     elif data["code"] == "deleteTemplate":
         template = TemplateFile.objects.get(id=data["template_id"])
-        os.remove("media/"+template.file_name.name)
+        pdfs_related = PDFFile.objects.filter(template=template)
+        for pdf in pdfs_related:
+            try:
+                json = JSONFile.objects.get(pdf=pdf)
+                os.remove("media/"+json.file_name.name)
+                os.remove("media/"+pdf.file_name.name)
+            except:
+                pass
+        try:
+            os.remove("media/"+template.file_name.name)
+        except:
+            pass
         template.delete()
+
+        return None
