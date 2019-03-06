@@ -79,9 +79,6 @@ $(document).ready(function () {
         table.draw();
     });
 
-    //Empty inputs on load or refresh
-    $('.datepicker').val("");
-
     //Set color of status according to its value
     $( ".status" ).each(function( ) {
       if ($(this).text() == "Pass"){
