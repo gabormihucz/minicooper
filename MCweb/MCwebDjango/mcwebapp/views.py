@@ -50,6 +50,9 @@ def autorefresh(request):
 def get_more_tables(request):
 
     jsons = JSONFile.objects.all().order_by('-upload_date')
+    for j in jsons:
+        j.template_name = j.pdf.template.name
+        j.template_user = j.pdf.template.user
 
     json = serializers.serialize('json', jsons)
     return HttpResponse(json, content_type='application/json')
