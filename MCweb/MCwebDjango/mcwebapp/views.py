@@ -36,15 +36,6 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
-@login_required
-def autorefresh(request):
-
-    jsons = JSONFile.objects.all().order_by('-upload_date')
-    context_dict = {'elems':jsons}
-
-    response = render(request,'mcwebapp/autorefresh.html',context_dict)
-    return response
-
 @csrf_exempt
 @login_required
 def get_more_tables(request):

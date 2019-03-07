@@ -24,11 +24,10 @@ urlpatterns = [
         path('template_manager/', views.manage_templates,name='templateManager'),
         path('search_templates/', views.search_templates, name='searchTemplates'),
         path('accounts/', include('registration.backends.simple.urls')),
-	    path('accounts/register/',MyRegistrationView.as_view(),name='registration_register'),
-	    path('template_creator/',views.template_creator,name='template_creator'),
+	path('accounts/register/',MyRegistrationView.as_view(),name='registration_register'),
+	path('template_creator/',views.template_creator,name='template_creator'),
         path('template_editor/<int:temp_id>',views.template_editor,name='template_editor'),
         path('json/<slug:json_slug>/', views.json_popup, name='json_popup'),
-        path('get_more_tables/', views.get_more_tables, name='get_more_tables'),
-        path('autorefresh/', views.autorefresh, name='autorefresh'),
+        path('get_more_tables/', views.get_more_tables, name='get_more_tables')
 
         ]
