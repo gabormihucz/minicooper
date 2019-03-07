@@ -1,5 +1,4 @@
 
-
 var table = $('#resultTable').dataTable( {
 "order": [[ 5, "desc" ]],
 
@@ -7,6 +6,34 @@ var table = $('#resultTable').dataTable( {
 "type":"GET",
 "dataSrc":""
 },
+
+"columnDefs": [
+            {
+                
+                targets:0,
+                render: function ( data, type, row, meta ) {
+                    if(type === 'display'){
+                        data = '<a href="media/pdfFiles"' + data '>' + data + '</a>';
+                    }
+
+                    return data;
+                }
+            },
+
+            {
+                
+                targets:1,
+                render: function ( data, type, row, meta ) {
+                    if(type === 'display'){
+                        data = '<a href="media/jsonFiles"' + data '>' + data + '</a>';
+                    }
+
+                    return data;
+                }
+            }
+
+        ],
+
  "columns": [
          { "data": "fields.name" },
          { "data": "fields.file_name" },
