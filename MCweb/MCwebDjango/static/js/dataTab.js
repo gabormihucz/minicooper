@@ -1,4 +1,3 @@
-
 var table = $('#resultTable').dataTable( {
 "order": [[ 5, "desc" ]],
 
@@ -13,7 +12,7 @@ var table = $('#resultTable').dataTable( {
                 targets:0,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
-                        data = '<a href="media/pdfFiles"' + data '>' + data + '</a>';
+                        data = '<a href="media/pdfFiles"' + data + '>' + data + '</a>';
                     }
 
                     return data;
@@ -25,7 +24,7 @@ var table = $('#resultTable').dataTable( {
                 targets:1,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
-                        data = '<a href="media/jsonFiles"' + data '>' + data + '</a>';
+                        data = '<a href="media/jsonFiles"' + data + '>' + data + '</a>';
                     }
 
                     return data;
