@@ -1,3 +1,6 @@
+// create Datatable, descending based on the 6. column (date) 
+// define ajax call, and how to interpret the received AJAX file
+
 var table = $('#resultTable').dataTable( {
 "order": [[ 5, "desc" ]],
 
@@ -15,15 +18,15 @@ var table = $('#resultTable').dataTable( {
          { "data": "fields.upload_date" }
      ],
 
+// make the first two columns urls pointing to the files 
+
 "columnDefs": [
             {
-                
                 targets:0,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
                         data = '<a href="media/pdfFiles/' + data + '.pdf">' + data + '</a>';
                     }
-
                     return data;
                 }
             },
@@ -34,7 +37,6 @@ var table = $('#resultTable').dataTable( {
                     if(type === 'display'){
                         data = '<a href="media/' + data + '">' + data.substring(10, data.length-5) + '</a>';
                     }
-
                     return data;
                 }
             }
@@ -46,8 +48,7 @@ var table = $('#resultTable').dataTable( {
 
 setInterval( function () {
     table.api().ajax.reload( null, false ); // user paging is not reset on reload
-}, 1000 );
-
+}, 1000 ); // reload every second
 
 
 //jquery function for the datepicker dropdown
@@ -83,7 +84,7 @@ function formattedDate(date) {
 
 }
 
-//
+// helper function to return the date numDays ago
 function getMinusDaysDate(numDays){
     var date = new Date();
     var last = new Date(date.getTime() - (numDays * 24 * 60 * 60 * 1000));
