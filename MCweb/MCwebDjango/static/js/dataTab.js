@@ -6,25 +6,33 @@ var table = $('#resultTable').dataTable( {
 "dataSrc":""
 },
 
+ "columns": [
+         { "data": "fields.pdf_name" },
+         { "data": "fields.file_name" },
+         { "data": "fields.status_string" },
+         { "data": "fields.template_name" },
+         { "data": "fields.template_user" },
+         { "data": "fields.upload_date" }
+     ],
+
 "columnDefs": [
             {
                 
                 targets:0,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
-                        data = '<a href="media/pdfFiles"' + data + '>' + data + '</a>';
+                        data = '<a href="media/pdfFiles/' + data + '.pdf">' + data + '</a>';
                     }
 
                     return data;
                 }
             },
 
-            {
-                
+            {          
                 targets:1,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
-                        data = '<a href="media/jsonFiles"' + data + '>' + data + '</a>';
+                        data = '<a href="media/' + data + '">' + data.substring(10, data.length-5) + '</a>';
                     }
 
                     return data;
@@ -33,14 +41,6 @@ var table = $('#resultTable').dataTable( {
 
         ],
 
- "columns": [
-         { "data": "fields.name" },
-         { "data": "fields.file_name" },
-         { "data": "fields.status_string" },
-         { "data": "fields.template_name" },
-         { "data": "fields.template_user" },
-         { "data": "fields.upload_date" }
-     ],
 } );
 
 
