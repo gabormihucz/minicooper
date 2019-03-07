@@ -19,11 +19,11 @@
                     <tbody>
                         <tr>
                             <td>Minimum Date:</td>
-                            <td><input name="min" id="min" class="datepicker form-control" type="text"></td>
+                            <td><input name="min" id="min" class="datepicker" type="text"></td>
                         </tr>
                         <tr>
                             <td>Maximum Date:</td>
-                            <td><input name="max" id="max" class="datepicker form-control" type="text"></td>
+                            <td><input name="max" id="max" class="datepicker" type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -45,7 +45,7 @@
                 {% for elem in elems %}
                     <tr>
                         <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
-                        <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
+                        <td class = "content"><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
                         <td class="status">{{ elem.status_string }}</td>
                         <td>{{ elem.pdf.template.name }}</td>
                         <td>{{ elem.pdf.template.user.username  }}</td>
@@ -55,8 +55,8 @@
                 {% endfor %}
                 </tbody>
             </table>
-            {% else %}
-                <div><p>There is no data to display!</p></div>
+        {% else %}
+        <div><p>There is no data to display!</p></div>
         {% endif %}
     </div>
 {% endblock %}
@@ -71,4 +71,6 @@
 <script src="/static/js/popup_script.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="/static/js/dataTab.js"></script>
+<script src="{% static 'js/DBupdate.js' %}"></script>
+
 {% endblock %}
