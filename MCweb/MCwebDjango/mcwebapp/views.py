@@ -53,6 +53,7 @@ def get_more_tables(request):
     for j in jsons:
         j.template_name = j.pdf.template.name
         j.template_user = j.pdf.template.user
+        j.pdf_name = j.pdf.name
 
     json = serializers.serialize('json', jsons)
     return HttpResponse(json, content_type='application/json')
