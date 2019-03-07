@@ -42,9 +42,6 @@ class JSONFile(models.Model):
     mandatory_fulfilled = models.BooleanField(null=True)
     status_string = models.CharField(max_length=4, default='Pass')
     slug = models.SlugField(null=True)
-    template_name = models.CharField(max_length=30, null=True)
-    template_user = models.CharField(max_length=30, null=True)
-    pdf_name = models.CharField(max_length = 200, null=True)
 
 
     def save(self, *args, **kwargs):
