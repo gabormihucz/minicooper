@@ -48,15 +48,22 @@ def autorefresh(request):
 @csrf_exempt
 @login_required
 def get_more_tables(request):
-
+    # process info to pass into the results table and pass it in a json
     jsons = JSONFile.objects.all().order_by('-upload_date')
+    data = [] 
     for j in jsons:
-        j.template_name = j.pdf.template.name
-        j.template_user = j.pdf.template.user
-        j.pdf_name = j.pdf.name
-
-    json = serializers.serialize('json', jsons)
-    return HttpResponse(json, content_type='application/json')
+        temp={}
+        temp["fields"]={
+            'pdf_name': j.pdf.name,
+            'template_name': j.pdf.template.name,
+            'template_user': j.pdf.template.user.username,
+            'upload_date': j.upload_date.strftime('%Y-%m-%d %H:%M'),
+            'file_name': j.file_name.name,
+            'status_string': j.status_string
+        }
+        data.append(temp)
+    jsoned = json.dumps(data)
+    return HttpResponse(jsoned, content_type='application/json')
 
 def json_popup(request, json_slug):
     context_dict = {}
