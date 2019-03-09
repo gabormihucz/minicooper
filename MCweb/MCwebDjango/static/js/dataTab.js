@@ -1,4 +1,4 @@
-// create Datatable, descending based on the 6. column (date) 
+// create Datatable, descending based on the 6. column (date)
 // define ajax call, and how to interpret the received AJAX file
 
 var table = $('#resultTable').dataTable( {
@@ -18,7 +18,7 @@ var table = $('#resultTable').dataTable( {
          { "data": "fields.upload_date" }
      ],
 
-// make the first two columns urls pointing to the files 
+// make the first two columns urls pointing to the files
 
 "columnDefs": [
             {
@@ -31,11 +31,11 @@ var table = $('#resultTable').dataTable( {
                 }
             },
 
-            {          
+            {
                 targets:1,
                 render: function ( data, type, row, meta ) {
                     if(type === 'display'){
-                        data = '<a href="media/' + data + '">' + data.substring(10, data.length-5) + '</a>';
+                        data = '<a href="#" class="popup" onclick=pop_json("media/' + data + '")>' + data.substring(10, data.length-5) + '</a>';
                     }
                     return data;
                 }
@@ -112,7 +112,7 @@ $(document).ready(function () {
     );
     if (flag){
         $( "#min" ).datepicker( "setDate" , getMinusDaysDate(7));
-        table.api().ajax.reload( null, false ); 
+        table.api().ajax.reload( null, false );
         flag=false;
     }
     $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true , dateFormat:"dd/mm/yy"});
