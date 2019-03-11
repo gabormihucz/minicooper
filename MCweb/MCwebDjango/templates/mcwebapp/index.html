@@ -13,17 +13,19 @@
 {% block body_block %}
     <div class="container">
         <h2>PDF-JSON pairs</h2>
+
+
         <!-- create table and loop through all jsons to fill it in according to needed data -->
         {% if elems %}
                <table border="0" cellspacing="5" cellpadding="5">
                     <tbody>
                         <tr>
                             <td>Minimum Date:</td>
-                            <td><input name="min" id="min" class="datepicker form-control" type="text"></td>
+                            <td><input name="min" id="min" class="datepicker" type="text"></td>
                         </tr>
                         <tr>
                             <td>Maximum Date:</td>
-                            <td><input name="max" id="max" class="datepicker form-control" type="text"></td>
+                            <td><input name="max" id="max" class="datepicker" type="text"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -45,7 +47,7 @@
                 {% for elem in elems %}
                     <tr>
                         <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
-                        <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
+                        <td class = "content"><a id="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
                         <td class="status">{{ elem.status_string }}</td>
                         <td>{{ elem.pdf.template.name }}</td>
                         <td>{{ elem.pdf.template.user.username  }}</td>
@@ -55,20 +57,41 @@
                 {% endfor %}
                 </tbody>
             </table>
-            {% else %}
-                <div><p>There is no data to display!</p></div>
+            <!--- POP UP MODAL BEGIN---->
+            <div class="modal fade" id="jsonpop" tabindex="-1" role="dialog" aria-labelledby="jsonpoplabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">JSON Output Window</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                  </div>
+                  <div class="modal-footer">
+                    <a id="json-downloader-link" hidden></a>
+                    <button id="download-button" type="button" class="btn btn-primary">Download</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--- POP UP MODAL END---->
+        {% else %}
+        <div><p>There is no data to display!</p></div>
         {% endif %}
     </div>
 {% endblock %}
 
 {% block script_block %}
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.min.js' %}"></script>
 <script src="/static/js/popup_script.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="/static/js/dataTab.js"></script>
+
 {% endblock %}

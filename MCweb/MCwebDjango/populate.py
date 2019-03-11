@@ -32,7 +32,7 @@ def populate():
     t.save()
 
     # Create PDFFile.
-    p = PDFFile.objects.get_or_create(name='PdfFile')[0]
+    p = PDFFile.objects.get_or_create(name='SamplePDF')[0]
     p.upload_date = curr_time
     p.file_name = 'pdfFiles/SamplePDF.pdf'
     p.template = t
