@@ -33,13 +33,6 @@
     </div>
 
       <ul class="nav navbar-nav navbar-right">
-          <form class="form-inline my-2 my-lg-0" action="{% url 'search' %}" method="get">
-              <div class="input-group">
-                  <input required name="search-bar" type="text" class="form-control"
-                         placeholder="Search for files">
-
-              </div>
-          </form>
 
         <li>
           <a class="nav-link" href="{% url 'auth_logout' %}?next=/">Log Out</a>

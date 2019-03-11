@@ -1,4 +1,3 @@
-
 import sys
 import os
 import json
@@ -8,7 +7,7 @@ from mcwebapp.pdf2json import simpleOCR
 #recursively attempts to write copies of the json file until one can be written without overwriting anything
 def write_output_recur(output_path, pdf_name, textOutput, iter = 0):
     try:
-        with open(output_path + pdf_name + "(" + str(2+iter) + ").json","x") as f:
+        with open(output_path + pdf_name + "(" + str(2+iter) + ").json","x",encoding="utf8") as f:
             f.write(textOutput)
         return iter + 2
     except:
@@ -33,9 +32,12 @@ def pdf_proccess(template_name, template_path,  pdf_name, input_path, output_pat
                     print("mandatory field unfulfilled")
                     mandatory_field_fulfilled = False
 
+
+    copies = 1
+    # print(textTest)
     textOutput = json.dumps(textOutput, ensure_ascii=False)
     try:
-        with open(output_path + pdf_name + ".json","x") as f:
+        with open(output_path + pdf_name + ".json","x",encoding="utf8") as f:
             f.write(textOutput)
         copies = 1
     except:

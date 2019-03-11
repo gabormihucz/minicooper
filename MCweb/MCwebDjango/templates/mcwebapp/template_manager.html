@@ -117,7 +117,33 @@ Search Results
     You are out of luck! There is no data to display! <br />
 
     {% endif %}
+    {% if elems.has_other_pages %}
+        <ul class="pagination">
+            {% if elems.has_previous %}
+                <li><a href="?page={{ elems.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in elems.paginator.page_range %}
+                {% if elems.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if elems.has_next %}
+                <li><a href="?page={{ elems.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
   </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
   {% endblock %}
 
   {% block script_block %}
@@ -227,19 +253,42 @@ Search Results
 
       // send a post request
       var message = {};
-      message["code"] = "deleteTemplate";
+      message["code"] = "deleteTemplate_request";
       message["template_id"] = templateID;
-
+      // check if user actually wants to delete a message
       var escape = window.confirm("Are you sure you want to delete a template?");
       if (escape == true){
         var xhr = new XMLHttpRequest();
         var url = "http://127.0.0.1:8000/template_manager/";
-
         var response;
 
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
             response = xhr.responseText;
+            var total_delete = window.confirm(response);
+            if(total_delete==true){
+              // actual dletion of template and related pdfs
+              message = {};
+              message["code"] = "deleteTemplate";
+              message["template_id"] = templateID;
+              xhr = new XMLHttpRequest();
+              url = "http://127.0.0.1:8000/template_manager/";
+              xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                  response = xhr.responseText;
+                  }
+                }
+                xhr.open("POST", url, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                // console.log(JSON.stringify(message));
+                xhr.send(JSON.stringify(message));
+                console.log("post_sent pdfs and temp will be deleted");
+                document.getElementById("Template_" + templateID).style.display = "none";
+                document.getElementById(rowIDHTML).style.display = "none";
+              }
+
+            }
           }
         }
 
@@ -249,11 +298,8 @@ Search Results
         // console.log(JSON.stringify(message));
         xhr.send(JSON.stringify(message));
         console.log("post_sent");
-
-        document.getElementById("Template_" + templateID).style.display = "none";
-        document.getElementById(rowIDHTML).style.display = "none";
       }
-    }
+
 
     function editTemplate(id) {
       var templateID = id.substr(12);

@@ -7,7 +7,7 @@ Corey Aynsley (2266643a@student.gla.ac.uk)
    * Iteration 4: Porting client side pdf processing to web app, Error checking for pdf proccessing, Ensuring compatibilty between template creator and pdf processing 
    * Iteration 5:  
 
-Gabor Mihucz (2239495m@student.gla.ac.uk)  
+Gabor Mihucz (magnarch) (2239495m@student.gla.ac.uk)  
  * Responsibilites:  
    * Iteration 2: wiki, CI, gitlab organisation, customer communication, notetaking  
    * Iteration 3: file watching, signup/login functionality, PythonAnywhere hosting, gitlab organisation, customer communication  

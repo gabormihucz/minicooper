@@ -35,11 +35,12 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
-#helper html file for ajax call (in index.html)
-@login_required
-def get_more_tables(request):
-    jsons = JSONFile.objects.all().order_by('-upload_date')
-    return render(request, 'mcwebapp/get_more_tables.html', {'elems': jsons})
+def json_popup(request, json_slug):
+    context_dict = {}
+    json = JSONFile.objects.get(slug = json_slug)
+    context_dict['json'] = json
+
+    return render(request, 'mcwebapp/json_popup.html', context_dict)
 
 
 def json_popup(request, json_slug):
@@ -52,9 +53,31 @@ def json_popup(request, json_slug):
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
 def template_creator(request):
+    if request.method =="POST":
+        try:
+            # translating post message json into python dictionary
+            data = json.loads(request.body.decode('utf-8'))
+
+            try:
+                template_already_exist = TemplateFile.objects.get(name=data["template_name"])
+                return HttpResponse("Template with this name already exist, pick a new name")
+            # creating template object
+            except:
+                template = TemplateFile()
+                template.name = data["template_name"]
+                template.upload_date = timezone.now()
+                with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+                    o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+                template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+                template.user = request.user
+                template.save()
+                return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
+        except:
+            return HttpResponse("Template coudn't be save")
     if not request.user.is_superuser:
         return HttpResponseRedirect("/")
     return render(request,'mcwebapp/template_creator.html',{})
+
 
 @login_required
 def template_editor(request, temp_id=-1):
@@ -62,15 +85,28 @@ def template_editor(request, temp_id=-1):
     # create a new one and update the fields of an old template
     if request.method == "POST":
         data = json.loads(request.body.decode('utf-8'))
-        template = TemplateFile.objects.get(id=data['template_id'])
-        os.remove("media/templateFiles/"+template.name+".json")
-        template.name = data['template_name']
-        with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
-            o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-        template.file_name.name = "templateFiles/"+data["template_name"]+".json"
-        template.save()
 
-        return HttpResponse("http://127.0.0.1:8000/template_manager/")
+        try:
+            template_already_exist = TemplateFile.objects.get(name=data["template_name"])
+            print("temp with this name exist already")
+            print(template_already_exist.id)
+            print(type(data['template_id']))
+            if template_already_exist.id != int(data['template_id']):
+                return HttpResponse("Template with this name already exist, pick a new name")
+            else:
+                print("here")
+                go_to_except = 9/0 #go to except
+        except:
+            print("in except")
+            template = TemplateFile.objects.get(id=data['template_id'])
+            os.remove("media/templateFiles/"+template.name+".json")
+            template.name = data['template_name']
+            with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
+                o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+            template.file_name.name = "templateFiles/"+data["template_name"]+".json"
+            template.save()
+
+            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/")
     #Trying to preload a template so that it's fields can be seen by editor_script.js
     try:
         temp = TemplateFile.objects.get(id=temp_id)
@@ -83,20 +119,21 @@ def template_editor(request, temp_id=-1):
         return HttpResponse("Template could not be found")
 
 @login_required
-# get the search query, and filter JSON files whether the query appears in them
-# and return the matching JSON objects in a paginated list
-def search(request):
-    query = request.GET.get('search-bar', '')
-    jsons = JSONFile.objects.filter(name__icontains=query)
-    context_dict = paginate(jsons, request)
-    return render(request, 'mcwebapp/search_files.html', context_dict)
-
-@login_required
 #start
 def search_templates(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        template_manager_code_check(data)
+        response = template_manager_code_check(data)
+
+        if response != None:
+            message="PDF's that will be deleted as a result of deleting a template:\n"
+            pdfCounter = 0
+            for pdf in response:
+                message += pdf.name+"\n"
+                pdfCounter +=1
+            if pdfCounter == 0:
+                message += "No Pdf will be affected\n"
+            return HttpResponse(message)
 
     query = request.GET.get('search-bar', '')
     templates = TemplateFile.objects.filter(name__icontains=query)
@@ -111,7 +148,18 @@ def search_templates(request):
 def manage_templates(request, temp_id=-1):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        template_manager_code_check(data)
+        response = template_manager_code_check(data)
+
+        if response != None:
+            message="PDF's that will be deleted as a result of deleting a template:\n"
+            pdfCounter = 0
+            for pdf in response:
+                message += pdf.name+"\n"
+                pdfCounter +=1
+            if pdfCounter == 0:
+                message += "No Pdf will be affected\n"
+            return HttpResponse(message)
+
 
     templates = TemplateFile.objects.all()
     patterns = MatchPattern.objects.all()
@@ -122,27 +170,6 @@ def manage_templates(request, temp_id=-1):
     response = render(request,'mcwebapp/template_manager.html',context_dict)
     return response
 
-
-@csrf_exempt
-def save_template(request):
-    if request.method =="POST":
-        try:
-            # translating post message json into python dictionary
-            data = json.loads(request.body.decode('utf-8'))
-            # creating template object
-            template = TemplateFile()
-            template.name = data["template_name"]
-            template.upload_date = timezone.now()
-            with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
-                o.write(json.dumps(data["rectangles"], ensure_ascii=False))
-            template.file_name.name = "templateFiles/"+data["template_name"]+".json"
-            template.user = request.user
-            template.save()
-            return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
-        except:
-            return HttpResponse("Template coudn't be save")
-            #end
-    return render(request,'mcwebapp/saveTemplate.html',{})
 
 
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
@@ -225,6 +252,24 @@ def template_manager_code_check(data):
         pattern.template = template
         pattern.save()
 
+    elif data['code'] == "deleteTemplate_request":
+        template = TemplateFile.objects.get(id=data["template_id"])
+        pdfs_related = PDFFile.objects.filter(template=template)
+        return pdfs_related
     elif data["code"] == "deleteTemplate":
         template = TemplateFile.objects.get(id=data["template_id"])
+        pdfs_related = PDFFile.objects.filter(template=template)
+        for pdf in pdfs_related:
+            try:
+                json = JSONFile.objects.get(pdf=pdf)
+                os.remove("media/"+json.file_name.name)
+                os.remove("media/"+pdf.file_name.name)
+            except:
+                pass
+        try:
+            os.remove("media/"+template.file_name.name)
+        except:
+            pass
         template.delete()
+
+        return None

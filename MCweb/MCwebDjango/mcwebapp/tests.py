@@ -124,12 +124,8 @@ class SaveTemplateTest(TestCase):
         c = Client()
         c.login(username='testuser', password='secret')
         body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
-        response = c.post('/save_template/',body, content_type="application/json")
+        response = c.post('/template_creator/',body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8')[0:2],"OK")
-
-    def testVisit(self):
-        response = self.client.get('/save_template/')
-        self.assertEqual(response.status_code, 200)
 
 
 class UploadPdfTest(TestCase):
@@ -143,7 +139,8 @@ class UploadPdfTest(TestCase):
                                     user=User.objects.get(username = 'testuser'))
         MatchPattern.objects.create(regex="test", template=template)
 
-    def testPost(self):
+    # testing if code fails if notrelevant pdf is uploaded
+    def testPostWrongPdf(self):
         c = Client()
         data = "SGVsbG8gSSBhbSBhIHBkZiBtYWRlIGZvciB0ZXN0IHB1cnBvc2UK"
         body = {"filename":"testPdf","content":data}
@@ -152,22 +149,58 @@ class UploadPdfTest(TestCase):
 
         self.assertEqual(response.content.decode('utf-8'),"Pdf sent over post seems to be corrupted")
 
+    # check if the Pdf has been assigned the correct template
+    def testPdfToTemplateMatching(self):
+        # Creating a template file that will be used to create a DB instance of template model
+        with open("media/templateFiles/template_testfile.json", "w") as t:
+            dictJson = {'default0': {'x1': 76, 'y1': 73, 'x2': 143, 'y2': 88, 'mandatory': True}, 'size': {'x': 596, 'y': 843}}
+            t.write(json.dumps(dictJson,ensure_ascii=False))
+
+        # creating a DB instance of a template model
+        template = TemplateFile.objects.create(name="template_testfile",upload_date=timezone.now(),
+                                    user=User.objects.get(username = 'testuser'))
+        template.file_name.name = "templateFiles/template_testfile.json"
+
+        # creating a pattern which will link a template with an incoming pdf file
+        pattern = MatchPattern.objects.create(regex="upload",template=template)
+
+        # loading binaries of a pdf that will later be uploaded
+        with open("mcwebapp/pdfs/testfile.pdf","rb") as f:
+            pdf_as_binary = base64.b64encode(f.read())
+
+        # creating a post message that will be send to a server (related view - upload_pdf )
+        body = {"filename":"uploadCheck","content":pdf_as_binary.decode('utf-8')}
+        c = Client()
+        # sending a post
+        response = c.post('/upload_pdf/',body,content_type="application/json")
+
+        # opening an output of ocr
+        with open("media/jsonFiles/uploadCheck.json","r") as j:
+            content = j.read()
+
+        # parsing it from json to get just the related value
+        content = json.loads(content)
+        content = content["default0"]
+
+        # asserton if post was parsed succesfully and if the output is right
+        self.assertEqual(response.content.decode('utf-8'), "Post request parsed succesfully")
+        self.assertEqual(content, "Lorem ipsum")
+
+        # rmoving the files that had been created during the test execution
+        os.remove("media/jsonFiles/uploadCheck.json")
+        os.remove("media/pdfFiles/uploadCheck.pdf")
+        os.remove("media/templateFiles/template_testfile.json")
+
+    # testing if html-helper page loads
     def testVisit(self):
         c = Client()
         c.login(username='testuser', password='secret')
         response = self.client.get('/upload_pdf/')
         self.assertEqual(response.status_code, 200)
 
-    # check if the Pdf has been assigned the correct template
-    #def testPdfToTemplateMatching(self):
-    #    post("mcwebapp/pdfs/testfile.pdf")
-    #    pdf = PDFFile.objects.get(name="testfile")
-    #    self.assertEqual(pdf.template.name, "SampleTemplate")
-
-
 # this test requires populating the database
 # checks if there is any JSONFile, which has the pattern 'File' in it
-class SearchTest(TestCase):
+class SearchTemplateTest(TestCase):
 
     def setUp(self):
         populate.populate()
@@ -177,17 +210,17 @@ class SearchTest(TestCase):
 
     # test passes if the search page returns the status code 200
     def test_search_page_exists(self):
-        files = JSONFile.objects.filter(name__icontains='File')[:10]
-        url = reverse('search_files') + "?search-bar=File"
+        templates = TemplateFile.objects.filter(name__icontains='Sample')[:10]
+        url = reverse('searchTemplates') + "?search-bar=Sample"
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
     # test passes if search returns correct results
     def test_search_gives_correct_results(self):
-        files = JSONFile.objects.filter(name__icontains='File')[:10]
-        url = reverse('search_files') + "?search-bar=File"
+        templates = TemplateFile.objects.filter(name__icontains='Sample')[:10]
+        url = reverse('searchTemplates') + "?search-bar=Sample"
         response = self.client.get(url)
-        self.assertQuerysetEqual(response.context['elems'], [repr(elt) for elt in files])
+        self.assertQuerysetEqual(response.context['elems'], [repr(template) for template in templates])
 
 
 class PdfProcessTest(TestCase):

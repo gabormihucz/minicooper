@@ -2,31 +2,73 @@
 
 {%load staticfiles%}
 
-{% block script_block %}
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="{% static 'js/DBupdate.js' %}"></script>
-<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.min.js' %}"></script>
-
-
-
+{% block css_block %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 {% endblock %}
 
 {% block body_block %}
-    <div class="container" >
-        <h2 >PDF-JSON pairs</h2>
+    <div class="container">
+        <h2>PDF-JSON pairs</h2>
         <!-- create table and loop through all jsons to fill it in according to needed data -->
         {% if elems %}
-            <div id="autotable">
-              
-            </div>
- 
-        {% else %}
-            No data to display! <br/>
+               <table border="0" cellspacing="5" cellpadding="5">
+                    <tbody>
+                        <tr>
+                            <td>Minimum Date:</td>
+                            <td><input name="min" id="min" class="datepicker form-control" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>Maximum Date:</td>
+                            <td><input name="max" id="max" class="datepicker form-control" type="text"></td>
+                        </tr>
+                    </tbody>
+                </table>
 
+            <table id="resultTable" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>PDF</th>
+                    <th>JSON</th>
+                    <th>Status</th>
+                    <th>Template</th>
+                    <th>User</th>
+                    <th>Date</th>
 
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for elem in elems %}
+                    <tr>
+                        <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
+                        <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
+                        <td class="status">{{ elem.status_string }}</td>
+                        <td>{{ elem.pdf.template.name }}</td>
+                        <td>{{ elem.pdf.template.user.username  }}</td>
+                        <td>{{ elem.upload_date }}</td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div><p>There is no data to display!</p></div>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block script_block %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script src="/static/js/popup_script.js"></script>
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="/static/js/dataTab.js"></script>
 {% endblock %}
