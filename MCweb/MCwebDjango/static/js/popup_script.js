@@ -1,29 +1,27 @@
+//called when json link is clicked (assigned in dataTab.js)
+function pop_json(file_target){
+  $.get(file_target, function (data) {
 
-var matchClass=['popup'];
+    var jsondata = data;
+    //Prepare the table to show in the popup
+    var output_html = '<table class="table table-bordered"><thead><tr><th scope="col">Key</th><th scope="col">Value</th></tr></thead><tbody>'
+    $.each(jsondata, function(key,value){
+      output_html += '<tr> <td>' + key + '</td><td>' + value +'</td></tr>'
+    });
+    output_html +='</tbody></table>'
 
-var popup = 'width=800,height=600,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=20,top=20';
+    //Set the table as popup body
+    $('.modal-body').html(output_html);
 
-function eventHandler() {
-  var popupSpecs = matchClass[0]
-  //Create a "unique" name for the window using a random number
-  var popurl = this.href;
-  var popupName = Math.floor(Math.random()*10000001);
-  //Opens the pop-up window according to the specified specs
-  newwindow=window.open(popurl,popupName,eval(popupSpecs));
-  return false;
-}
+    //Prepare the download data
+    var download_data = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(jsondata));
+    var download_element = $('#json-downloader-link');
+    download_element.attr("href", "data:"+download_data);
+    download_element.attr("download", file_target.substring(16) );
+    $('#download-button').on('click',function(e){
+      download_element[0].click();
+    });
+  });
+  $('#jsonpop').modal('show');
 
-//Attach the onclick event to all your links that have the specified CSS class names
-function attachPopup(){
-  var linkElems = document.getElementsByTagName('a'),i;
-  for (i in linkElems){
-      if((" "+linkElems[i].className+" ") == " popup "){
-        linkElems[i].onclick = eventHandler;
-  }
-  }
-}
-
-//Call the function when the page loads
-window.onload = function (){
-    attachPopup();
 }

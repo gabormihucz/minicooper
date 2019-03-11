@@ -1,8 +1,54 @@
-    var table = $('#resultTable').DataTable({
-    	"order": [[ 5, "desc" ]]
+// create Datatable, descending based on the 6. column (date)
+// define ajax call, and how to interpret the received AJAX file
+
+var table = $('#resultTable').dataTable( {
+"order": [[ 5, "desc" ]],
+
+"ajax": {"url":'get_more_tables',
+"type":"GET",
+"dataSrc":""
+},
+
+ "columns": [
+         { "data": "fields.pdf_name" },
+         { "data": "fields.file_name" },
+         { "data": "fields.status_string" },
+         { "data": "fields.template_name" },
+         { "data": "fields.template_user" },
+         { "data": "fields.upload_date" }
+     ],
+
+// make the first two columns urls pointing to the files
+
+"columnDefs": [
+            {
+                targets:0,
+                render: function ( data, type, row, meta ) {
+                    if(type === 'display'){
+                        data = '<a href="media/pdfFiles/' + data + '.pdf">' + data + '</a>';
+                    }
+                    return data;
+                }
+            },
+
+            {
+                targets:1,
+                render: function ( data, type, row, meta ) {
+                    if(type === 'display'){
+                        data = '<a href="#" class="popup" onclick=pop_json("media/' + data + '")>' + data.substring(10, data.length-5) + '</a>';
+                    }
+                    return data;
+                }
+            }
+
+        ],
+
+} );
 
 
-    });
+setInterval( function () {
+    table.api().ajax.reload( null, false ); // user paging is not reset on reload
+}, 1000 ); // reload every second
 
 
 //jquery function for the datepicker dropdown
@@ -38,7 +84,7 @@ function formattedDate(date) {
 
 }
 
-//
+// helper function to return the date numDays ago
 function getMinusDaysDate(numDays){
     var date = new Date();
     var last = new Date(date.getTime() - (numDays * 24 * 60 * 60 * 1000));
@@ -55,7 +101,7 @@ $(document).ready(function () {
             var min = $('#min').datepicker( "getDate");
             var max = $('#max').datepicker("getDate");
             // need to change str order before making  date obect since it uses a new Date("mm/dd/yyyy") format for short date.
-            var startDate = new Date(formattedDate(data[5]));
+            var startDate = new Date(data[5]);
 
             if (min === null && max === null) { return true; }
             if (min === null && startDate <= max) { return true;}
@@ -66,7 +112,7 @@ $(document).ready(function () {
     );
     if (flag){
         $( "#min" ).datepicker( "setDate" , getMinusDaysDate(7));
-        table.draw();
+        table.api().ajax.reload( null, false );
         flag=false;
     }
     $("#min").datepicker({ onSelect: function () { table.draw(); }, changeMonth: true, changeYear: true , dateFormat:"dd/mm/yy"});
@@ -76,7 +122,7 @@ $(document).ready(function () {
 
     // Event listener to the two range filtering inputs to redraw on input
     $('#min, #max').change(function () {
-        table.draw();
+        table.api().ajax.reload( null, false );
     });
 
     //Set color of status according to its value

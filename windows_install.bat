@@ -12,6 +12,16 @@ powershell -Command "Invoke-WebRequest https://digi.bib.uni-mannheim.de/tesserac
 start /W tesseract.exe
 DEL tesseract.exe
 
+ECHO "Installing Windows Server 2003 Resource Kit Tools..."
+powershell -Command "Invoke-WebRequest https://download.microsoft.com/download/8/e/c/8ec3a7d8-05b4-440a-a71e-ca3ee25fe057/rktools.exe -OutFile rktools.exe"
+start /W rktools.exe
+DEL rktools.exe
+
+pathman /au "C:\Program Files (x86)\Tesseract-OCR"
+pathman /au "%USERPROFILE%\AppData\Local\Programs\Python\Python37\Scripts\"
+pathman /au "%USERPROFILE%\AppData\Local\Programs\Python\Python37\"
+
+
 ECHO "Installing virtualenv..."
 pip3 install virtualenv
 
