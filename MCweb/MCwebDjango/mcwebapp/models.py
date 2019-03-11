@@ -43,12 +43,16 @@ class JSONFile(models.Model):
     status_string = models.CharField(max_length=4, default='Pass')
     slug = models.SlugField(null=True)
 
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(JSONFile, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
+
+
+
 
 
 class MatchPattern(models.Model):

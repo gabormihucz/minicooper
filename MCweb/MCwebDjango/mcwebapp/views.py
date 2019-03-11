@@ -13,7 +13,8 @@ from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process
 
 import json, base64, datetime, pytz, os, re
-
+from django.http import HttpResponse
+from django.core import serializers
 
 # helper function for paginated lists
 
@@ -34,6 +35,26 @@ def index(request):
 
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
+
+@csrf_exempt
+@login_required
+def get_more_tables(request):
+    # process info to pass into the results table and pass it in a json
+    jsons = JSONFile.objects.all().order_by('-upload_date')
+    data = [] 
+    for j in jsons:
+        temp={}
+        temp["fields"]={
+            'pdf_name': j.pdf.name,
+            'template_name': j.pdf.template.name,
+            'template_user': j.pdf.template.user.username,
+            'upload_date': j.upload_date.strftime('%Y-%m-%d %H:%M'),
+            'file_name': j.file_name.name,
+            'status_string': j.status_string
+        }
+        data.append(temp)
+    jsoned = json.dumps(data)
+    return HttpResponse(jsoned, content_type='application/json')
 
 def json_popup(request, json_slug):
     context_dict = {}

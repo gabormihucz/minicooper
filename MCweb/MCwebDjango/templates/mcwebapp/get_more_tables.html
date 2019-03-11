@@ -1,0 +1,35 @@
+{% load staticfiles %}
+
+{% block script_block %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/static/js/popup_script.js"></script>
+<script src="/static/js/dataTab.js"></script>
+{% endblock %}
+		<table id="resultTable" class="table table-bordered">
+            <thead>    
+                <tr>
+                    <th>PDF</th>
+                    <th>JSON</th>
+                    <th>Status</th>
+                    <th>Template</th>
+                    <th>User</th>
+                    <th>Date</th>
+
+                </tr>
+            </thead>
+
+<tbody>
+{% for elem in elems %}
+    <tr>
+        <td><a href="{{ elem.pdf.file_name.url }}">{{elem.pdf.name}}</a></td>
+        <td><a href="json/{{ elem.slug }}" class="popup">{{elem.name}}</a></td>
+        <td>{{ elem.status_string }}</td>
+        <td>{{ elem.pdf.template.name }}</td>
+        <td>{{ elem.pdf.template.user.username  }}</td>
+        <td>{{ elem.upload_date }}</td>
+
+    </tr>
+{% endfor %}
+</tbody>
+</table>
