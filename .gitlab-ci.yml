@@ -28,6 +28,7 @@ build:
     - sudo rm -r venv/
     - cd ..
     - zip -r deployment.zip dissertation
+    - mv deployment.zip dissertation
   artifacts:
     paths:
       - "*.pdf"
