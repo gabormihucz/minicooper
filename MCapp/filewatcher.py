@@ -18,12 +18,13 @@ def main(argv):
         time.sleep(1)
         filename_list = [f for f in os.listdir(WATCHED_FOLDER) if f.endswith('.pdf')] # get all PDF files in the watched folder in a list (of string representing the file names)
         for filename in filename_list:
-            post_to_server.post(WATCHED_FOLDER, filename, IP_SERVER) # upload them to the database
 
+            # remove the PDF file from the folder only if a template was found by the server
+            if post_to_server.post(WATCHED_FOLDER, filename, IP_SERVER) != -1: # upload them to the database
+                # remove the filename from the list of files in the directory, and remove the file from the directory
+                os.remove(WATCHED_FOLDER +'/'+ filename)
 
-            # remove the filename from the list of files in the directory, and remove the file from the directory
             filename_list.remove(filename)
-            os.remove(WATCHED_FOLDER +'/'+ filename)
     else:
         print("program could not deliver")
 

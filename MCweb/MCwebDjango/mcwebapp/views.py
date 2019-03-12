@@ -16,14 +16,15 @@ import json, base64, datetime, pytz, os, re
 from django.http import HttpResponse
 from django.core import serializers
 
-# helper function for paginated lists
 
+# helper function for paginated lists
 def paginate(input_list, request):
     page = request.GET.get('page', 1)
     paginator = Paginator(input_list, 10)
     elems = paginator.page(page)
 
     return {'elems': elems}
+
 
 @login_required
 def index(request):
@@ -36,12 +37,14 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
+
 @csrf_exempt
 @login_required
 def get_more_tables(request):
     # process info to pass into the results table and pass it in a json
     jsons = JSONFile.objects.all().order_by('-upload_date')
-    data = [] 
+    data = []
+
     for j in jsons:
         temp={}
         temp["fields"]={
@@ -53,15 +56,17 @@ def get_more_tables(request):
             'status_string': j.status_string
         }
         data.append(temp)
+
     jsoned = json.dumps(data)
+
     return HttpResponse(jsoned, content_type='application/json')
 
+
 def json_popup(request, json_slug):
-    context_dict = {}
-    json = JSONFile.objects.get(slug = json_slug)
-    context_dict['json'] = json
+    context_dict = {'json': JSONFile.objects.get(slug = json_slug)}
 
     return render(request, 'mcwebapp/json_popup.html', context_dict)
+
 
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
@@ -73,20 +78,24 @@ def template_creator(request):
 
             try:
                 template_already_exist = TemplateFile.objects.get(name=data["template_name"])
-                return HttpResponse("Template with this name already exist, pick a new name")
+                return HttpResponse("Template with this name already exist, pick a new name")        
             # creating template object
             except:
                 template = TemplateFile()
                 template.name = data["template_name"]
                 template.upload_date = timezone.now()
+
                 with open("media/templateFiles/"+data["template_name"]+".json", "w") as o:
                     o.write(json.dumps(data["rectangles"], ensure_ascii=False))
+                
                 template.file_name.name = "templateFiles/"+data["template_name"]+".json"
                 template.user = request.user
                 template.save()
+                
                 return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/"+str(template.id))
         except:
             return HttpResponse("Template coudn't be save")
+    
     if not request.user.is_superuser:
         return HttpResponseRedirect("/")
     return render(request,'mcwebapp/template_creator.html',{})
@@ -101,11 +110,12 @@ def template_editor(request, temp_id=-1):
 
         try:
             template_already_exist = TemplateFile.objects.get(name=data["template_name"])
-            print("temp with this name exist already")
+            print("a template with this name already exists")
             print(template_already_exist.id)
             print(type(data['template_id']))
+
             if template_already_exist.id != int(data['template_id']):
-                return HttpResponse("Template with this name already exist, pick a new name")
+                return HttpResponse("A template with this name already exists, please pick a new name")
             else:
                 print("here")
                 go_to_except = 9/0 #go to except
@@ -120,13 +130,15 @@ def template_editor(request, temp_id=-1):
             template.save()
 
             return HttpResponse("OKhttp://127.0.0.1:8000/template_manager/")
+
     #Trying to preload a template so that it's fields can be seen by editor_script.js
     try:
         temp = TemplateFile.objects.get(id=temp_id)
         with open("media/"+str(temp.file_name),"r") as t:
             file = t.read()
         tempDictJSON = {"id":temp.id,"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
-        tempDict ={"JSON":tempDictJSON}
+        tempDict = {"JSON":tempDictJSON}
+
         return render(request,'mcwebapp/template_editor.html',tempDict)
     except:
         return HttpResponse("Template could not be found")
@@ -184,20 +196,22 @@ def manage_templates(request, temp_id=-1):
     return response
 
 
-
 #view required to handle POST request from mcApp. We still need to tackle how we will recognize how post is linked to a user, so far authentication not required
 @csrf_exempt
 def upload_pdf(request):
     if request.method =="POST":
         #decoding post message
         json_post = request.body.decode('utf-8')
+
         #translating json into python dictionary
         data = json.loads(json_post)
+
         #retranslating binary of the pdf into a system readable bytes
         content = data["content"].encode('utf-8')
         content = base64.b64decode(content)
         name = data["filename"]
         upload_date = timezone.now()
+        
         # Look through all MatchPatterns
         for pattern in MatchPattern.objects.all():
             match = re.findall(pattern.regex, name)
@@ -208,7 +222,7 @@ def upload_pdf(request):
 
         # if no match was found, use the sample template
         if not match:
-            template = TemplateFile.objects.get(name="SampleTemplate")
+            return HttpResponse("A template was not found for the received PDF")
 
         #creating a pdf in media/pdffiles
         with open("media/pdfFiles/"+name+".pdf", "wb") as o:
@@ -248,7 +262,7 @@ def upload_pdf(request):
 #end
         except:
             return HttpResponse("Pdf sent over post seems to be corrupted")
-    #if not a post visualise the template that is responsible for handeling posts
+    #if not a post visualise the template that is responsible for handling posts
     return render(request,'mcwebapp/uploadPDF.html',{})
 
 #helper functions
