@@ -27,7 +27,7 @@ build:
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - mkdir deployment
-    - cp -r * deployment/
+    - cp -r !(deployment) deployment/
     - zip -r deployment.zip deployment/
     - sudo rm -rf deployment/
   artifacts:
