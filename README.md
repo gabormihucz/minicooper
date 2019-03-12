@@ -7,10 +7,12 @@ If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then
 
 ## OS Requirements:
 
-- Currently the website has been tested on Debian-based Linux environments
+- Currently the website has been tested on Debian-based Linux and on Windows environments
 - The app works on Windows and UNIX-based systems as well
 
 ## Deployment guide: 
+
+### On Linux
 
 Extract the zipped project file to a directory of your choice.  
 
@@ -30,6 +32,25 @@ In order to start the file watching, go to the MCapp folder and execute
 `python3 filewatcher.py`
 
 You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
+
+### On Windows
+
+Double-click on `windows_install.bat`. If you get any error regarding "python3", just ignore it.
+Install Tesseract and Windows Server by following the pop-up setup wizards with default settings.
+
+Once that's done, open your preferred web browser and go to http://127.0.0.1:8000/  to load the website  
+
+To login as a superuser:  
+username: superuser  
+password: superpass  
+
+In order to start the file watching, go to the MCapp folder and double-click
+
+`python3 filewatcher.py`
+
+Leave the black window open as long as you want to have the file watcher running.
+
+The default folder the PDFs are uploaded to the website is the current working directory of `filewatcher.py`. You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
 
 
 ## User guide
