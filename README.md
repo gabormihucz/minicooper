@@ -46,7 +46,7 @@ password: superpass
 
 In order to start the file watching, go to the MCapp folder and double-click
 
-`python3 filewatcher.py`
+`filewatcher.py`
 
 Leave the black window open as long as you want to have the file watcher running.
 
