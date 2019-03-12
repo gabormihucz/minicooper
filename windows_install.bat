@@ -18,7 +18,7 @@ start /W rktools.exe
 DEL rktools.exe
 
 pathman /au "C:\Program Files (x86)\Tesseract-OCR"
-pathman /au "C:\Program Files\Poppler"
+pathman /au "C:\Program Files\Poppler\bin"
 pathman /au "%USERPROFILE%\AppData\Local\Programs\Python\Python37\Scripts\"
 pathman /au "%USERPROFILE%\AppData\Local\Programs\Python\Python37\"
 
