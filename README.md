@@ -45,6 +45,9 @@ You can change the watched folder in `filewatcher.py` and you can change the ser
 
 ### On Windows
 
+Firstly, you will need to install poppler. [Download poppler by clicking here.](http://blog.alivate.com.au/wp-content/uploads/2018/10/poppler-0.68.0_x86.7z) 
+Extract the contents of the poppler directory in the archive you just downloaded under `C:\Program Files\Poppler`.
+
 Double-click on `windows_install.bat`. If you get any error regarding "python3", just ignore it.
 Install Tesseract and Windows Server by following the pop-up setup wizards with default settings.
 
