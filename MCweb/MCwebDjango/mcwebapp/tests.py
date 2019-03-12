@@ -110,6 +110,18 @@ class LogInTest(TestCase):
         # should be logged in now
         self.assertTrue(response.context['user'].is_active)
 
+class GetMoreTablesTest(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.user.save()
+        self.client.force_login(self.user)
+
+    def test_get_more_tables_redirect(self):
+        response = self.client.get(reverse('get_more_tables'))
+        # get more tables should respond OK after having logged in
+        self.assertEqual(response.status_code, 200)
+
 
 class SaveTemplateTest(TestCase):
 
