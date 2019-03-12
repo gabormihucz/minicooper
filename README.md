@@ -1,6 +1,16 @@
 # dissertation
 CS15 --- team project
 
+## User Scenario
+
+Company A deals with thousands of PDF files each day. There is a dedicated employee whose job is to manually open these PDFs and enter the relevant information on them to an online form.
+There are only a few types of PDFs however (e.g. flight tickets, invoices for a certain product, etc.), and the relevant information (e.g. price, quantity, date, etc.) appears at the place on each PDF.
+Company A would like to automise this repetitive task by converting the contents of the PDFs to JSON format (key: value pairs, where the value should be the relevant content of the PDF), based on user-defined templates.
+Templates indicate the areas where the relevant content of a PDF will be found. Each area (a rectangle on an A4 PDF page) will have a label, which will serve as the key of the JSON.
+
+Company A would like to make the process as automatic as possible. Because of this, PDFs dragged to a specific folder should be automatically uploaded to a website where the processing will take place and where the results will be stored.
+Furthermore, the template being applied to each PDF should depend on the filename of the PDF. 
+
 ## Get the software
 
 If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then under the button CI Lint, click on the latest button with a cloud symbol and an arrow pointing downards and click on 'Download build artifacts'.  
