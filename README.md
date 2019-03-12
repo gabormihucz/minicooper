@@ -63,7 +63,7 @@ Minicooper allows you to automatically upload PDFs to a website by copying them 
 ### User Scenario
 
 Company A deals with thousands of PDF files each day. There is a dedicated employee whose job is to manually open these PDFs and enter the relevant information on them to an online form.
-There are only a few types of PDFs however (e.g. flight tickets, invoices for a certain product, etc.), and the relevant information (e.g. price, quantity, date, etc.) appears at the place on each PDF.
+There are only a few types of PDFs however (e.g. flight tickets, invoices for a certain product, etc.), and the relevant information (e.g. price, quantity, date, etc.) appears at the same place on each PDF.
 Company A would like to automise this repetitive task by converting the contents of the PDFs to JSON format (key: value pairs, where the value should be the relevant content of the PDF), based on user-defined templates.
 Templates indicate the areas where the relevant content of a PDF will be found. Each area (a rectangle on an A4 PDF page) will have a label, which will serve as the key of the JSON.
 
