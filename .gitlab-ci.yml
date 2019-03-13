@@ -1,6 +1,13 @@
 image: blang/latex
-build:
-  before_script:
+
+stages:
+    - setup
+    - servertests
+    - dissertationbuild
+
+setup:
+  stage: setup
+  script:
     - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
@@ -10,11 +17,13 @@ build:
     - sudo apt -y install tesseract-ocr
     - sudo apt -y install libtesseract-dev
     - sudo apt -y install zip
-
-  script:
     - pip3 install -r dependencies.txt
     - pip3 install -U numpy
     - pip3 list
+
+servertests:
+  stage: servertests
+  script:
     - cd MCapp
     - python3 tests.py
     - cd ..
@@ -24,6 +33,10 @@ build:
     - sudo python3 populate.py
     - python3 manage.py test
     - cd ../..
+    
+dissertationbuild:
+  stage: dissertationbuild
+  script:
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - cd ..
