@@ -47,9 +47,9 @@ var table = $('#resultTable').dataTable( {
                     if(type === 'display'){
                       console.log(data);
                       if (data == "Pass"){
-                        data = '<p style="color:green;">' + data + '</p>';
+                        data = '<span style="color:green;">' + data + '</span>';
                       }else{
-                        data = '<p style="color:red;">' + data + '</p>';
+                        data = '<span style="color:red;">' + data + '</span>';
                       }
 
                     }
