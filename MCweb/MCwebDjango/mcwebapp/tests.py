@@ -9,6 +9,9 @@ from mcwebapp.models import *
 from mcwebapp.pdf2json import pdf_process, crop
 
 
+import urllib.request
+import json
+import base64
 import os
 
 # Create your tests here.
