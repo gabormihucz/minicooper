@@ -9,6 +9,7 @@ If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then
 
 - Currently the website has been tested on Debian-based Linux and on Windows environments
 - The app works on Windows and UNIX-based systems as well
+- In order to accurately create templates in template editor, the scale of display should be set to 100%, to check what scale is at use, check Swtings/Dispaly/Scale and Layout
 
 ## Deployment guide: 
 
