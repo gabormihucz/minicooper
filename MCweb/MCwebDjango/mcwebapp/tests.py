@@ -235,6 +235,7 @@ class SearchTemplateTest(TestCase):
         self.assertQuerysetEqual(response.context['elems'], [repr(template) for template in templates])
 
 
+#  check if processing works with single "normal" template
 class PdfProcessTest(TestCase):
     # test passes if the result of pdfprocess on the Sample PDF using the SampleTemplate matches the expected output
     def test_processing_output_correct(self):
@@ -252,6 +253,8 @@ class PdfProcessTest(TestCase):
         test_string = {"cost": "£1000", "tax": "£125", "total": "£1125", "address_line1": "Address line 1", "address_line2": "Address line 2", "city": "City", "post_code": "Post Code"}
         self.assertEqual(json_output, test_string)
 
+#  check if multiple pdfs can be processed without overwriting
+class DuplicatePdfProcessTest(TestCase):
     # test passes if the json output of a pdf is not overwritten when the pdf is processed again with the same template
     def test_proccess_handles_duplicate_pdf(self):
         try:
@@ -263,6 +266,7 @@ class PdfProcessTest(TestCase):
             os.remove("media/jsonFiles/" + "TestPDF(2)" + ".json")
         except OSError:
             pass
+
         pdf_process.pdf_proccess("SampleTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
 
         pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
@@ -274,28 +278,85 @@ class PdfProcessTest(TestCase):
 
         test_string = {"default0": "£1000", "default1": ""}
         self.assertNotEqual(json_output, test_string)
-
+#  check if, during process, whether or not the mandatory fields are filled is checked
+class PdfProcessErrorCheckingTest(TestCase):
     # test passes if pdf_process if pdf_process returns false, indicating that a mandatory field was not filled
     def test_mandatory_field_fails(self):
         try:
             os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
+
         process_dict = pdf_process.pdf_proccess("mandatory_field_fail_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
         success = process_dict["mand_filled"]
         os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertFalse(success)
 
     # test passes if pdf_process if pdf_process returns true, indicating that all mandatory fields were filled
-    def test_mandatory_field_suceeds(self):
+    def test_mandatory_field_succeeds(self):
         try:
             os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         except OSError:
             pass
+
         process_dict = pdf_process.pdf_proccess("mandatory_field_succeed_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
         success = process_dict["mand_filled"]
         os.remove("media/jsonFiles/" + "TestPDF" + ".json")
         self.assertTrue(success)
+
+#  check if processing still works when coordinates are saved in oposite order in the template file
+class PdfProcessCoordinateSwitchedTest(TestCase):
+    # test passes if processing works correctly with a template where the coordinates of the corners of the template are switched
+    def test_corner_switched_template(self):
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+
+        process_dict = pdf_process.pdf_proccess("CornerSwitchedTemplate", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
+            json_output = json.loads(output.read())
+
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+
+        test_string = {"default1": "Post Code"}
+        self.assertEqual(json_output, test_string)
+
+#  check if processing works when fields overlap in the template
+class PdfProcessOverlappingFieldsTest(TestCase):
+    # test passes if template with overlapping fields processes pdf correctly
+    def test_overlapping_fields(self):
+        try:
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+        except OSError:
+            pass
+
+        process_dict = pdf_process.pdf_proccess("overlapping_field_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+        with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
+            json_output = json.loads(output.read())
+
+        os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+
+        test_string = {"default0": "Post Code", "default1": "Post Code"}
+        self.assertEqual(json_output, test_string)
+
+#  check if processing works when the aspect ratio is differen between the pdf and template
+class PdfProcessAspectRatioTest(TestCase):
+        # test passes if pdf processes correctly with template of a different aspect ratio
+        def test_aspect_ratio(self):
+            try:
+                os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+            except OSError:
+                pass
+
+            process_dict = pdf_process.pdf_proccess("aspect_ratio_test", "media/templateFiles/", "TestPDF", "media/pdfFiles/", "media/jsonFiles/")
+            with open("media/jsonFiles/" + "TestPDF" + ".json", "r") as output:
+                json_output = json.loads(output.read())
+
+            os.remove("media/jsonFiles/" + "TestPDF" + ".json")
+
+            test_string = {"default1": "Sample PDF"}
+            self.assertEqual(json_output, test_string)
 
 
 #Test which checks template_editor() view
