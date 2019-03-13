@@ -2,12 +2,11 @@ image: blang/latex
 
 stages:
     - setup
-    - servertests
     - dissertationbuild
 
 setup:
   stage: setup
-  script:
+  before_script:
     - virtualenv -p python3 venv
     - . venv/bin/activate
     - python -V
@@ -20,9 +19,6 @@ setup:
     - pip3 install -r dependencies.txt
     - pip3 install -U numpy
     - pip3 list
-
-servertests:
-  stage: servertests
   script:
     - cd MCapp
     - python3 tests.py
