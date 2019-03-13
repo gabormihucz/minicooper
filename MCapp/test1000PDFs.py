@@ -36,7 +36,7 @@ class Test1000PDFs(unittest.TestCase):
 			if not file_list:
 				break
 			for file_item in file_list:
-				post_to_server.post(file_item) # upload them to the database
+				post_to_server.post(WATCHED_FOLDER,file_item) # upload them to the database
 
 
 				# remove file from the folder, and remove the filename from the list of files in the directory
