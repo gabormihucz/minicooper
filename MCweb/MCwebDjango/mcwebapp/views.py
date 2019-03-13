@@ -214,7 +214,8 @@ def upload_pdf(request):
         
         # Look through all MatchPatterns
         for pattern in MatchPattern.objects.all():
-            match = re.findall(pattern.regex, name)
+            match = re.search(pattern.regex, name)
+            print("trying to find " + pattern.regex + " in " + name)
             if match:  # if a match is found
                 template = pattern.template      # get the associated template
                 print("I found a template for " + name)
