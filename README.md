@@ -36,10 +36,14 @@ You can change the watched folder in `filewatcher.py` and you can change the ser
 ### On Windows
 
 Firstly, you will need to install poppler. [Download poppler by clicking here.](http://blog.alivate.com.au/wp-content/uploads/2018/10/poppler-0.68.0_x86.7z) 
-Extract the contents of the poppler directory in the archive you just downloaded under `C:\Program Files\Poppler`.
+Extract the contents of the poppler directory in the archive you just downloaded under `C:\Program Files\Poppler`. Add the path of the poppler
+to the windows user environment under path. Guide written here https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/.
 
 Double-click on `windows_install.bat`. If you get any error regarding "python3", just ignore it.
 Install Tesseract and Windows Server by following the pop-up setup wizards with default settings.
+
+Once tesseract is installed, add the path to tesseract (e.g. "C:\Program Files (x86)\Tesseract-OCR") to windows user environment under path, similarly to poppler
+above.
 
 Once that's done, open your preferred web browser and go to http://127.0.0.1:8000/  to load the website  
 
