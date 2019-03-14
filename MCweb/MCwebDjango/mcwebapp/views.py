@@ -130,7 +130,6 @@ def template_editor(request, temp_id=-1):
             file = t.read()
         tempDictJSON = {"id":temp.id,"name":temp.name,"upload_date":temp.upload_date,"user":temp.user,"file":file}
         tempDict = {"JSON":tempDictJSON}
-
         return render(request,'mcwebapp/template_editor.html',tempDict)
     except:
         return HttpResponse("Template could not be found")

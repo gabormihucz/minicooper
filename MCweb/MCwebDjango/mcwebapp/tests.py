@@ -208,7 +208,7 @@ class TemplateEditorTest(TestCase):
         self.assertEqual(response.content.decode('utf-8')[:2],"OK")
         os.remove("media/templateFiles/testedTemplateWithSetName.json")
 
-
+#following test determines if the core functionallity of a website, that is processing uploaded pdf's and extracting data with regard to a predefined temlate works
 class UploadPdfTest(TestCase):
 
     def setUp(self):
@@ -220,7 +220,7 @@ class UploadPdfTest(TestCase):
                                     user=User.objects.get(username = 'testuser'))
         MatchPattern.objects.create(regex="test", template=template)
 
-    # testing if code fails if notrelevant pdf is uploaded
+    # testing if code fails if not relevant pdf is uploaded
     def testPostWrongPdf(self):
         c = Client()
         data = "SGVsbG8gSSBhbSBhIHBkZiBtYWRlIGZvciB0ZXN0IHB1cnBvc2UK"
@@ -428,7 +428,7 @@ class PdfProcessAspectRatioTest(TestCase):
             test_string = {"default1": "Sample PDF"}
             self.assertEqual(json_output, test_string)
 
-
+# tests responsible for checking if actions started in template_manager are correctly executed by a
 class ManageTemplatesTest(TestCase):
 
     def setUp(self):
@@ -448,7 +448,7 @@ class ManageTemplatesTest(TestCase):
         response = c.post('/template_manager/',message, content_type="application/json")
         self.assertEqual(response.context.get('patterns')[0].regex,"TestAddRegex")
 
-
+#   test at first add an pattern, then counts how many pattern are there, then deletes the originally created pattern and checks in in an aftermath there is less patterns then before
     def test_template_manager_with_pattern_delete(self):
         template = TemplateFile.objects.get(name="TestTemp")
         c = Client()
@@ -481,7 +481,7 @@ class ManageTemplatesTest(TestCase):
         response = c.post('/template_manager/',message, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8'),"PDF's that will be deleted as a result of deleting a template:\nNo Pdf will be affected\n")
 
-
+# test checks if backend would warn user about what pdfs ould be deleted along the deleted template
     def test_template_manager_with_template_delete_request_with_releted_files(self):
         template = TemplateFile.objects.create(name="TestTempWithRelations",upload_date=timezone.now(),file_name="sth",
                                     user=User.objects.get(username = 'testuser'))
@@ -502,12 +502,14 @@ class ManageTemplatesTest(TestCase):
         c.login(username='testuser', password='secret')
         response = c.post('/template_manager/',message, content_type="application/json")
         template_exist = True
+        # if templete was properly deleted then error will be raised and template_exist would habe it value changed
         try:
             templateExist = TemplateFile.objects.get(id=template.id)
         except:
             template_exist = False
         self.assertEqual(template_exist,False)
 
+# search templates tests are Aa copy of ManageTemplatesTests
 class SearchTemplatesTest(TestCase):
 
     def setUp(self):
