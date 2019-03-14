@@ -113,6 +113,7 @@ class LogInTest(TestCase):
         # should be logged in now
         self.assertTrue(response.context['user'].is_active)
 
+
 class GetMoreTablesTest(TestCase):
 
     def setUp(self):
@@ -141,6 +142,69 @@ class SaveTemplateTest(TestCase):
         body = {"template_name":"testTemp","rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
         response = c.post('/template_creator/',body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8')[0:2],"OK")
+
+
+#Test which checks template_editor() view
+class TemplateEditorTest(TestCase):
+
+    def setUp(self):
+        populate.populate()
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+
+    def test_template_editor_with_existing_template(self):
+        # the populate.py script was ran so SampleTemplate should exist, together with actual .json file with each content
+        # test is checking if context_dictionary sent later to view was loaded correctly
+        c = Client()
+        c.login(username='testuser', password='secret')
+        template = TemplateFile.objects.get(name="SampleTemplate")
+        response = c.get('/template_editor/'+str(template.id), follow=True)
+        self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
+
+    def test_template_editor_with_non_existent_template(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.get('/template_editor/999999999999999999999999999999999999', follow=True)
+        self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
+
+    def test_template_editor_owerwriting_a_template_with_a_name_of_a_template_which_already_exist(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        templateOriginal = TemplateFile.objects.create(name="OriginalTestTemplate",upload_date=timezone.now(),
+                                    user=User.objects.get(username = 'testuser'))
+
+        templateInEdition = TemplateFile.objects.create(name="templateInEdition",upload_date=timezone.now(),
+                                    user=User.objects.get(username='testuser'))
+
+        c = Client()
+        c.login(username='testuser', password='secret')
+        body = {"template_name":"OriginalTestTemplate","template_id":str(templateInEdition.id),"rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
+        response = c.post('/template_editor/'+str(templateInEdition.id) ,body, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8'),"A template with this name already exists, please pick a new name")
+
+    def test_template_editor_owerwriting_a_template_with_a_new_template_name(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        testedTemplate = TemplateFile.objects.create(name="testedTemplate",upload_date=timezone.now(),
+                                    user=User.objects.get(username='testuser'))
+
+        c = Client()
+        c.login(username='testuser', password='secret')
+        body = {"template_name":"testedTemplatedWithNewName","template_id":str(testedTemplate.id),"rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
+        response = c.post('/template_editor/'+str(testedTemplate.id) ,body, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8')[:2],"OK")
+
+    def test_template_editor_owerwriting_a_template_without_changing_a_name(self):
+        # test checks if asking for a non-existent template returns correct HttpResponse
+        testedTemplate = TemplateFile.objects.create(name="testedTemplateWithSetName",upload_date=timezone.now(),
+                                    user=User.objects.get(username='testuser'))
+
+        c = Client()
+        c.login(username='testuser', password='secret')
+        body = {"template_name":"testedTemplateWithSetName","template_id":str(testedTemplate.id),"rectangles":{"default0":{"x1":214,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
+        response = c.post('/template_editor/'+str(testedTemplate.id) ,body, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8')[:2],"OK")
 
 
 class UploadPdfTest(TestCase):
@@ -281,6 +345,7 @@ class DuplicatePdfProcessTest(TestCase):
 
         test_string = {"default0": "£1000", "default1": ""}
         self.assertNotEqual(json_output, test_string)
+
 #  check if, during process, whether or not the mandatory fields are filled is checked
 class PdfProcessErrorCheckingTest(TestCase):
     # test passes if pdf_process if pdf_process returns false, indicating that a mandatory field was not filled
@@ -362,33 +427,6 @@ class PdfProcessAspectRatioTest(TestCase):
             self.assertEqual(json_output, test_string)
 
 
-#Test which checks template_editor() view
-class TemplateEditorTest(TestCase):
-
-    def setUp(self):
-        populate.populate()
-        self.credentials = {
-            'username': 'testuser',
-            'password': 'secret'}
-        User.objects.create_user(**self.credentials)
-
-    def test_template_editor_with_existing_template(self):
-        # the populate.py script was ran so SampleTemplate should exist, together with actual .json file with each content
-        # test is checking if context_dictionary sent later to view was loaded correctly
-        c = Client()
-        c.login(username='testuser', password='secret')
-        template = TemplateFile.objects.get(name="SampleTemplate")
-        response = c.get('/template_editor/'+str(template.id), follow=True)
-        self.assertEqual(response.context.get("JSON")["name"], "SampleTemplate")
-
-    def test_template_editor_with_non_existent_template(self):
-        # test checks if asking for a non-existent template returns correct HttpResponse
-        c = Client()
-        c.login(username='testuser', password='secret')
-        response = c.get('/template_editor/999999999999999999999999999999999999', follow=True)
-        self.assertEqual(response.content.decode('utf-8'),"Template could not be found")
-
-
 class ManageTemplatesTest(TestCase):
 
     def setUp(self):
@@ -412,8 +450,8 @@ class ManageTemplatesTest(TestCase):
     def test_template_manager_with_pattern_delete(self):
         template = TemplateFile.objects.get(name="TestTemp")
         c = Client()
-        message = {"code":"addPattern","regex":"TestDeleteRegex","template_id":template.id}
         c.login(username='testuser', password='secret')
+        message = {"code":"addPattern","regex":"TestDeleteRegex","template_id":template.id}
         response = c.post('/template_manager/',message, content_type="application/json")
 
         count1 = 0
@@ -425,9 +463,74 @@ class ManageTemplatesTest(TestCase):
 
         message = {"code":"deletePattern","pattern_id":testDelPatternId}
         response = c.post('/template_manager/',message, content_type="application/json")
-
         count2 = 0
         for pattern in response.context.get('patterns'):
             count2 += 1
 
         self.assertFalse(count1==count2)
+
+
+    def test_template_manager_with_template_delete_request_with_no_releted_files(self):
+        template = TemplateFile.objects.create(name="TestTempWithNoRelations",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        message = {"code":"deleteTemplate_request","template_id":template.id}
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8'),"PDF's that will be deleted as a result of deleting a template:\nNo Pdf will be affected\n")
+
+
+    def test_template_manager_with_template_delete_request_with_releted_files(self):
+        template = TemplateFile.objects.create(name="TestTempWithRelations",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        pdf = PDFFile.objects.create(name="relatedPDF",upload_date=timezone.now(),file_name=None,template=template)
+        message = {"code":"deleteTemplate_request","template_id":template.id}
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8'),"PDF's that will be deleted as a result of deleting a template:\nrelatedPDF\n")
+
+
+    def test_template_manager_template_delete(self):
+        template = TemplateFile.objects.create(name="TestTempDeleteWithRelations",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        pdf = PDFFile.objects.create(name="relatedDeletePDF",upload_date=timezone.now(),file_name=None,template=template)
+        message = {"code":"deleteTemplate","template_id":template.id}
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.post('/template_manager/',message, content_type="application/json")
+        template_exist = True
+        try:
+            templateExist = TemplateFile.objects.get(id=template.id)
+        except:
+            template_exist = False
+        self.assertEqual(template_exist,False)
+
+class SearchTemplatesTest(TestCase):
+
+    def setUp(self):
+        self.credentials = {
+            'username': 'testuser',
+            'password': 'secret'}
+        User.objects.create_user(**self.credentials)
+
+
+    def test_search_template_with_pattern_delete_request_with_no_releted_files(self):
+        template = TemplateFile.objects.create(name="TestSearchTempWithNoRelations",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        message = {"code":"deleteTemplate_request","template_id":template.id}
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.post('/search_templates/',message, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8'),"PDF's that will be deleted as a result of deleting a template:\nNo Pdf will be affected\n")
+
+
+    def test_template_manager_with_pattern_delete_request_with_releted_files(self):
+        template = TemplateFile.objects.create(name="TestSearchTempWithRelations",upload_date=timezone.now(),file_name="sth",
+                                    user=User.objects.get(username = 'testuser'))
+        pdf = PDFFile.objects.create(name="relatedSearchPDF",upload_date=timezone.now(),file_name=None,template=template)
+        message = {"code":"deleteTemplate_request","template_id":template.id}
+        c = Client()
+        c.login(username='testuser', password='secret')
+        response = c.post('/search_templates/',message, content_type="application/json")
+        self.assertEqual(response.content.decode('utf-8'),"PDF's that will be deleted as a result of deleting a template:\nrelatedSearchPDF\n")
