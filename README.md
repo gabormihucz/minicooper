@@ -9,7 +9,6 @@ If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then
 
 - Currently the website has been tested on Debian-based Linux and on Windows environments
 - The app works on Windows and UNIX-based systems as well
-- In order to accurately create templates in template editor, the scale of display should be set to 100%, to check what scale is at use, check Swtings/Dispaly/Scale and Layout
 
 ## Deployment guide: 
 
@@ -97,6 +96,8 @@ Then click on 'Upload PDF' to upload a PDF based on which you will draw your pat
 On the right hand side, give a name to your rectangle: this will be they key in your JSON output. Select whether the rectangle's conversion should be mandatory or optional. If the output of any mandatory rectangle in a template is empty that will label the status of the conversion as 'Fail'. Empty outputs of optional rectangles will not be flagged as failed conversions. You can manually change the coordinates of the rectangles by changing the x and y values of the top left and bottom right corners.
 If you made a mistake and you want to delete a rectangle, select a rectangle and click on the 'Delete' button.
 Finally, once you finished creating the template, click on 'Save Template'.
+
+> Note: In order to accurately create templates in template editor, the scale of the display should be set to 100%. If the boxes are not drawn from where you clicked in Windows, go to Settings/Display/Scale and Layout, and set the Scale to 100%.
 
 ###### Template Manager
 
