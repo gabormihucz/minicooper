@@ -9,7 +9,6 @@ If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then
 
 - Currently the website has been tested on Debian-based Linux and on Windows environments
 - The app works on Windows and UNIX-based systems as well
-- In order to accurately create templates in template editor, the scale of display should be set to 100%, to check what scale is at use, check Swtings/Dispaly/Scale and Layout
 
 ## Deployment guide: 
 
@@ -40,7 +39,7 @@ Firstly, you will need to install poppler. [Download poppler by clicking here.](
 Extract the contents of the poppler directory in the archive you just downloaded under `C:\Program Files\Poppler`. Add the path of the poppler
 to the windows user environment under path. Guide written here https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/.
 
-Double-click on `windows_install.bat`. If you get any error regarding "python3", just ignore it.
+Double-click on `windows_install.bat`. If you get any error regarding "python3", just ignore it. If you get a prompt asking whether you want to replace some files, click "Yes to all".
 Install Tesseract and Windows Server by following the pop-up setup wizards with default settings.
 
 Once tesseract is installed, add the path to tesseract (e.g. "C:\Program Files (x86)\Tesseract-OCR") to windows user environment under path, similarly to poppler
@@ -98,6 +97,8 @@ On the right hand side, give a name to your rectangle: this will be they key in 
 If you made a mistake and you want to delete a rectangle, select a rectangle and click on the 'Delete' button.
 Finally, once you finished creating the template, click on 'Save Template'.
 
+> Note: In order to accurately create templates in template editor, the scale of the display should be set to 100%. If the boxes are not drawn from where you clicked in Windows, go to Settings/Display/Scale and Layout, and set the Scale to 100%.
+
 ###### Template Manager
 
 To manage the properties of already existing templates, click on 'Manage'. You will see the list of templates currently in the database. Clicking on one template will open a drop-down, where you can define *patterns*.
@@ -122,8 +123,14 @@ Under MCWEBAPP, you can view/delete/update the other entities in the database. T
 
 ### The app
 
-In order to run the app, open a terminal window in the folder 'dissertation/MCapp' and run
-python3 filewatcher.py
+##### On Linux
 
-This will start the filewatching process. Drag and drop files with the extension ".pdf" into the current folder. These will then be uploaded to the webserver and deleted from the local filesystem.
-On the results page, you will be able to see the uploaded PDF, as well as the converted JSON, based on the template the file's filename indicated.
+In order to run the app, open a terminal window in the folder 'dissertation/MCapp' and run
+`python3 filewatcher.py`
+
+##### On Windows
+
+Just double click the `filewatcher.py` file in the MCapp folder.
+
+This will start the filewatching process. Drag and drop files with the extension ".pdf" into the current folder. If these match any of the patterns of templates, they will then be uploaded to the webserver and deleted from the local filesystem.
+On the results page, you will be able to see the uploaded PDFs, as well as the converted JSON, based on the template the file's filename indicated.
