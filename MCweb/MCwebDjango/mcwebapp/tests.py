@@ -194,6 +194,7 @@ class TemplateEditorTest(TestCase):
         body = {"template_name":"testedTemplatedWithNewName","template_id":str(testedTemplate.id),"rectangles":{"default0":{"x1":213,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
         response = c.post('/template_editor/'+str(testedTemplate.id) ,body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8')[:2],"OK")
+        os.remove("media/templateFiles/testedTemplatedWithNewName.json")
 
     def test_template_editor_owerwriting_a_template_without_changing_a_name(self):
         # test checks if asking for a non-existent template returns correct HttpResponse
@@ -205,6 +206,7 @@ class TemplateEditorTest(TestCase):
         body = {"template_name":"testedTemplateWithSetName","template_id":str(testedTemplate.id),"rectangles":{"default0":{"x1":214,"y1":78,"x2":398,"y2":225,"mandatory":"true"}}}
         response = c.post('/template_editor/'+str(testedTemplate.id) ,body, content_type="application/json")
         self.assertEqual(response.content.decode('utf-8')[:2],"OK")
+        os.remove("media/templateFiles/testedTemplateWithSetName.json")
 
 
 class UploadPdfTest(TestCase):
