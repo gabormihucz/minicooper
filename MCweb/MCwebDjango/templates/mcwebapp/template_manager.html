@@ -232,6 +232,9 @@ Search Results
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
             response = xhr.responseText;
+            if (response.includes("<") == false) {
+             window.alert(response);
+            }
             location.href = url;
           }
         }

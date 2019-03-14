@@ -142,11 +142,15 @@ def manage_templates(request, temp_id=-1):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         response = template_manager_code_check(data) #followinf function at the end of views.py; function returns a warning messege for a user if necessary, otherwise it edits database
-
-        if response != None:
+        
+        if response == -1:
+            message = "Sorry, this match pattern is too similar to one that's already in use.\nPlease try again."
+            return HttpResponse(message)
+        elif response != None:
             #creating a response for a user which will notify him about pdf's user is trying to delete
             message="PDF's that will be deleted as a result of deleting a template:\n"
             pdfCounter = 0
+
             for pdf in response:
                 message += pdf.name+"\n"
                 pdfCounter +=1
@@ -261,6 +265,10 @@ def template_manager_code_check(data):
         pattern.delete()
 
     elif data['code'] == "addPattern":
+        for pattern in MatchPattern.objects.all():
+            if pattern.regex in data["regex"] or data["regex"] in pattern.regex:
+                return -1
+
         template = TemplateFile.objects.get(id=data["template_id"])
         pattern = MatchPattern()
         pattern.regex = data["regex"]
