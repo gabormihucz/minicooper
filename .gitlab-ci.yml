@@ -26,7 +26,9 @@ build:
     - cd ../..
     - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
-    - zip -r deployment.zip ../dissertation
+    - cd ..
+    - zip -r deployment.zip dissertation
+    - mv deployment.zip dissertation
   artifacts:
     paths:
       - "*.pdf"

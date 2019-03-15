@@ -39,6 +39,22 @@ var table = $('#resultTable').dataTable( {
                     }
                     return data;
                 }
+            },
+            
+            {
+                targets:2,
+                render: function ( data, type, row, meta ) {
+                    if(type === 'display'){
+                      console.log(data);
+                      if (data == "Pass"){
+                        data = '<span style="color:green;">' + data + '</span>';
+                      }else{
+                        data = '<span style="color:red;">' + data + '</span>';
+                      }
+
+                    }
+                    return data;
+                }
             }
 
         ],
