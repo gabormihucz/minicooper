@@ -56,7 +56,9 @@ def get_more_tables(request):
         }
         data.append(temp)
 
-    return render(request, 'mcwebapp/json_popup.html', context_dict)
+    jsoned = json.dumps(data)
+
+    return HttpResponse(jsoned, content_type='application/json')
 
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
