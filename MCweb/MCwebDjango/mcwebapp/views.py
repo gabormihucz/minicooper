@@ -60,14 +60,6 @@ def get_more_tables(request):
 
     return HttpResponse(jsoned, content_type='application/json')
 
-
-def json_popup(request, json_slug):
-    context_dict = {}
-    json = JSONFile.objects.get(slug = json_slug)
-    context_dict['json'] = json
-
-    return render(request, 'mcwebapp/json_popup.html', context_dict)
-
 @login_required
 # if not superuser redirect to homepage, otherwise go to template creator
 def template_creator(request):
