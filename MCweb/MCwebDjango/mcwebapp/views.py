@@ -24,7 +24,7 @@ def paginate(input_list, request):
 
     return {'elems': elems}
 
-
+# view for the home page, return paginated list of json objects in case ajax fails
 @login_required
 def index(request):
     if not TemplateFile.objects.all() and request.user.is_superuser:
@@ -36,11 +36,11 @@ def index(request):
     response = render(request,'mcwebapp/index.html',context_dict)
     return response
 
-
+# view for the AJAX helper html file that is loaded on the home page
 @csrf_exempt
 @login_required
 def get_more_tables(request):
-    # process info to pass into the results table and pass it in a json
+    # get json objects and turn them into json to feed the ajax function
     jsons = JSONFile.objects.all().order_by('-upload_date')
     data = []
 
