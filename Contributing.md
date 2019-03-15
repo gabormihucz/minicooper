@@ -19,7 +19,7 @@ Nestoras Skiadas (2258257s@student.gla.ac.uk)
    * Iteration 2: CI/CD & VM  configuration, managing git branches
    * Iteration 3: CI/CD, setting up the Django app, basic Django testing, project deployment, manageing git branches
    * Iteration 4: CI/CD, output of completed build as artefact, managing git branches, pop-up of summary data
-   * Iteration 5:
+   * Iteration 5: CI/CD, Linux and Windows automated deployment, managing branches, template matching errors, matchpattern similarity checking, various bug fixes
 
 Pawel Heldt (2268686h@student.gla.ac.uk)  
  * Responsibilites:  
