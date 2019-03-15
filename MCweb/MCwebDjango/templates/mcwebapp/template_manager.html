@@ -22,11 +22,8 @@ Search Results
   {% for elem in elems %}
   <!-- DIV to center cards -->
   <div class="mx-auto col-ml-10">
-    <!-- Example Card -->
-    <!-- LOOP this -->
     <div class="card mt-3">
       <!-- BEGIN Card header -->
-      <!-- REMEMBER to set the collapsable -->
       <div id="Template_{{elem.id}}" class="card-header text-white bg-dark clickable" data-toggle="collapse" data-target="#{{elem.name}}{{elem.user.username}}" aria-expanded="true" aria-controls="{{elem.id}}" style="display:""">
         <div class="row">
           <div class="column ml-3 col-sm">
@@ -62,7 +59,6 @@ Search Results
       <!-- END Card header -->
 
       <!-- BEGIN Card body -->
-      <!-- REMEMBER to set the collapsable -->
       {% ifequal elem.id unfolded_row %}
       <div id="{{elem.name}}{{elem.user.username}}" class="card-body collapse show text-center py-0">
         {% else %}
@@ -70,8 +66,6 @@ Search Results
           {% endifequal %}
           <!-- BEGIN List of patterns -->
           <ul class="list-group list-group-flush py-0 ">
-            <!-- LOOP Pattern list -->
-
             {% for pattern in patterns %}
             {% ifequal pattern.template elem %}
             <li class="list-group-item">
@@ -83,7 +77,6 @@ Search Results
                 <p class="mb-0 ml-4 mt-1">{{pattern.regex}}</p>
               </div>
             </li>
-            <!-- END LOOP HERE -->
             {% endifequal %}
             {% endfor %}
             <!-- BEGIN Last list item (Adding new pattern field) -->
@@ -149,6 +142,7 @@ Search Results
   {% block script_block %}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script>
+    // function which gets csrf token from client to preserve login state
     function getCookie(c_name) {
       if (document.cookie.length > 0) {
         c_start = document.cookie.indexOf(c_name + "=");
@@ -170,6 +164,7 @@ Search Results
       message["code"] = "deletePattern";
       message["pattern_id"] = patternID;
 
+      // prepare and send post request which would trigger pattern deletion in the backend
       var xhr = new XMLHttpRequest();
       var url = "http://127.0.0.1:8000/template_manager/";
 
@@ -188,19 +183,20 @@ Search Results
       xhr.send(JSON.stringify(message));
       console.log("post_sent");
 
+      // hide the deleted pattern so that the page does not have to be refreshed
       document.getElementById("Pattern_" + patternID).style.display = "none";
     }
 
 
     function addPattern(id) {
+      // prepare parmeters which define a pattern
       var templateID = id.substr(7);
       var regex = document.getElementById("AddRegex_" + templateID).value;
-      // alert(regex);
       var regexLocationSelect = document.getElementById("RegexLoc_" + templateID);
       var selectedRegexLocationVal = regexLocationSelect.options[regexLocationSelect.selectedIndex].value;
 
+      // error check the parameters
       var error = false;
-
       if (regex == "") {
         alert("Define the regex");
         error = true;
@@ -217,7 +213,7 @@ Search Results
         error = true;
       }
 
-      // send a post request
+      // send a post request which will trigger pattern creation
       if (error == false) {
         var message = {};
         message["code"] = "addPattern";
@@ -265,17 +261,21 @@ Search Results
         var url = "http://127.0.0.1:8000/template_manager/";
         var response;
 
+        // outer post gets triggered a first, it sends a deletion_request which makes backend return a list of pdfs that would be deleted along the template,
+        // if user accepts that then the inner post is being send, which sends the parameters of template that is about to be deleted
         xhr.onreadystatechange = function() {
           if (xhr.readyState == XMLHttpRequest.DONE) {
             response = xhr.responseText;
             var total_delete = window.confirm(response);
             if(total_delete==true){
+              // inner post with just the deletion request
               // actual dletion of template and related pdfs
               message = {};
               message["code"] = "deleteTemplate";
               message["template_id"] = templateID;
               xhr = new XMLHttpRequest();
               url = "http://127.0.0.1:8000/template_manager/";
+
               xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                   response = xhr.responseText;
@@ -284,7 +284,6 @@ Search Results
                 xhr.open("POST", url, true);
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                // console.log(JSON.stringify(message));
                 xhr.send(JSON.stringify(message));
                 console.log("post_sent pdfs and temp will be deleted");
                 document.getElementById("Template_" + templateID).style.display = "none";
@@ -304,6 +303,7 @@ Search Results
       }
 
 
+    // redirect to template editor
     function editTemplate(id) {
       var templateID = id.substr(12);
       location.href = "http://127.0.0.1:8000/template_editor/" + templateID;

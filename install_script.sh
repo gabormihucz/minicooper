@@ -12,8 +12,10 @@ echo "Installing dependencies..."
 pip3 install -r dependencies.txt
 
 echo "Populating database..."
-python3 MCweb/MCwebDjango/manage.py makemigrations
-python3 MCweb/MCwebDjango/manage.py migrate
+cd MCweb/MCwebDjango
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 populate.py
 
 echo "Running server..."
-python3 MCweb/MCwebDjango/manage.py runserver
+python3 manage.py runserver
