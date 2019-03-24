@@ -184,6 +184,47 @@ telescope! I think I could, if I only knew how to begin.'' For, you
 see, so many out-of-the- way things had happened lately, that Alice
 had begun to think that very few things indeed were really impossible.
 
+Iteration One and Two
+
+We spent Iteration One with getting set up and getting to know each other better to identify each others’ strengths  in order to assign technical tasks efficiently in the future.
+We set up our GitLab account, installed the virtual machine on the lab machines and familiarised ourselves with Linux.
+We also created a Slack account in order to communicate efficiently in the future on multiple channels and participated on a 48-hour Hackathon, partly as a team building exercise.  
+
+Iteration Two started with the team being assigned to our customer, Cooper Software. The goal for the end of this iteration was to have a detailed backlog, consisting of the detailed description of the project, and a clear well-organised set of tasks in GitLab to start delivering features.
+The first step was to gather requirements, for which we needed frequent contact with the representative of Cooper Software. Since our customer was based 70 miles away, we decided that the best way to keep in touch would be on Slack with occasional video conferences.
+As expected in the initial requirements gathering phase, features and requirements were added, removed and changed on an ongoing basis. Requirements gathering was an iterative process, in which the team gradually increased clarity about the required features and its priorities.
+In order to foster the creation of a common understanding of the requirements, we decided to create various forms of documentation in order to ensure that we are on the same page with the customer. We created:
+User Personas who represent the primary types of users who would interact with the app we would build.
+An initial architecture diagram which would explain the general information flow of the application.
+Wireframes, using a method our coach suggested: 
+Each member of the team drafted five possible wireframes for the main page of the app, then explained his ideas to the rest of the team. After that, each member of the team drafted two suggested wireframes and explained his decisions to the rest of the team.
+Finally everybody was required to draft one wireframe, and to everyone’s relief the proposed wireframes converged significantly.
+User stories for the main features of the app. As per the request of our customer, we aimed to have user stories written from a non-technical end user perspective. Each user story was designed to be as atomic as possible, with the terse structure of “As a < type of user>, I want to <action describing feature>, So that <action describing benefit of feature>”
+A very helpful technique we employed here was the Value Proposition Canvas, which helped us empathise with the customer, identify the core business value the application was creating, and the issues it was meant to resolve. This knowledge helped us tailor our solutions to the customer’s needs.
+As suggested in the Principles behind the Agile Manifesto, we welcomed changing requirements.
+The final documentation is the result of many iterations of the following process:
+
+Creating documentation artifacts
+Discussing the documentation artifacts with the customer
+Taking notes of new or changed requirements
+
+Following that, we used the MoSCoW method to identify the most important features to implement in the coming iteration as “Must-Haves”. These were: 
+basic web app
+create predefined template
+prototype for file conversion from PDF to JSON via predefined template
+
+We uploaded all the gathered requirements and produced documentation to the Wiki page of GitLab.  Initially, we uploaded the list of user stories to the wiki as well, and we added technical tasks to be done to deliver features to the board with labeled due dates.
+
+We started to diversify our communication to multiple channels on Slack to reflect the growing complexity of the project: we prepared for the coming meeting with the customer on the channel #presentation, while we created a very handy channel #guides, where we copied useful commands and reference guides, e.g. how to log in to the VM, how to install a virtual environment and dependencies, recurrent git commands, etc.
+
+Since occasions to meet the customer in person were scarce, we tried to maximise the benefits of the customer meeting by having a well-structured presentation of our accomplishments thus far and our planned deliverables for the coming iteration. We planned the meeting so that each team member would get to talk about their share of tasks in the first half of the meeting and we would have time for an open discussion with the customer in the second half. However the customer preferred to have a dialogue-like meeting throughout, which made us to improvise on the spot. The meeting overall went very well, but having learnt from the experience of the first customer meeting, we decided that in following meetings we would share the responsibilities differently: one team member would present the slides, two team members would respond to the customer’s questions and ask for clarifications/more details in case of new requirements, and two team member would act as observers/note takers.
+
+After the customer meeting, we also had our first retrospective. Retrospectives are crucial for a modern software development process; they force the developers to look at the bigger picture, ironing out the methods and practices employed by the team so that productivity and efficiency is maximized. They give team members a chance to vocalise any grievances they might have had during the development process in the appropriate time and environment. Airing grievances at an inappropriate time can make a developer feel insecure, whereas proper retrospective meetings allow for a healthier environment for criticism and self improvement.
+
+Frameworks are a great help with structuring retrospectives. A retrospective framework describes a technique by which all team members offer their criticism in organised manner that allows the complaints to be grouped according to categories by the end of the meeting. For this specific retrospective, we employed the “Liked-Learned-Lacked-Longed For” framework. One of the ways that a retrospective allows for a healthy environment is by including positive remarks that balance out the negativity of the complaints. Remarks by the team are written under the four columns, which scale according to importance from left to right. Ideally, the team will learn some useful lessons from the retrospective and successfully hone their teamwork skills. In hindsight, we conclude that our first retrospective had vague suggestions and criticisms, and we did not identify solutions to the issues raised.
+
+
+
 %==============================================================================
 
 \section{Choice of Colours}
@@ -211,11 +252,20 @@ In this chapter, we describe how the implemented the system.
 %------------------------------------------------------------------------------
 \section{Conclusions}
 
-Explain the wider lessons that you learned about software engineering,
-based on the specific issues discussed in previous sections.  Reflect
-on the extent to which these lessons could be generalised to other
-types of software project.  Relate the wider lessons to others
-reported in case studies in the software engineering literature.
+In hindsight, the conclusions we can draw can be enumerated as follows:
+Initial requirements gathering and planning phase
+Requirements are very fuzzy in the beginning, as the project takes shape. Project documentation, such as user personas, wireframes, site URLs, UML diagrams take time, but help immensely to create clarity between the development team and the customer.
+Once the initial requirements are agreed, it is a good idea to produce a quick prototype. This gives the customer the opportunity to further clarify requirements, and the team to quickly change and adopt to these. Following a successful prototype and agreed requirements, it is useful to identify the scope of the project and decide on web frameworks to use. Django was an excellent choice for the backend, however we would have benefited from a front-end framework such as React or Angular for multiple users: automated testing would have been very easy to implement and we could have enjoyed better library and community support.
+Project Management and Development
+
+As it was expected, Team Dynamics evolved throughout the course of the project: as we got to know each better, and got used to working together, we could better estimate the delivery costs of certain features and our understanding of the frameworks and tools we used increased too. We found retrospectives the best tools to improve our team work, especially when we decided to suggest concrete solutions to the identified issues and adhered to them improved the teams commitment and efficiency in the project. 
+
+Quality Assurance
+Although the backend is thoroughly tested with over 90\% coverage, our front-end lacks tests. This is partly due to not using any front-end frameworks, partly to occasionally prioritising delivering features over thorough tests.
+We started user-testing late, which revealed several bugs at the end of the project. Due to the complexity and unusual nature of the app (it is meant to be used in a company not be usual end users), user testing was difficult to organise and get useful results. Each user test would first need a thorough debrief and setup, which is fairly time-consuming and resource-intensive. An alternative option could have been to gather 10-15 users into one physical place, debrief them and make them test the app at once in order to save time and introduce competition among them to think of unusual edge cases to be tested.
+
+Since the start of our degrees, the Team Project was possibly our biggest step up in our journey to become professional software developers. This was the first time we worked in a reasonably large group for an extended amount of time creating software for a real world customer. Over the course of the project, we got to learn new technologies, such as CI/CD, various python and javascript libraries and we had the chance to apply the principles and practices learnt during the Professional Software Development course. We feel that having worked in a small agile team for two semesters gave us the communication, teamwork skills and industry best practices knowledge to perform well in our summer internships / year placements.
+
 
 %==============================================================================
 \bibliographystyle{plain}
