@@ -60,37 +60,37 @@ Implementing a software which would tackle this problem would result in less err
 
 
 %==============================================================================
-\section{Final Product Features}
-\subsection{Template Creator and Template Manager}
+\subsection{Final Product Features}
+\subsubsection{Template Creator and Template Manager}
 
 The main feature of the application is highlighting areas on PDF defined by a template. To achieve this, we created a tool to create and define templates for the PDF files to be matched to. This is a canvas tool that uses two javascript libraries (Paper.js and PDF.js) where users have to upload a PDF as a background, highlight areas of interest and name those areas. After the task is completed user can save template and complete configuration in a template manager.
 
 Template manager is a page where users are able to control previously created templates. This includes setting file patterns the template should look out for when new PDFs are uploaded, deleting selected templates and finally editing the template itself. Deleting the template will also delete previously created PDF conversions where this template was applied.
 
 
-\subsection{File Watcher}
+\subsubsection{File Watcher}
 
 The software which runs on the employee machine is based solely on python and its purpose is to upload all of the PDF documents which appear in a designated folder onto the web server.
 
 
-\subsection{Web Application}
+\subsubsection{Web Application}
 
 The web server and web application are built with Django, a python-based web development framework. The benefits of Django were that the whole team had enough experience with it already, it provides a built-in Admin page and user authentication and it is a straightforward, easy-to-use implementation of the MVC framework with plenty of documentation and a helpful community.
 
 
-\subsection{PDF to JSON Conversion}
+\subsubsection{PDF to JSON Conversion}
 
 An uploaded PDF is processed by storing it in a database model that contains the file itself, the file name and the date when the uploading occurred. While the PDF is being uploaded, the system examines whether the filename matches any of the patterns associated with the user-created templates. If a matching template is found, the PDF is converted to .jpg with pdf2image. Then the image is cropped according to the coordinates of the template using numpy. Finally, the cropped images are processed with pytesseract, an optical character recognition library which uses pre-trained neural networks to recognize text in an image. The resulting JSON file which consists the template keys linked to the extracted text is stored in a database model instance.
 
 
-\subsection{Displaying the Data}
+\subsubsection{Displaying the Data}
 
 On the main page, we display the links to PDF and JSON files, the template’s name that was used during conversion and the upload date. The PDF and JSON files can be opened by clicking on them: the JSON data is rendered to a user-friendly representation of the key-value pairs.
 
 The data is automatically loaded via an AJAX call, and the table is paginated with sorting and searching implemented with the DataTables jQuery plugin.
 
 
-\subsection{User Handling}
+\subsubsection{User Handling}
 
 There are two types of users, regular users who can see the main page with converted files, and administrators who can create and edit templates as well as manage other users on the Admin page.
 
@@ -98,7 +98,7 @@ There are two types of users, regular users who can see the main page with conve
 
 %==============================================================================
 
-\section{Design Decisions}
+\subsection{Design Decisions}
 
 A final product bases on the Client-Server architectural pattern, specified by the architecture diagramme presented below:
 
@@ -113,7 +113,8 @@ As the software is supposed to be used locally by a small to medium group of use
 
 
 %==============================================================================
-\section{Iteration One and Two}
+\section{Reflections}
+\subsection{Iteration One and Two}
 
 We spent Iteration One with getting set up and getting to know each other better to identify each others’ strengths  in order to assign technical tasks efficiently in the future.
 
@@ -163,7 +164,7 @@ After the customer meeting, we also had our first retrospective. Retrospectives 
 Frameworks are a great help with structuring retrospectives. A retrospective framework describes a technique by which all team members offer their criticism in organised manner that allows the complaints to be grouped according to categories by the end of the meeting. For this specific retrospective, we employed the ``Liked-Learned-Lacked-Longed For'' framework. One of the ways that a retrospective allows for a healthy environment is by including positive remarks that balance out the negativity of the complaints. Remarks by the team are written under the four columns, which scale according to importance from left to right. Ideally, the team will learn some useful lessons from the retrospective and successfully hone their teamwork skills. In hindsight, we conclude that our first retrospective had vague suggestions and criticisms, and we did not identify solutions to the issues raised.
 
 %==============================================================================
-\section{Iteration Three}
+\subsection{Iteration Three}
 
 One of the greatest sources of ambiguity in the requirements for our project was how the functionality of the project was going to be split between the local application and the web-based one. Some of this division was clear; the file watching feature was going to be on the local application and the template creator was going to be on the web application. For other features, such as the Optical Character Recognition and the viewing of the results, the team was instructed to develop this on the side of the web application.
 
@@ -185,7 +186,7 @@ During the end of the iteration, we had a customer demo. Since the team had only
 
 
 %==============================================================================
-\section{Iteration Four}
+\subsection{Iteration Four}
 
 This iteration spans across two months so we decided to split it between two shorter sprints. Since it was the longest iteration and we had met all our objectives in the previous iteration, we set goals that, compared to the other iterations, were more ambitious.
 
@@ -224,7 +225,7 @@ One realization we had after the retrospective was that we were not keeping clea
 
 
 %==============================================================================
-\section{Iteration Five}
+\subsection{Iteration Five}
 
 In this iteration we wanted to finish all the main features of ``MiniCooper''. We could then leave bug fixes, polishing and perhaps some minor features for Iteration 6 and be ready to deliver. As such the goals for this iteration were somewhat ambitious however, we tried to keep it realistic as we didn’t want to miss anything important. 
 
@@ -239,7 +240,7 @@ By the end of this iteration, we got used to doing retrospectives, and every tea
 In order to stay on track with all the issues that need to be closed, we decided to start setting deadlines for tasks, and we agreed that if someone misses a deadline, then the reason behind it should be explained before granting an extension.
 
 %==============================================================================
-\section{Iteration Six}
+\subsection{Iteration Six}
 
 This Iteration, as the last we had before delivery, was a difficult time to make choices about what we needed to prioritise and what was relatively less important and we could go without. One of our biggest priority in this iteration was quality assurance. We wanted to make sure the final version of ``MiniCooper'' was easy to use and free of any critical bugs. As such in this iteration did not plan on committing much time towards developing new features.
 
