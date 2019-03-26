@@ -4,13 +4,7 @@
 % a PDF file as output (there is no need to use dvips when using pdflatex).
 
 % Modified 
-
 \documentclass{l3proj}
-
-\usepackage{biblatex}
-\usepackage{xstring}
-\addbibresource{dissertation.bib}
-
 \begin{document}
 
 \title{MiniCooper}
@@ -206,7 +200,7 @@ The iteration ended with another successful demonstration to the customer, follo
 \item Keep doing great demos, good communication and task delegation
 \end{itemize}
 
-One realization we had after the retrospective was that we were not keeping clear track of how well we are implementing the solutions the team agreed to have after the previous retrospective. For example, to avoid becoming distracted, a constructive solution was to try to implement the pomodoro method. \citep{Cirillo} The team decided to utilize the issue board, creating a different type of issue labelled as “Retrospective Solutions” on the issue board, moving them between stages similarly to any other issues on subsequent meetings, as we assessed ourselves how good we are at sticking to the identified solutions. Overall, the team managed to accomplish most of the tasks set for the iteration and was able to follow up on most of the retrospective solutions despite a few hiccups.
+One realization we had after the retrospective was that we were not keeping clear track of how well we are implementing the solutions the team agreed to have after the previous retrospective. For example, to avoid becoming distracted, a constructive solution was to try to implement the pomodoro method. \cite{Cirillo} The team decided to utilize the issue board, creating a different type of issue labelled as “Retrospective Solutions” on the issue board, moving them between stages similarly to any other issues on subsequent meetings, as we assessed ourselves how good we are at sticking to the identified solutions. Overall, the team managed to accomplish most of the tasks set for the iteration and was able to follow up on most of the retrospective solutions despite a few hiccups.
 
 
 %==============================================================================
@@ -269,6 +263,6 @@ We started user-testing late, which revealed several bugs at the end of the proj
 Since the start of our degrees, the Team Project was possibly our biggest step up in our journey to become professional software developers. This was the first time we worked in a reasonably large group for an extended amount of time creating software for a real world customer. Over the course of the project, we got to learn new technologies, such as CI/CD, various Python and JavaScript libraries and we had the chance to apply the principles and practices learnt during the Professional Software Development course. We feel that having worked in a small agile team for two semesters gave us the communication, teamwork skills and knowledge of industry best practices to perform well in our summer internships/year placements.
 
 %==============================================================================
-
-\printbibliography
+\bibliographystyle{plain}
+\bibliography{dissertation}
 \end{document}
