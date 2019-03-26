@@ -46,8 +46,6 @@ In order to meet the set expectations, we have tried to empirically evaluate the
 The delivery of the product was distributed into six ``iterations'' with each having time frames of four to eight weeks. At the end of each iteration, we were expected to deliver and demonstrate an agreed set of features we developed during the iteration to the customer, gather feedback and then discuss requirements for the next iteration including the priority of each new features.
 
 The dissertation is structured in a way which represents the workflow of a team, with the first sections disclosing initial requirements and motives behind the application as well as design decisions. After that we describe the progress the team has made throughout the six iterations. The dissertation ends with a conclusion which reflects on the final outcome and the experience we gained thanks to working in a professional software development environment.
-
-
 %==============================================================================
 \section{Case Study Background}
 \subsection{Customer and Objective}
@@ -58,42 +56,24 @@ The enterprise itself has to deal with great communication overhead such as hund
 
 Our task was to automate this process by creating an application that would automatically upload PDFs appearing in a specific folder, match the PDFs based on patterns in their filenames to custom templates the user created previously, convert the files to JSON using OCR (Optical Character Recognition) and display the data in a user-friendly interface.
 Implementing a software which would tackle this problem would result in less error-prone bookkeeping as user error is inevitable when it comes to typing. Furthermore, the employees could spend their time at work doing more creative or complicated tasks which is an additional business value for the company.
-
-
 %==============================================================================
 \subsection{Final Product Features}
-\subsubsection{Template Creator and Template Manager}
 
-One of the main features of the application is highlighting areas on PDF defined by a template. To achieve this, we created a tool to create and define templates for the PDF files to be matched to. This is a canvas tool that uses two javascript libraries (Paper.js and PDF.js) where users have to upload a PDF as a background, highlight areas of interest and name those areas. After the task is completed user can save template and complete configuration in a template manager.
+One of the main features of the application is the highlighting areas on PDF defined by a template. To achieve this, we created a tool to \textbf{create and define templates for the PDF files to be matched to}. This is a canvas tool that uses two javascript libraries (Paper.js and PDF.js) where users have to upload a PDF as a background, highlight areas of interest and name those areas. After the task is completed user can save template and complete configuration in a template manager.
 
-Template manager is a page where users are able to control previously created templates. This includes setting file patterns the template should look out for when new PDFs are uploaded, deleting selected templates and finally editing the template itself. Deleting the template will also delete previously created PDF conversions where this template was applied.
+\textbf{Template Manager} is a page where users are able to control previously created templates. This includes setting file patterns the template should look out for when new PDFs are uploaded, deleting selected templates and finally editing the template itself. Deleting the template will also delete previously created PDF conversions where this template was applied.
 
+The program \textbf{filewatcher.py} runs on the employee machine and is based solely on Python. Its purpose is to upload all of the PDF documents which appear in a designated folder onto the web server.
 
-\subsubsection{File Watcher}
+The \textbf{web server and web application} are built with Django, a Python-based web development framework. The benefits of Django were that the whole team had enough experience with it already, it provides a built-in Admin page and user authentication and it is a straightforward, easy-to-use implementation of the MVC framework with plenty of documentation and a helpful community.
 
-The software which runs on the employee machine is based solely on Python and its purpose is to upload all of the PDF documents which appear in a designated folder onto the web server.
+An uploaded PDF is processed by storing it in a database model that contains the file itself, the file name and the date when the uploading occurred. While the PDF is being uploaded, \textbf{the system examines whether the filename matches any of the patterns associated with the user-created templates}. If a matching template is found, the PDF is converted to .jpg with pdf2image. Then the image is cropped according to the coordinates of the template using numpy. Finally, \textbf{the cropped images are processed with pytesseract, an optical character recognition library} which uses pre-trained neural networks to recognize text in an image. The resulting JSON file which consists the template keys linked to the extracted text is stored in a database model instance.
 
-
-\subsubsection{Web Application}
-
-The web server and web application are built with Django, a Python-based web development framework. The benefits of Django were that the whole team had enough experience with it already, it provides a built-in Admin page and user authentication and it is a straightforward, easy-to-use implementation of the MVC framework with plenty of documentation and a helpful community.
-
-
-\subsubsection{PDF to JSON Conversion}
-
-An uploaded PDF is processed by storing it in a database model that contains the file itself, the file name and the date when the uploading occurred. While the PDF is being uploaded, the system examines whether the filename matches any of the patterns associated with the user-created templates. If a matching template is found, the PDF is converted to .jpg with pdf2image. Then the image is cropped according to the coordinates of the template using numpy. Finally, the cropped images are processed with pytesseract, an optical character recognition library which uses pre-trained neural networks to recognize text in an image. The resulting JSON file which consists the template keys linked to the extracted text is stored in a database model instance.
-
-
-\subsubsection{Displaying the Data}
-
-On the main page, we display the links to PDF and JSON files, the template’s name that was used during conversion and the upload date. The PDF and JSON files can be opened by clicking on them: the JSON data is rendered to a user-friendly representation of the key-value pairs.
+\textbf{On the main page, we display the links to PDF and JSON files}, the template’s name that was used during conversion and the upload date. The PDF and JSON files can be opened by clicking on them: the JSON data is rendered to a user-friendly representation of the key-value pairs.
 
 The data is automatically loaded via an AJAX call, and the table is paginated with sorting and searching implemented with the DataTables jQuery plugin.
 
-
-\subsubsection{User Handling}
-
-There are two types of users, regular users who can see the main page with converted files, and administrators who can create and edit templates as well as manage other users on the Admin page.
+\textbf{There are two types of users}, regular users who can see the main page with converted files, and administrators who can create and edit templates as well as manage other users on the Admin page.
 
 
 
