@@ -1,3 +1,4 @@
+
 % This example An LaTeX document showing how to use the l3proj class to
 % write your report. Use pdflatex and bibtex to process the file, creating 
 % a PDF file as output (there is no need to use dvips when using pdflatex).
@@ -5,6 +6,10 @@
 % Modified 
 
 \documentclass{l3proj}
+
+\usepackage{biblatex}
+\usepackage{xstring}
+\addbibresource{dissertation.bib}
 
 \begin{document}
 
@@ -92,7 +97,7 @@ The final product is based on the Client-Server architectural pattern, specified
 \label{fig:componentDiagram}
 \end{figure}
 
-As the software is intended to be used locally by a small- to medium-sized group of users, it is beneficial to implement its server in a centralised manner. The benefits coming from such a design are the improvement in the management and organisation of data, as all of it can be maintained and controlled in a single and consistent structure. Hence any future improvements can be undertaken directly on the server rather than simultaneously updating multiple clients. [REFERENCE (Yadav, Chandra, Singh, Kumar AN INTRODUCTION TO CLIENT SERVER COMPUTING; New Age International (P) Ltd.; 2009) page 19 https://epdf.tips/an-introduction-to-client-server-computing.html ]
+As the software is intended to be used locally by a small- to medium-sized group of users, it is beneficial to implement its server in a centralised manner. The benefits coming from such a design are the improvement in the management and organisation of data, as all of it can be maintained and controlled in a single and consistent structure. Hence any future improvements can be undertaken directly on the server rather than simultaneously updating multiple clients. \cite{YadavSingh}
 
 
 %==============================================================================
@@ -117,11 +122,11 @@ In order to foster the creation of a common understanding of the requirements, w
 \item Wireframes, using a method our coach suggested: 
 Each member of the team drafted five possible wireframes for the main page of the app, then explained their ideas to the rest of the team. After that, each member of the team drafted two suggested wireframes and explained his decisions to the rest of the team.
 Finally everybody was required to draft one wireframe, and to everyone’s relief the proposed wireframes converged significantly.
-\item User stories for the main features of the app. As per the request of our customer, we aimed to have user stories written from a non-technical end user perspective. Each user story was designed to be as atomic as possible, with the terse structure of ``As a [type of user], I want to [action  describing  feature], So that [action  describing  benefit  of  feature]'' [REFERENCE Cohn M. User stories applied : for agile software development p.18 Addison-Wesley, [2004]]
+\item User stories for the main features of the app. As per the request of our customer, we aimed to have user stories written from a non-technical end user perspective. Each user story was designed to be as atomic as possible, with the terse structure of ``As a [type of user], I want to [action  describing  feature], So that [action  describing  benefit  of  feature]'' \cite{CohnMike}
 \item A very helpful technique we employed here was the Value Proposition Canvas, which helped us empathise with the customer, identify the core business value the application was creating, and the issues it was meant to resolve. This knowledge helped us tailor our solutions to the customer’s needs.
 \end{itemize}
 
-As suggested in the Principles behind the Agile Manifesto [REFERENCE https://agilemanifesto.org/] , we welcomed changing requirements.
+As suggested in the Principles behind the Agile Manifesto \cite{agilewebsite} , we welcomed changing requirements.
 The final documentation is the result of many iterations of the following process:
 \begin{itemize}
 \item Creating documentation artifacts
@@ -129,7 +134,7 @@ The final documentation is the result of many iterations of the following proces
 \item Taking notes of new or changed requirements
 \end{itemize}
 
-Following that, we used the MoSCoW method [REFERENCE Clegg, Dai; Barker, Richard (1994). Case Method Fast-Track: A RAD Approach. Addison-Wesley.] to identify the most important features to implement in the coming iteration as ``Must-Haves''. These were: 
+Following that, we used the MoSCoW method \cite{CleggBarker} to identify the most important features to implement in the coming iteration as ``Must-Haves''. These were: 
 \begin{itemize}
 \item Basic web app
 \item Create predefined template
@@ -142,7 +147,7 @@ We started to diversify our communication to multiple channels on Slack to refle
 
 Since occasions to meet the customer in person were scarce, we tried to maximise the benefits of the customer meeting by having a well-structured presentation of our accomplishments thus far and our planned deliverables for the coming iteration. We planned the meeting so that each team member would get to talk about their share of tasks in the first half of the meeting and we would have time for an open discussion with the customer in the second half. However the customer preferred to have a dialogue-like meeting throughout, which made us to improvise on the spot. The meeting overall went very well, but having learnt from the experience of the first customer meeting, we decided that in following meetings we would share the responsibilities differently: one team member would present the slides, two team members would respond to the customer’s questions and ask for clarifications/more details in case of new requirements, and two team member would act as observers/note takers. Once the main customer meeting was done, we discussed the notes taken during the meeting so that everyone was on the same page, with clear tasks for the next iteration. The final notes would also be shared with the customer later on to verify that the requirements, as we understood, were indeed what he wanted. This would be repeated after every customer meeting.
 
-After the customer meeting, we also had our first retrospective. Retrospectives are crucial for a modern software development process; they force the developers to look at the bigger picture, ironing out the methods and practices employed by the team so that productivity and efficiency is maximized. They give team members a chance to vocalise any grievances they might have had during the development process in the appropriate time and environment. Airing grievances at an inappropriate time can make a developer feel insecure, whereas proper retrospective meetings allow for a healthier environment for criticism and self improvement. [ REFERENCE Derby, Larsen, Schwaber; Agile Retrospectives: Making Good Teams Great; Pragmatic Bookshelf, 26 Jul 2006; chapter 3]
+After the customer meeting, we also had our first retrospective. Retrospectives are crucial for a modern software development process; they force the developers to look at the bigger picture, ironing out the methods and practices employed by the team so that productivity and efficiency is maximized. They give team members a chance to vocalise any grievances they might have had during the development process in the appropriate time and environment. Airing grievances at an inappropriate time can make a developer feel insecure, whereas proper retrospective meetings allow for a healthier environment for criticism and self improvements. \cite{DerbyLarsenSchwaber} 
 
 Frameworks are a great help with structuring retrospectives. A retrospective framework describes a technique by which all team members offer their criticism in organised manner that allows the complaints to be grouped according to categories by the end of the meeting. For this specific retrospective, we employed the ``Liked-Learned-Lacked-Longed For'' framework. One of the ways that a retrospective allows for a healthy environment is by including positive remarks that balance out the negativity of the complaints. Remarks by the team are written under the four columns, which scale according to importance from left to right. Ideally, the team will learn some useful lessons from the retrospective and successfully hone their teamwork skills. In hindsight, we conclude that our first retrospective had vague suggestions and criticisms, and we did not identify solutions to the issues raised.
 
@@ -151,7 +156,7 @@ Frameworks are a great help with structuring retrospectives. A retrospective fra
 
 One of the greatest sources of ambiguity in the requirements for our project was how the functionality of the project was going to be split between the local application and the web-based one. Some of this division was clear; the file watching feature was going to be on the local application and the template creator was going to be on the web application. For other features, such as the Optical Character Recognition and the viewing of the results, the team was instructed to develop this on the side of the web application.
 
-As our customer is a software engineering firm, their representative was able to give us some feedback on our software engineering practices and more specifically on our issue tracking methodology. We were advised to minimise the duplication of tasks on our virtual KanBan board [REFERENCE Mattias Skarin; Real-World Kanban: Do Less, Accomplish More with Lean Thinking; Pragmatic Bookshelf, 23 Jun 2015]and to organise our technical tasks under the non-technical user stories using dependencies, which we adhered to until the end of the project. User stories and technical tasks were distinguished using labels, and each issue was assigned to a specific iteration. KanBan boards can be an important part of an Agile developer’s toolbox, since they allow for issues to be categorised by their state in the development pipeline in an easy to read manner.
+As our customer is a software engineering firm, their representative was able to give us some feedback on our software engineering practices and more specifically on our issue tracking methodology. We were advised to minimise the duplication of tasks on our virtual KanBan board \cite{Skarin} and to organise our technical tasks under the non-technical user stories using dependencies, which we adhered to until the end of the project. User stories and technical tasks were distinguished using labels, and each issue was assigned to a specific iteration. KanBan boards can be an important part of an Agile developer’s toolbox, since they allow for issues to be categorised by their state in the development pipeline in an easy to read manner.
 
 Organising the KanBan board like this allowed us to easily filter it by:
 \begin{itemize}
@@ -173,7 +178,7 @@ During the end of the iteration, we had a customer demo. Since the team had only
 
 This iteration spans across two months including the winter holidar so we decided to split it between two shorter sprints. 
 
-Before the end of the semester, the team had assigned clear tasks to each other which were also tracked in the issue board. We also started using planning poker [REFERENCE Cohn M.; Agile Estimating and Planning; Robert C. Martin 2005; Chapter 6] , and added the estimated delivery efforts as numbers next to each issue. This organisation helped us stay motivated during this period. 
+Before the end of the semester, the team had assigned clear tasks to each other which were also tracked in the issue board. We also started using planning poker \cite{MikeAgile} , and added the estimated delivery efforts as numbers next to each issue. This organisation helped us stay motivated during this period. 
 
 During the middle of the break, there was a disruption to the university network which rendered us unable to access the repository as well as the issue tracking system which hindered the progress of the team. Not only we were unable to access the latest file or update the repository, we were also not able to track issues which is necessary for task delegation until the break was over. We decided to move to a temporary repository on the public Gitlab and later migrating back to the university Gitlab. The commits pushed during the server downtime are only accessible in the temporary GitLab repository.
 
@@ -191,7 +196,7 @@ As the team got more used to the Gitlab system, we developed and improved the co
 
 The team also decided to step up on the quality assurance department and one of the goals in the iteration was to achieve high test coverage across the files by filling it up with meaningful tests. Having a high-test coverage would reduce defects as almost every single part of the code would be tested every time the test suite was activated, which occurs with every commits to the repository as it is attached to the continuous integration pipeline. This means that every time an update was made to the codebase and parts were changed, we can ensure that it does not break other parts of the code and this reduces the risk overall.
 
-The iteration ended with another successful demonstration to the customer, followed by a retrospective. During the retrospective, the team used starfish technique following the suggestion of the team coach. This retrospective contains five different sections, namely: Start, Stop, Continue, More of and Less of [REFERENCE Luís Gonçalves; https://luis-goncalves.com/starfish-exercise/]. The team agreed to:
+The iteration ended with another successful demonstration to the customer, followed by a retrospective. During the retrospective, the team used starfish technique following the suggestion of the team coach. This retrospective contains five different sections, namely: Start, Stop, Continue, More of and Less of \cite{starfishwebsite}. The team agreed to:
 
 \begin{itemize}
 \item Start doing dissertation studies and communicate via issues
@@ -201,7 +206,7 @@ The iteration ended with another successful demonstration to the customer, follo
 \item Keep doing great demos, good communication and task delegation
 \end{itemize}
 
-One realization we had after the retrospective was that we were not keeping clear track of how well we are implementing the solutions the team agreed to have after the previous retrospective. For example, to avoid becoming distracted, a constructive solution was to try to implement the pomodoro method. [REFERENCE Francesco Cirillo; The Pomodoro Technique: The Life-Changing Time-Management System; Random House, 16 Aug 2018 ]The team decided to utilize the issue board, creating a different type of issue labelled as “Retrospective Solutions” on the issue board, moving them between stages similarly to any other issues on subsequent meetings, as we assessed ourselves how good we are at sticking to the identified solutions. Overall, the team managed to accomplish most of the tasks set for the iteration and was able to follow up on most of the retrospective solutions despite a few hiccups.
+One realization we had after the retrospective was that we were not keeping clear track of how well we are implementing the solutions the team agreed to have after the previous retrospective. For example, to avoid becoming distracted, a constructive solution was to try to implement the pomodoro method. \citep{Cirillo} The team decided to utilize the issue board, creating a different type of issue labelled as “Retrospective Solutions” on the issue board, moving them between stages similarly to any other issues on subsequent meetings, as we assessed ourselves how good we are at sticking to the identified solutions. Overall, the team managed to accomplish most of the tasks set for the iteration and was able to follow up on most of the retrospective solutions despite a few hiccups.
 
 
 %==============================================================================
@@ -209,12 +214,12 @@ One realization we had after the retrospective was that we were not keeping clea
 
 In this iteration we wanted to finish all the main features of ``MiniCooper''. We could then leave bug fixes, polishing and perhaps some minor features for Iteration Six and be ready to deliver.
 
-We wanted to have our app deployed on one of the customer’s machine, following the Agile principle of delivering working software as often as possible. [REFERENCE https://agilemanifesto.org/principles.html Priniciple 3] Our customer had been happy with our progress so far but we knew we could get more valuable feedback from leaving it in his hands.  
+We wanted to have our app deployed on one of the customer’s machine, following the Agile principle of delivering working software as often as possible. \cite{agilewebsite} Our customer had been happy with our progress so far but we knew we could get more valuable feedback from leaving it in his hands.  
 
 This iteration we began user testing as we wanted to get feedback from outside the development team that we could not get from our customer until he deployed the software. We asked people unfamiliar with the project, preferably not computing science/software engineering students, to try our application and give us feedback on the usability of the app. We created a google form for them to provide their feedback. The main benefit of user testing was however, the bugs that were discovered. We realised that we were not going to get valuable feedback on the app until we address these, hence each bug was entered to GitLab with high priority, and solved as soon as possible.
 We were glad that user testing helped our software become more robuts, however, possibly we could have used testers time on more valuable work such as feedback on UX, if we had implemented more thorough testing before.
 
-During both this iteration and iteration 6 we increased the number of code reviews we did in order to prepare for delivery. During these code reviews we identified a number of ``bad smells'' [REFERENCE Martin Fowler. Refactoring: Improving the Design of Existing Code. Object Technology Series. Addison Wesley, Pearson Education Inc 2000; Chapter 3]. A example of this was in the template editor and template creator where we found significant amount code duplicated across the two files. We decided to refactor in order to follow the principle of Don’t Repeat Yourself (DRY) [REFERENCE Andrew Hunt and David Thomas (The Pragmatic Programmer: From Journeyman to Master, Addison-Wesley Professional, 1999)]. We extracted functions from the code and replaced any occurrences of the duplicate code with calls to one of these functions. Refactoring is an important task in software development as it lowers the cost of developing new features in the future as well as making the codebase much more understandable. This not only improves the quality of the code but also reduces the risk of code breaking down.
+During both this iteration and iteration 6 we increased the number of code reviews we did in order to prepare for delivery. During these code reviews we identified a number of ``bad smells'' \cite{Fowler}. A example of this was in the template editor and template creator where we found significant amount code duplicated across the two files. We decided to refactor in order to follow the principle of Don’t Repeat Yourself (DRY) \cite{HuntThomas}. We extracted functions from the code and replaced any occurrences of the duplicate code with calls to one of these functions. Refactoring is an important task in software development as it lowers the cost of developing new features in the future as well as making the codebase much more understandable. This not only improves the quality of the code but also reduces the risk of code breaking down.
 
 Overall the iteration was a success; all critical features were finished however, we did have some missed objectives. Despite our frequent communication via Slack and email, our customer did not find the time to deploy the app to provide us with a feedback. Two lower priority objectives were: the ability to resize boxes by their corners in the template creator and the automatically refreshing result page. Box resizing turned out to be too demanding of a task with the library of our choice. Automatic refreshing of the index page was implemented however, the newly implemented functionality collided with the previously implemented pagination and we could not find a workable solution at that point. After discussion with our customer it was decided that pagination was more important than the refreshing but both working together was still desired. Therefore we rolled back this code for now so that pagination still worked and left automatic refreshing as a missed objective. 
 
@@ -264,6 +269,6 @@ We started user-testing late, which revealed several bugs at the end of the proj
 Since the start of our degrees, the Team Project was possibly our biggest step up in our journey to become professional software developers. This was the first time we worked in a reasonably large group for an extended amount of time creating software for a real world customer. Over the course of the project, we got to learn new technologies, such as CI/CD, various Python and JavaScript libraries and we had the chance to apply the principles and practices learnt during the Professional Software Development course. We feel that having worked in a small agile team for two semesters gave us the communication, teamwork skills and knowledge of industry best practices to perform well in our summer internships/year placements.
 
 %==============================================================================
-\bibliographystyle{plain}
-\bibliography{dissertation}
+
+\printbibliography
 \end{document}
