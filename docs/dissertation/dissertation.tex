@@ -39,7 +39,7 @@ The following document is a case study of ``MiniCooper'', an application softwar
 
 Our group was required to develop a software tool for the Fife based software company ``Cooper Software'', represented by  Darryl Rankin, Head of Development. The programme with the working title ``MiniCooper'' was intended to be a combination of a web and desktop application, which would upload local employees’ PDF files onto a server, process them so that the most important information is extracted and stored in a user-readable JSON format.
 
-Apart from developing a workable product, part of our assignment was to try and examine ourselves various techniques and processes which are commonly used by professional development teams. These were mostly covered on ``Professional Software Development'', a Level 3 course by Dr Timothy Storer. This requirement distinguished our project from any other that we have conducted so far, as it made us pay a great attention not just to the quality of our code but to our professionalism as well.
+Apart from developing a workable product, part of our assignment was to try various techniques and processes which are commonly used by professional development teams. These were mostly covered on ``Professional Software Development'', a Level 3 course by Dr Timothy Storer. This requirement distinguished our project from any other that we have conducted so far, as it made us pay a great attention not just to the quality of our code but to our professionalism as well.
 
 In order to meet the set expectations, we have tried to empirically evaluate the effectiveness of multiple software development techniques and processes such as version control, continuous development and integration, Agile  just to name a few, which were introduced to us before and over the course of the project. 
 
@@ -54,7 +54,7 @@ The dissertation is structured in a way which represents the workflow of a team,
 
 Cooper Software is a software development company founded in 2005, based in Fife, specialised in Enterprise Resource Planning (ERP).
 
-The enterprise itself has to deal with a great communication overhead such as hundreds of PDFs each day. The PDFs can be classified into a number of distinct groups based on their structure and titles: flight tickets, supermarket bills, etc. The relevant information happens to be at the same area in each PDF that belongs to a specific group. The company needs to retrieve this data and store it in an online system, therefore, there is a dedicated employee in the company whose job is to manually open these PDFs and type the data into an online form, e.g. on a supermarket bill the labels to be entered manually could be: invoice number, address, total, etc.
+The enterprise itself has to deal with great communication overhead such as hundreds of PDFs each day. The PDFs can be classified into a number of distinct groups based on their structure and titles: flight tickets, supermarket bills, etc. The relevant information happens to be at the same area in each PDF that belongs to a specific group. The company needs to retrieve this data and store it in an online system, therefore, there is a dedicated employee in the company whose job is to manually open these PDFs and type the data into an online form, e.g. on a supermarket bill the labels to be entered manually could be: invoice number, address, total, etc.
 
 Our task was to automate this process by creating an application that would automatically upload PDFs appearing in a specific folder, match the PDFs based on patterns in their filenames to custom templates the user created previously, convert the files to JSON using OCR (Optical Character Recognition) and display the data in a user-friendly interface.
 Implementing a software which would tackle this problem would result in less error-prone bookkeeping as user error is inevitable when it comes to typing. Furthermore, the employees could spend their time at work doing more creative or complicated tasks which is an additional business value for the company.
@@ -64,19 +64,19 @@ Implementing a software which would tackle this problem would result in less err
 \subsection{Final Product Features}
 \subsubsection{Template Creator and Template Manager}
 
-The main feature of the application is highlighting areas on PDF defined by a template. To achieve this, we created a tool to create and define templates for the PDF files to be matched to. This is a canvas tool that uses two javascript libraries (Paper.js and PDF.js) where users have to upload a PDF as a background, highlight areas of interest and name those areas. After the task is completed user can save template and complete configuration in a template manager.
+One of the main features of the application is highlighting areas on PDF defined by a template. To achieve this, we created a tool to create and define templates for the PDF files to be matched to. This is a canvas tool that uses two javascript libraries (Paper.js and PDF.js) where users have to upload a PDF as a background, highlight areas of interest and name those areas. After the task is completed user can save template and complete configuration in a template manager.
 
 Template manager is a page where users are able to control previously created templates. This includes setting file patterns the template should look out for when new PDFs are uploaded, deleting selected templates and finally editing the template itself. Deleting the template will also delete previously created PDF conversions where this template was applied.
 
 
 \subsubsection{File Watcher}
 
-The software which runs on the employee machine is based solely on python and its purpose is to upload all of the PDF documents which appear in a designated folder onto the web server.
+The software which runs on the employee machine is based solely on Python and its purpose is to upload all of the PDF documents which appear in a designated folder onto the web server.
 
 
 \subsubsection{Web Application}
 
-The web server and web application are built with Django, a python-based web development framework. The benefits of Django were that the whole team had enough experience with it already, it provides a built-in Admin page and user authentication and it is a straightforward, easy-to-use implementation of the MVC framework with plenty of documentation and a helpful community.
+The web server and web application are built with Django, a Python-based web development framework. The benefits of Django were that the whole team had enough experience with it already, it provides a built-in Admin page and user authentication and it is a straightforward, easy-to-use implementation of the MVC framework with plenty of documentation and a helpful community.
 
 
 \subsubsection{PDF to JSON Conversion}
