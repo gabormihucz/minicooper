@@ -120,7 +120,7 @@ As the software is intended to be used locally by a small- to medium-sized group
 We spent Iteration One with getting set up and getting to know each other better to identify each others’ strengths  in order to assign technical tasks efficiently in the future.
 
 We set up our GitLab account, installed the virtual machine on the lab machines and familiarised ourselves with Linux.
-We also created a Slack account in order to communicate efficiently in the future on multiple channels and participated on a 48-hour Hackathon, partly as a team building exercise.  
+We also created a Slack account in order to communicate efficiently in the future on multiple channels and participated on a 48-hour Hackathon, partly as a team building exercise. Social Media would be used for  
 
 Iteration Two started with the team being assigned to our customer, Cooper Software. The goal for the end of this iteration was to have a detailed backlog, consisting of the detailed description of the project, and a clear well-organised set of tasks in GitLab to start delivering features.
 
@@ -189,13 +189,13 @@ During the end of the iteration, we had a customer demo. Since the team had only
 %==============================================================================
 \subsection{Iteration Four}
 
-This iteration spans across two months so we decided to split it between two shorter sprints. Since it was the longest iteration and we had met all our objectives in the previous iteration, we set goals that, compared to the other iterations, were more ambitious.
+This iteration spans across two months including the winter holidar so we decided to split it between two shorter sprints. 
 
-Our team was split with some of us away for the holidays in December, making communications a bit harder. However prior to going back, the team had assigned clear tasks to each other which were also tracked in the issue board. We also started using planning poker, and added the estimated delivery efforts as numbers next to each issue. This organisation helped us stay motivated during this period. 
+Before the end of the semester, the team had assigned clear tasks to each other which were also tracked in the issue board. We also started using planning poker, and added the estimated delivery efforts as numbers next to each issue. This organisation helped us stay motivated during this period. 
 
-During the middle of the break, there was a disruption to the university network which rendered us unable to access the repository as well as the issue tracking system which hindered the progress of the team. Not only we were unable to access the latest file or update the repository, we were also not able to track issues which is necessary for task delegation until the break was over. We decided to move to a temporary repository on the public Gitlab and later migrating back to the university Gitlab. The end result was that the files were successfully migrated but the process was not smooth. The commits pushed during the server downtime are only accessible in the temporary GitLab repository, but are not visible in the main GitLab repository. 
+During the middle of the break, there was a disruption to the university network which rendered us unable to access the repository as well as the issue tracking system which hindered the progress of the team. Not only we were unable to access the latest file or update the repository, we were also not able to track issues which is necessary for task delegation until the break was over. We decided to move to a temporary repository on the public Gitlab and later migrating back to the university Gitlab. The commits pushed during the server downtime are only accessible in the temporary GitLab repository.
 
-One of the main tasks was to develop a template creator, which is followed up by a template editor, both of which were described in the above sections. The template creator was done during the break with improvements to be made in the future and the template editor came a bit later. We found many parts of the code were repetitive between the two during a code review so refactoring was done in order to follow the principle of Don’t Repeat Yourself (DRY). Refactoring is an important task in software development as it lowers the cost of developing new features in the future as well as making the codebase much more understandable. This not only improves the quality of the code but also reduces the risk of code breaking down.
+We found many parts of the code were repetitive between the template editor and template creator during a code review so refactoring was done in order to follow the principle of Don’t Repeat Yourself (DRY). Refactoring is an important task in software development as it lowers the cost of developing new features in the future as well as making the codebase much more understandable. This not only improves the quality of the code but also reduces the risk of code breaking down.
 
 The other main tasks for the web app in the iteration were:
 \begin{itemize}
@@ -228,12 +228,12 @@ One realization we had after the retrospective was that we were not keeping clea
 %==============================================================================
 \subsection{Iteration Five}
 
-In this iteration we wanted to finish all the main features of ``MiniCooper''. We could then leave bug fixes, polishing and perhaps some minor features for Iteration 6 and be ready to deliver. As such the goals for this iteration were somewhat ambitious however, we tried to keep it realistic as we didn’t want to miss anything important. 
+In this iteration we wanted to finish all the main features of ``MiniCooper''. We could then leave bug fixes, polishing and perhaps some minor features for Iteration Six and be ready to deliver.
 
-We wanted to have our app deployed on one of the customer’s machine, following the Agile principle of delivering working software as often as possible. Our customer had been happy with our progress so far but we knew we could get more valuable feedback from leaving it in his hands. With this in mind it was important to finish the most critical features as quickly as possible. One such feature was adding the file patterns to our templates to be used to identify which files were to be processed by which templates. 
+We wanted to have our app deployed on one of the customer’s machine, following the Agile principle of delivering working software as often as possible. Our customer had been happy with our progress so far but we knew we could get more valuable feedback from leaving it in his hands.  
 
-This iteration we began user testing as we wanted to get feedback from outside the development team that we couldn’t get from our customer until he deployed the software. We asked people unfamiliar with the project, preferably not computing science/software engineering students, to try our application and give us feedback on the usability of the app. We created a google form for them to provide their feedback. The main benefit of user testing was however, the bugs that were discovered. We expected some to still be present but as it turned out there happened to be a concerning amount of significant ones we were not expecting. We realised that  we were not going to get valuable feedback on the app until we address these. 
-We were glad that user testing guided us towards this issue, however, possibly we could have used testers time on more valuable work such as feedback on UX, if we had implemented more thorough testing before.
+This iteration we began user testing as we wanted to get feedback from outside the development team that we could not get from our customer until he deployed the software. We asked people unfamiliar with the project, preferably not computing science/software engineering students, to try our application and give us feedback on the usability of the app. We created a google form for them to provide their feedback. The main benefit of user testing was however, the bugs that were discovered. We realised that we were not going to get valuable feedback on the app until we address these, hence each bug was entered to GitLab with high priority, and solved as soon as possible.
+We were glad that user testing helped our software become more robuts, however, possibly we could have used testers time on more valuable work such as feedback on UX, if we had implemented more thorough testing before.
 
 Overall the iteration was a success; all critical features were finished however, we did have some missed objectives. Despite our frequent communication via Slack and email, our customer did not find the time to deploy the app to provide us with a feedback. Two lower priority objectives were: the ability to resize boxes by their corners in the template creator and the automatically refreshing result page. Box resizing turned out to be too demanding of a task with the library of our choice. Automatic refreshing of the index page was implemented however, the newly implemented functionality collided with the previously implemented pagination and we could not find a workable solution at that point. After discussion with our customer it was decided that pagination was more important than the refreshing but both working together was still desired. Therefore we rolled back this code for now so that pagination still worked and left automatic refreshing as a missed objective. 
 
@@ -243,19 +243,19 @@ In order to stay on track with all the issues that need to be closed, we decided
 %==============================================================================
 \subsection{Iteration Six}
 
-This Iteration, as the last we had before delivery, was a difficult time to make choices about what we needed to prioritise and what was relatively less important and we could go without. One of our biggest priority in this iteration was quality assurance. We wanted to make sure the final version of ``MiniCooper'' was easy to use and free of any critical bugs. As such in this iteration did not plan on committing much time towards developing new features.
+One of our biggest priority in this iteration was Quality Assurance. We wanted to make sure the final version of ``MiniCooper'' was easy to use and free of any critical bugs.
 
 From the very beginning we had focused on testing.  We increased the volume of tests as much as we could as well increased test coverage across the entire server side of the application. We had wanted to also include testing of our javascript files, however in the end we didn’t have to time implement these due to the team not prioritizing it soon enough and the team did not manage to get it working on time.
 
 Writing new tests and solving occuring bugs forced us to understand the logic behind each functions once again. As it had turned out some of them were representing ``bad smells'' (Fowler). In order to correct that defect we have undertaken a refactoring process, which modified the old code into a more efficient and easier to maintain one.
 
-Probably the biggest challenge this iteration was assisting our customer to deploy our app. A final requirement change meant that the web server had to be able to be run on Windows as well, not just on Linux. A Windows install script and user guide had to be written quickly and Windows deployment introduced new bugs even though python is meant to be platform-agnostic. For example, we noticed that the website would not display non-ASCII characters correctly. It was so because of the difference in UTF encoding, which turned out to be hideous but trivial to repair bug. Discovering it underlined the importance to test the application on both operating systems, which since then we were trying to keep up with.
+Probably the biggest challenge this iteration was assisting our customer to deploy our app. A final requirement change meant that the web server had to be able to be run on Windows as well, not just on Linux. A Windows install script and user guide had to be written quickly and Windows deployment introduced new bugs even though Python is meant to be platform-agnostic. For example, we noticed that the website would not display non-ASCII characters correctly. It was so because of the difference in UTF encoding, which turned out to be a bug hideous but trivial to repair. Discovering it underlined the importance to test the application on both operating systems.
 
 We managed to complete the Windows deployment within a few weeks before the deadline, however, we had not heard back from customer about his experience with it. 
 
-By the end of this iteration we were confident that we were ready to deliver our application. All the main requirements had been added, though we were still missing some optional features. We had also managed to re-implement automatic refreshing on the results page. Using DataTables we were finally able to get this working alongside our pagination. 
+By the end of this iteration we were confident that we were ready to deliver our application. All the main requirements had been added, though we were still missing some optional features. We had also managed to re-implement automatic refreshing with pagination on the results page switching to using DataTables.
 
-We did not have a retrospective by the end of this iteration, but we had followed our previous retrospective solutions. They helped to further improve our communication and overall performance leaving us with a functional working environment by the end of the project.
+We did not have a retrospective by the end of this iteration, but we evaluated our previous retrospective solutions. We agreed that they further improved our communication and overall performance leaving us with a functional working environment by the end of the project.
 
 %==============================================================================
 \section{Conclusions}
@@ -270,7 +270,7 @@ Once the initial requirements are agreed, it is a good idea to produce a quick p
 
 \subsection{Project Management and Development}
 
-As it was expected, Team Dynamics evolved throughout the course of the project: as we got to know each other better, and got used to working together, we could better estimate the delivery costs of certain features and our understanding of the frameworks and tools we used increased. We found retrospectives the best tools to improve our team work, especially when we decided to suggest concrete solutions to the identified issues and adhered to them improved the teams commitment and efficiency in the project. 
+As it was expected, Team Dynamics evolved throughout the course of the project: as we got to know each other better, and got used to working together, we could better estimate the delivery costs of certain features and our understanding of the frameworks and tools we used increased. We found retrospectives the best tools to improve our team work, especially when we decided to suggest concrete solutions to the identified issues and adhered to them improved the team's commitment and efficiency in the project. 
 
 
 \subsection{Quality Assurance}
@@ -281,7 +281,7 @@ We started user-testing late, which revealed several bugs at the end of the proj
 
 \subsection{Final Notes}
 
-Since the start of our degrees, the Team Project was possibly our biggest step up in our journey to become professional software developers. This was the first time we worked in a reasonably large group for an extended amount of time creating software for a real world customer. Over the course of the project, we got to learn new technologies, such as CI/CD, various python and javascript libraries and we had the chance to apply the principles and practices learnt during the Professional Software Development course. We feel that having worked in a small agile team for two semesters gave us the communication, teamwork skills and industry best practices knowledge to perform well in our summer internships/year placements.
+Since the start of our degrees, the Team Project was possibly our biggest step up in our journey to become professional software developers. This was the first time we worked in a reasonably large group for an extended amount of time creating software for a real world customer. Over the course of the project, we got to learn new technologies, such as CI/CD, various Python and JavaScript libraries and we had the chance to apply the principles and practices learnt during the Professional Software Development course. We feel that having worked in a small agile team for two semesters gave us the communication, teamwork skills and knowledge of industry best practices to perform well in our summer internships/year placements.
 
 %==============================================================================
 \bibliographystyle{plain}
