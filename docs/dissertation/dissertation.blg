@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2017/Debian)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: dissertation.aux
+The style file: plainurl.bst
+Reallocated glb_str_ptr (elt_size=4) to 20 items from 10.
+Reallocated global_strs (elt_size=20001) to 20 items from 10.
+Reallocated glb_str_end (elt_size=4) to 20 items from 10.
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: dissertation.bib
+Warning--entry type for "agilewebsite" isn't style-file defined
+--line 19 of file dissertation.bib
+You've used 11 entries,
+            2849 wiz_defined-function locations,
+            677 strings with 6101 characters,
+and the built_in function-call counts, 3609 in all, are:
+= -- 334
+> -- 118
+< -- 0
++ -- 47
+- -- 32
+* -- 110
+:= -- 553
+add.period$ -- 33
+call.type$ -- 11
+change.case$ -- 39
+chr.to.int$ -- 0
+cite$ -- 11
+duplicate$ -- 129
+empty$ -- 389
+format.name$ -- 32
+if$ -- 962
+int.to.chr$ -- 0
+int.to.str$ -- 11
+missing$ -- 20
+newline$ -- 58
+num.names$ -- 22
+pop$ -- 137
+preamble$ -- 1
+purify$ -- 38
+quote$ -- 0
+skip$ -- 282
+stack$ -- 0
+substring$ -- 59
+swap$ -- 11
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 24
+warning$ -- 0
+while$ -- 22
+width$ -- 13
+write$ -- 111
+(There was 1 warning)
