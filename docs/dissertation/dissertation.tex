@@ -33,6 +33,8 @@ This paper presents a case study of ``MiniCooper'', a project undertaken by a gr
 \newpage
 
 %==============================================================================
+\clearpage
+\setcounter{page}{1}
 \section{Introduction}
 
 The following document is a case study of ``MiniCooper'', an application software developed by Group 15 as part of Level 3 course on software engineering at the University of Glasgow. The main goal of the course is to deliver a tailored solution to a selected customer while working in a standard-sized agile team of five using professional software development practices.
@@ -180,10 +182,9 @@ We found many parts of the code were repetitive between the template editor and 
 The other main tasks for the web app in the iteration were:
 \begin{itemize}
 \item To develop and improve the back end
-\item Moving our cropping and processing code we had written in the local application into the web application to help ensure the application would perform consistently across multiple platforms.
-\item Setting up a user system as in the design of the project, the application was designed to have two different users, regular user and admin (superuser). All of the above tasks were achieved within the iteration.
+\item Moving our cropping and processing code we had written in the local application into the web application for multi-platform compatibility.
+\item Setting up a user system as in the design of the project by having regular users and admins
 \item Development for the main result page
-\item General error checking
 \end{itemize}
 
 A few missed objectives include user friendly representation of JSON data on the main page, error checking when PDF is converted into JSON. The first was missed due to us not assigning the right person for the task and the second being due tests not being written for the fix on time and as such, the update was not pushed on time for the iteration.
