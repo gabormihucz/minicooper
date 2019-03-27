@@ -1,0 +1,60 @@
+\begin{thebibliography}{10}
+
+\bibitem{Cirillo}
+Francesco Cirillo.
+\newblock {\em The Pomodoro Technique: The Life-Changing Time-Management
+  System}.
+\newblock Virgin Digital, 2018.
+
+\bibitem{CleggBarker}
+Dai Clegg and Richard Barker.
+\newblock {\em Case Method Fast-Track: A RAD Approach}.
+\newblock Addison-Wesley, 1994.
+
+\bibitem{CohnMike}
+Mike Cohn.
+\newblock {\em User Stories Applied: For Agile Software Development}.
+\newblock Addison-Wesley, 2004.
+
+\bibitem{MikeAgile}
+Mike Cohn.
+\newblock {\em Agile Estimating and Planning}.
+\newblock Prentice Hall, 2005.
+
+\bibitem{DerbyLarsenSchwaber}
+Ester Derby and Diana Larsenand~Ken Schwaber.
+\newblock {\em Agile Retrospectives: Making Good Teams Great}.
+\newblock Pragmatic Bookshelf, 2006.
+
+\bibitem{agilewebsite}
+Kent~Beck et~al.
+\newblock Agile manifesto.
+\newblock URL: \url{"http://agilemanifesto.org/"}.
+
+\bibitem{Fowler}
+Martin Fowler.
+\newblock {\em The Pragmatic Programmer}.
+\newblock Addison Wesley, 2019.
+
+\bibitem{GoncalvesLinders}
+Luís Gonçalves and Ben Linders.
+\newblock {\em Getting Value out of Agile Retrospectives - A Toolbox of
+  Retrospective Exercises}.
+\newblock lulu.com, 2014.
+
+\bibitem{HuntThomas}
+Andrew Hunt and David Thomas.
+\newblock {\em The Pragmatic Programmer}.
+\newblock Addison Wesley, 1999.
+
+\bibitem{Skarin}
+Mattias Skarin.
+\newblock {\em Real-World Kanban: Do Less, Accomplish More with Lean Thinking}.
+\newblock Pragmatic Bookshelf, 2015.
+
+\bibitem{YadavSingh}
+Chandra Yadav and Kumar Singh.
+\newblock {\em An Introduction to Client Server Computing}.
+\newblock New Age International, 2009.
+
+\end{thebibliography}

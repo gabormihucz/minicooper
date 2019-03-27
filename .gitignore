@@ -10,3 +10,12 @@ MCweb/MCwebDjango/db.sqlite3
 MCapp/.idea/
 MCweb/MCwebDjango/.coverage
 MCweb/MCwebDjango/covhtml/
+
+# dissertation build stuff
+*synctex.gz
+*.log
+*.fdb_latexmk
+*.fls
+*.out
+*.pdf
+*.aux

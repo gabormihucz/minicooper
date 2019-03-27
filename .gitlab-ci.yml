@@ -23,8 +23,9 @@ build:
     - python3 manage.py migrate
     - sudo python3 populate.py
     - python3 manage.py test
+    - cd ../../docs/dissertation
+    - latexmk -pdf dissertation.tex
     - cd ../..
-    - latexmk -pdf -cd docs/dissertation/dissertation.tex
     - sudo rm -r venv/
     - cd ..
     - zip -r deployment.zip dissertation

@@ -10,7 +10,7 @@ def post(path, pdf, ip = '127.0.0.1:8000'):
         with open(path + '/' + pdf, 'rb') as f:
             data = base64.b64encode(f.read()) #encoding to fit into later json
 
-
+        pdf = pdf.replace(" ", "-")
         body = {"filename":pdf[:-4],"content":data.decode('utf-8')} #temporary directory that will be parsed into json
         url_destination = 'http://' + ip + '/upload_pdf/' #destination is an url that is linked to a view which handles post requests (uploads to a server)
 

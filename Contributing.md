@@ -9,10 +9,10 @@ Corey Aynsley (2266643a@student.gla.ac.uk)
 
 Gabor Mihucz (magnarch) (2239495m@student.gla.ac.uk)  
  * Responsibilites:  
-   * Iteration 2: wiki, CI, gitlab organisation, customer communication, notetaking  
+   * Iteration 2: wiki, CI/CD, gitlab organisation, customer communication, notetaking  
    * Iteration 3: file watching, signup/login functionality, PythonAnywhere hosting, gitlab organisation, customer communication  
-   * Iteration 4: results page, search function, error checking in signup/login, coverage testing, mutation testing, customer communication  
-   * Iteration 5: user guide, CI/CD, AJAX, DataTables, DatePicker, customer communication  
+   * Iteration 4: results page, search function, error checking in signup/login, coverage testing, mutation testing, customer communication, team meeting agendas  
+   * Iteration 5: user guide, CI/CD, AJAX, DataTables, DatePicker, stress tests, bug fixes, customer communication, team meeting agendas  
 
 Nestoras Skiadas (2258257s@student.gla.ac.uk)  
  * Responsibilites:  

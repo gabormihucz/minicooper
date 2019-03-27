@@ -83,7 +83,8 @@ Furthermore, the template being applied to each PDF should depend on the filenam
 You first need to register/login to access the results page.
 
 Once logged in, you can see the previously converted PDF files, along with their corresponding JSON files. Status indicated whether the conversion was successful, that is, if all mandatory fields in a template were populated. You can also see the template that was applied during the conversion and the user who created that template. Finally the date and time of the conversion is also listed.
-In the search bar, you can search for patterns appearing in the JSON file. Hitting enter will list all the files that have the pattern you searched for.
+Records are listed by reverse chronological order by default, and only from the last 7 days. You can change the ordering by clicking on the header of table and you can select specific date ranges by selecting dates by the Minimum and Maximum Date fields. 
+In the search bar, you can search for patterns appearing in the records.
 
 #### As a superuser
 
@@ -95,7 +96,7 @@ First give a title to your template to be created.
 Then click on 'Upload PDF' to upload a PDF based on which you will draw your pattern. Once your PDF is uploaded, click on the 'Draw Rectangle' button, and draw a rectangle over a field you would like to process in subsequent PDFs. Once you drew the rectangle, if you click and hold it, you can move it around the template. To get meaningful results, please draw rectangles **containing only one line of text**. If you want to convert something that is broken into multiple lines, (e.g. an address field), please draw multiple rectangles. 
 On the right hand side, give a name to your rectangle: this will be they key in your JSON output. Select whether the rectangle's conversion should be mandatory or optional. If the output of any mandatory rectangle in a template is empty that will label the status of the conversion as 'Fail'. Empty outputs of optional rectangles will not be flagged as failed conversions. You can manually change the coordinates of the rectangles by changing the x and y values of the top left and bottom right corners.
 If you made a mistake and you want to delete a rectangle, select a rectangle and click on the 'Delete' button.
-Finally, once you finished creating the template, click on 'Save Template'.
+Finally, once you finished creating the template, click on 'Save Template'. You will get a prompt notifying you whether the template creation was successful and then you will be directed to the Template Manager page.
 
 > Note: In order to accurately create templates in template editor, the scale of the display should be set to 100%. If the boxes are not drawn from where you clicked in Windows, go to Settings/Display/Scale and Layout, and set the Scale to 100%.
 
@@ -104,12 +105,13 @@ Finally, once you finished creating the template, click on 'Save Template'.
 To manage the properties of already existing templates, click on 'Manage'. You will see the list of templates currently in the database. Clicking on one template will open a drop-down, where you can define *patterns*.
 Patterns are used to automatically match PDF files to templates. From the drop-down, you can select 'Starts with', 'Contains' and 'Ends with'.
 For example, if you wanted to upload PDFs with the title of the form SupermarketBills_XX, and convert them based on the template 'SuperBills', you could select 'Starts with', write 'SupermarketBills' into the entry field and click Add.
-After having done this, if you dropped a PDF filename that begins with 'SupermarketBills', that file would be converted based on the template 'SuperBills'.
-You can add multiple patterns to a template. If a filename matches any of the defined patterns of a template, that template will be applied to the patterns.
+After having done this, if you dropped a PDF filename to the watched folder that begins with 'SupermarketBills', that file would be converted based on the template 'SuperBills'.
+You can add multiple patterns to a template. If a filename dropped to the watched folder matches any of the defined patterns of a template, that template will be applied to the patterns.
 
 If a filename matches multiple templates, the first template in the list will be applied.
+If a filename does not match any of the templates, the file will not be uploaded.
 
-On Template Manager, for each template you can also see two buttons: 'Edit' and 'Delete'. Delete will delete the template. Clicking on 'Edit' will take you to the page to edit that template.
+On Template Manager, for each template you can also see two buttons: 'Edit' and 'Delete'. Delete will delete the template and all the JSON files that were created using that template. Clicking on 'Edit' will take you to the page to edit that template.
 
 ###### Template Editor
 
