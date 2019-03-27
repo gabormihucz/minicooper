@@ -97,9 +97,9 @@ As the software is intended to be used locally by a small- to medium-sized group
 \section{Reflections}
 \subsection{Iteration One and Two}
 
-We spent Iteration One with getting set up and getting to know each other better to identify each others’ strengths  in order to assign technical tasks efficiently in the future.
+We spent Iteration One with getting set up and getting to know each other better to identify each others’ strengths in order to assign technical tasks efficiently in the future.
 
-We set up our GitLab account, installed the virtual machine we had been provided on the lab machines and familiarised ourselves with Linux. We also created a Slack account in order to communicate efficiently in the future on multiple channels and participated on a 48-hour Hackathon, partly as a team building exercise. Social Media would also be used for brief, and urgent, messages.
+We set up our GitLab account, installed the virtual machine we had been provided on the lab machines and familiarised ourselves with Linux. We also created a Slack workspace in order to communicate efficiently in the future on multiple channels and participated on a 48-hour Hackathon, partly as a team building exercise. Social Media would also be used for brief, and urgent, messages.
 
 Iteration Two started with the team being assigned to our customer, Cooper Software. The goal for the end of this iteration was to have a detailed backlog, consisting of the detailed description of the project, and a clear well-organised set of tasks in GitLab to start delivering features.
 
@@ -158,12 +158,13 @@ Organising the KanBan board like this allowed us to easily filter it by:
 \item Other labels such as ``high priority'' or ``QA'' (Quality Assurance)
 \end{itemize}
 
-In many ways, Iteration 3 constituted the point at which we began development of the application in earnest. For a simple overview of the features delivered in this iteration, we created a ``Hello World'' application in the Django web-app framework, implemented user authentication functionality and fleshed out a significant part of the User Interface. On the local application side, we created a hard-coded template that was used in conjunction with OCR to process some premade PDF files.
+In many ways, Iteration Three constituted the point at which we began development of the application in earnest. For a simple overview of the features delivered in this iteration, we created a ``Hello World'' application in the Django web-app framework, implemented user authentication functionality and fleshed out a significant part of the User Interface. On the local application side, we created a hard-coded template that was used in conjunction with OCR to process some premade PDF files.
 
 To start with, we created a small script that would crop an image according to two pairs of coordinates which formed a rectangle. Then, we initialized a Django project, which would allow us to develop the web application further down the line. Another small script was created - this one was exploratory in nature, as we were learning how to utilize the tesseract library. Importantly, this piece of code was accompanied by our first unit test. Throughout development, we made sure to create unit tests as we were developing features.
 
 During the end of the iteration, we had a customer demo. Since the team had only started on the development of the app and did not have much to show for the demo, we decided to use a prototype for the PDF to JSON conversion and wireframes for the Template Creation as substitutes. It was found to be effective as instead of trying to explain the future features using words, a picture (with some narration) displays more information and the customer was easily able to catch onto what we were planning to deliver and give us almost immediate feedback. As such, we also decided to use wireframe/prototypes in future demonstrations.
 
+At the end of the iteration we had our second retrospective. This time we tried a different framework; Mad-Sad-Glad. Since we had actually started writing code we were able to come up more specific problems and solutions. These included being thorough with making sure nothing was broken before pushing changes to our development branch, writing more tests as we developed and updating the wiki more often as the app's features changed. This retrospective was more successful as we followed through on most of the solutions. However there was much room for improving the specificity of the problems/solutions.  
 
 %==============================================================================
 \subsection{Iteration Four}
@@ -238,8 +239,7 @@ In hindsight, the conclusions we can draw can be enumerated as follows:
 
 \subsection{Initial Requirements Gathering and Planning Phase}
 
-Requirements are quite vague in the beginning, as the project takes shape. Project documentation, such as user personas, wireframes, site URLs, UML diagrams take time, but help immensely to create clarity between the development team and the customer.
-Once the initial requirements are agreed, it is a good idea to produce a quick prototype. This gives the customer the opportunity to further clarify requirements, and the team to quickly change and adopt to these. Following a successful prototype and agreed requirements, it is useful to identify the scope of the project and decide on web frameworks to use. Django was an excellent choice for the backend, however we would have benefited from a front-end framework such as React or Angular for multiple reasons: automated testing would then have been very easy to implement and we could have enjoyed better library and community support.
+Requirements are quite vague in the beginning, as the project takes shape. Project documentation, such as user personas, wireframes, site URLs, UML diagrams take time, but help immensely to create clarity between the development team and the customer. Once the initial requirements are agreed, it is a good idea to produce a quick prototype. This gives the customer the opportunity to further clarify requirements, and the team to quickly change and adopt to these. Following a successful prototype and agreed requirements, it is useful to identify the scope of the project and decide on web frameworks to use. Django was an excellent choice for the backend, however we would have benefited from a front-end framework such as React or Angular for multiple reasons: automated testing would then have been very easy to implement and we could have enjoyed better library and community support.
 
 
 \subsection{Project Management and Development}
@@ -249,8 +249,7 @@ As it was expected, Team Dynamics evolved throughout the course of the project: 
 
 \subsection{Quality Assurance}
 
-Although the backend is thoroughly tested with over 90\% coverage, our front-end lacks tests. This is partly due to not using any front-end frameworks, partly to occasionally prioritising delivering features over thorough tests.
-We started user-testing late, which revealed several bugs at the end of the project. Due to the complexity and unusual nature of the app (as it is meant to be used in a company setting, not by individual users), user testing was difficult to organise and get useful results. Each user test would first need a thorough brief and setup, which is fairly time-consuming and resource-intensive. An alternative option could have been to gather 10-15 users into one physical place, brief them and make them test the app at once in order to save time and introduce competition among them to think of unusual edge cases to be tested.
+Although the backend is thoroughly tested with over 90\% coverage, our front-end lacks tests. This is partly due to not using any front-end frameworks, partly to occasionally prioritising delivering features over thorough tests. We started user-testing late, which revealed several bugs at the end of the project. Due to the complexity and unusual nature of the app (as it is meant to be used in a company setting, not by individual users), user testing was difficult to organise and get useful results. Each user test would first need a thorough brief and setup, which is fairly time-consuming and resource-intensive. An alternative option could have been to gather 10-15 users into one physical place, brief them and make them test the app at once in order to save time and introduce competition among them to think of unusual edge cases to be tested.
 
 
 \subsection{Final Notes}
