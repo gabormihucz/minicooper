@@ -52,7 +52,7 @@ This document is structured in order to best represent the workflow of our team,
 
 Cooper Software is a software development company founded in 2005, based in Fife, specialised in Enterprise Resource Planning (ERP).
 
-The company itself has to deal with great communication overhead such as hundreds of PDFs over the course of a week. The PDFs can be classified into a number of distinct groups based on their structure and titles: flight tickets, supermarket bills, etc. The relevant information happens to be at the same area in each PDF that belongs to a specific group. The company needs to retrieve this data and store it in an online system, therefore, there is an employee in the company who has to take time out of their regular work to manually open these PDFs and type the data into an online form, e.g. on a supermarket bill the labels to be entered manually could be: invoice number, address, total, etc.
+The company itself has to deal with great communication overhead such as hundreds of PDFs over the course of a week. The PDFs can be classified into a number of distinct groups based on their structure and titles: flight tickets, supermarket bills, etc. The relevant information happens to be at the same area in each PDF that belongs to a specific group. The company needs to retrieve this data and store it in an online system. Currently, there is an employee in the company who has to take time out of their regular work to manually open these PDFs and type the data into an online form, e.g. on a supermarket bill the labels to be entered manually could be: invoice number, address, total, etc.
 
 Our task was to automate this process by creating an application that would automatically upload PDFs appearing in a specific folder, match the PDFs based on patterns in their filenames to custom templates the user created previously, convert the files to JSON using OCR (Optical Character Recognition) and display the data in a user-friendly interface.
 Implementing a piece of software which would tackle this problem would result in less error-prone bookkeeping as user error is inevitable when it comes to typing. Furthermore, the employees could spend their time at work doing more creative or complicated tasks which is an additional business value for the company.
@@ -90,7 +90,7 @@ The final product is based on the Client-Server architectural pattern, specified
 \label{fig:componentDiagram}
 \end{figure}
 
-As the software is intended to be used locally by a small- to medium-sized group of users, it is beneficial to implement its server in a centralised manner. The benefits coming from such a design are the improvement in the management and organisation of data, as all of it can be maintained and controlled in a single and consistent structure. Hence any future improvements can be undertaken directly on the server rather than simultaneously updating multiple clients. \cite{YadavSingh}
+As the software is intended to be used locally by a small- to medium-sized group of users, it is beneficial to implement its server in a centralised manner. The benefit coming from such a design is the improvement in the management and organisation of data, as all of it can be maintained and controlled in a single and consistent structure. Hence any future improvements can be undertaken directly on the server rather than simultaneously updating multiple clients. \cite{YadavSingh}
 
 
 %==============================================================================
