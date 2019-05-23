@@ -1,9 +1,5 @@
-# dissertation
-CS15 --- team project
-
-## Get the software
-
-If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then under the button CI Lint, click on the latest button with a cloud symbol and an arrow pointing downards and click on 'Download build artifacts'.  
+# minicooper
+CS15 --- L3 team project at the University of Glasgow
 
 ## OS Requirements:
 
@@ -11,6 +7,8 @@ If you do not have the project in a zip file yet: click on CI/CD/Pipelines. Then
 - The app works on Windows and UNIX-based systems as well
 
 ## Deployment guide: 
+
+The project was intended to be used for a company internally, hence is not hosted on any public website at the moment.
 
 ### On Linux
 
@@ -25,13 +23,6 @@ Once that's done, open your preferred web browser and go to http://127.0.0.1:800
 To login as a superuser:  
 username: superuser  
 password: superpass  
-
-
-In order to start the file watching, go to the MCapp folder and execute
-
-`python3 filewatcher.py`
-
-You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
 
 ### On Windows
 
@@ -50,15 +41,6 @@ Once that's done, open your preferred web browser and go to http://127.0.0.1:800
 To login as a superuser:  
 username: superuser  
 password: superpass  
-
-In order to start the file watching, go to the MCapp folder and double-click
-
-`filewatcher.py`
-
-Leave the black window open as long as you want to have the file watcher running.
-
-The default folder the PDFs are uploaded to the website is the current working directory of `filewatcher.py`. You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
-
 
 ## User guide
 
@@ -130,9 +112,13 @@ Under MCWEBAPP, you can view/delete/update the other entities in the database. T
 In order to run the app, open a terminal window in the folder 'dissertation/MCapp' and run
 `python3 filewatcher.py`
 
+You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
+
 ##### On Windows
 
 Just double click the `filewatcher.py` file in the MCapp folder.
 
 This will start the filewatching process. Drag and drop files with the extension ".pdf" into the current folder. If these match any of the patterns of templates, they will then be uploaded to the webserver and deleted from the local filesystem.
 On the results page, you will be able to see the uploaded PDFs, as well as the converted JSON, based on the template the file's filename indicated.
+
+You can change the watched folder in `filewatcher.py` and you can change the server address in `post_to_server.py`
